@@ -1,27 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ali D. Shah — UI/UX Designer & Flutter Developer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --bg:        #0a0a0f;
-      --surface:   #111118;
-      --border:    #1e1e2e;
-      --accent:    #00d9ff;
-      --accent2:   #7c3aed;
-      --text:      #e2e8f0;
-      --muted:     #64748b;
-      --card:      #13131c;
+  <!-- ===== FAVICON (placeholder – replace with your own image) ===== -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230a0a0f'/%3E%3Ctext x='50' y='68' font-family='Arial, sans-serif' font-size='56' font-weight='bold' text-anchor='middle' fill='%2300d9ff'%3EA%3C/text%3E%3C/svg%3E" />
+  <link rel="alternate icon" href="/favicon.ico" /> <!-- fallback, you can replace later -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ----- RESET & ROOT ----- */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #1e1e2e;
+      --accent: #00d9ff;
+      --accent2: #7c3aed;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --card: #13131c;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       background: var(--bg);
@@ -31,7 +46,7 @@
       overflow-x: hidden;
     }
 
-    /* ── NOISE TEXTURE ── */
+    /* ----- NOISE TEXTURE (kept) ----- */
     body::before {
       content: '';
       position: fixed;
@@ -41,16 +56,18 @@
       z-index: 0;
     }
 
-    /* ── NAV ── */
+    /* ----- NAVIGATION ----- */
     nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1.2rem 2.5rem;
-      background: rgba(10,10,15,0.8);
+      background: rgba(10, 10, 15, 0.8);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
@@ -76,9 +93,11 @@
       transition: color 0.2s;
     }
 
-    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover {
+      color: var(--text);
+    }
 
-    /* ── HERO ── */
+    /* ----- HERO ----- */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -138,6 +157,7 @@
       flex-wrap: wrap;
     }
 
+    /* ----- BUTTONS ----- */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -175,7 +195,7 @@
       transform: translateY(-2px);
     }
 
-    /* ── SCROLL INDICATOR ── */
+    /* ----- SCROLL INDICATOR ----- */
     .scroll-hint {
       position: absolute;
       bottom: 2.5rem;
@@ -196,11 +216,16 @@
     }
 
     @keyframes scrollLine {
-      0%, 100% { opacity: 0.3; }
-      50%       { opacity: 1; }
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 1;
+      }
     }
 
-    /* ── SECTIONS ── */
+    /* ----- SECTION HEADERS ----- */
     section {
       max-width: 900px;
       margin: 0 auto;
@@ -223,7 +248,7 @@
       margin-bottom: 3rem;
     }
 
-    /* ── ABOUT ── */
+    /* ----- ABOUT ----- */
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -238,7 +263,9 @@
       line-height: 1.75;
     }
 
-    .about-text p strong { color: var(--text); }
+    .about-text p strong {
+      color: var(--text);
+    }
 
     .about-stats {
       display: grid;
@@ -266,7 +293,7 @@
       color: var(--muted);
     }
 
-    /* ── SKILLS ── */
+    /* ----- SKILLS ----- */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -281,7 +308,9 @@
       transition: border-color 0.2s;
     }
 
-    .skill-group:hover { border-color: var(--accent); }
+    .skill-group:hover {
+      border-color: var(--accent);
+    }
 
     .skill-group-title {
       font-size: 0.78rem;
@@ -306,7 +335,7 @@
       font-weight: 500;
     }
 
-    /* ── PROJECTS ── */
+    /* ----- PROJECTS ----- */
     .projects-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -329,15 +358,23 @@
     .project-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 2px;
       background: linear-gradient(90deg, var(--accent), var(--accent2));
       opacity: 0;
       transition: opacity 0.25s;
     }
 
-    .project-card:hover { border-color: var(--accent); transform: translateY(-4px); }
-    .project-card:hover::before { opacity: 1; }
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+    }
 
     .project-icon {
       font-size: 1.75rem;
@@ -368,13 +405,13 @@
       font-size: 0.72rem;
       font-family: 'Fira Code', monospace;
       color: var(--accent);
-      background: rgba(0,217,255,0.08);
-      border: 1px solid rgba(0,217,255,0.2);
+      background: rgba(0, 217, 255, 0.08);
+      border: 1px solid rgba(0, 217, 255, 0.2);
       padding: 0.2rem 0.55rem;
       border-radius: 4px;
     }
 
-    /* ── JOURNEY ── */
+    /* ----- JOURNEY (timeline) ----- */
     .journey-list {
       display: flex;
       flex-direction: column;
@@ -432,7 +469,7 @@
       color: var(--muted);
     }
 
-    /* ── CONTACT ── */
+    /* ----- CONTACT ----- */
     .contact-inner {
       background: var(--card);
       border: 1px solid var(--border);
@@ -461,7 +498,7 @@
       flex-wrap: wrap;
     }
 
-    /* ── FOOTER ── */
+    /* ----- FOOTER ----- */
     footer {
       border-top: 1px solid var(--border);
       padding: 2rem 2.5rem;
@@ -471,7 +508,7 @@
       font-family: 'Fira Code', monospace;
     }
 
-    /* ── DIVIDER ── */
+    /* ----- DIVIDER (used as <hr>) ----- */
     .divider {
       border: none;
       border-top: 1px solid var(--border);
@@ -479,235 +516,260 @@
       margin: 0 auto;
     }
 
-    /* ── RESPONSIVE ── */
+    /* ----- RESPONSIVE ----- */
     @media (max-width: 700px) {
-      nav { padding: 1rem 1.25rem; }
-      .nav-links { gap: 1.2rem; }
-      .hero { padding: 7rem 1.25rem 4rem; }
-      section { padding: 4rem 1.25rem; }
-      .about-grid { grid-template-columns: 1fr; }
-      .skills-grid { grid-template-columns: 1fr; }
-      .projects-grid { grid-template-columns: 1fr; }
-      .journey-list::before { left: 4.5rem; }
-      .journey-item { grid-template-columns: 5rem 1fr; }
-      .contact-inner { padding: 2rem 1.25rem; }
+      nav {
+        padding: 1rem 1.25rem;
+      }
+      .nav-links {
+        gap: 1.2rem;
+      }
+      .hero {
+        padding: 7rem 1.25rem 4rem;
+      }
+      section {
+        padding: 4rem 1.25rem;
+      }
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .journey-list::before {
+        left: 4.5rem;
+      }
+      .journey-item {
+        grid-template-columns: 5rem 1fr;
+      }
+      .contact-inner {
+        padding: 2rem 1.25rem;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav>
-  <span class="nav-logo">ali.shah()</span>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+  <!-- ========== NAVIGATION ========== -->
+  <nav>
+    <span class="nav-logo">ali.shah()</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <p class="hero-eyebrow">Available for freelance</p>
-  <h1>Ali D. Shah<br/><span>Designer &amp; Developer</span></h1>
-  <p class="hero-sub">
-    Computer Engineering student building simple, intuitive digital experiences.
-    Focused on UI/UX Design, Flutter, and Product Thinking.
-  </p>
-  <div class="hero-cta">
-    <a href="#projects" class="btn btn-primary">View Projects</a>
-    <a href="https://github.com/GoldenTitab" target="_blank" class="btn btn-ghost">GitHub Profile</a>
-  </div>
-  <div class="scroll-hint">
-    <div class="scroll-hint-line"></div>
-    scroll
-  </div>
-</div>
-
-<hr class="divider"/>
-
-<!-- ABOUT -->
-<section id="about">
-  <p class="section-label">// about me</p>
-  <h2 class="section-title">Who I am</h2>
-  <div class="about-grid">
-    <div class="about-text">
-      <p>I'm a <strong>Computer Engineering student</strong> from Kerman, Iran, passionate about the intersection of technology and design.</p>
-      <p>My journey started with HTML &amp; CSS and grew into <strong>UI/UX Design</strong>, WordPress development, and now <strong>Flutter &amp; Dart</strong> for mobile apps.</p>
-      <p>I believe good design is invisible — it guides people naturally without getting in the way.</p>
+  <!-- ========== HERO ========== -->
+  <div class="hero">
+    <p class="hero-eyebrow">Available for freelance</p>
+    <h1>Ali D. Shah<br /><span>Designer &amp; Developer</span></h1>
+    <p class="hero-sub">
+      Computer Engineering student building simple, intuitive digital experiences.
+      Focused on UI/UX Design, Flutter, and Product Thinking.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="https://github.com/GoldenTitab" target="_blank" class="btn btn-ghost">GitHub Profile</a>
     </div>
-    <div class="about-stats">
-      <div class="stat-card">
-        <div class="stat-number">2+</div>
-        <div class="stat-label">Years learning</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">4+</div>
-        <div class="stat-label">Projects built</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">100%</div>
-        <div class="stat-label">HTML / CSS</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">90%</div>
-        <div class="stat-label">Figma</div>
-      </div>
+    <div class="scroll-hint">
+      <div class="scroll-hint-line"></div>
+      scroll
     </div>
   </div>
-</section>
 
-<hr class="divider"/>
+  <hr class="divider" />
 
-<!-- SKILLS -->
-<section id="skills">
-  <p class="section-label">// skills</p>
-  <h2 class="section-title">What I work with</h2>
-  <div class="skills-grid">
-    <div class="skill-group">
-      <p class="skill-group-title">UI / UX</p>
-      <div class="skill-tags">
-        <span class="skill-tag">Figma</span>
-        <span class="skill-tag">Wireframing</span>
-        <span class="skill-tag">Prototyping</span>
-        <span class="skill-tag">User Flows</span>
-        <span class="skill-tag">Design Thinking</span>
+  <!-- ========== ABOUT ========== -->
+  <section id="about">
+    <p class="section-label">// about me</p>
+    <h2 class="section-title">Who I am</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a <strong>Computer Engineering student</strong> from Kerman, Iran, passionate about the intersection of technology and design.</p>
+        <p>My journey started with HTML &amp; CSS and grew into <strong>UI/UX Design</strong>, WordPress development, and now <strong>Flutter &amp; Dart</strong> for mobile apps.</p>
+        <p>I believe good design is invisible — it guides people naturally without getting in the way.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-number">2+</div>
+          <div class="stat-label">Years learning</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">4+</div>
+          <div class="stat-label">Projects built</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">HTML / CSS</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">90%</div>
+          <div class="stat-label">Figma</div>
+        </div>
       </div>
     </div>
-    <div class="skill-group">
-      <p class="skill-group-title">Front-End</p>
-      <div class="skill-tags">
-        <span class="skill-tag">HTML</span>
-        <span class="skill-tag">CSS</span>
-        <span class="skill-tag">JavaScript</span>
-        <span class="skill-tag">WordPress</span>
-        <span class="skill-tag">Responsive</span>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ========== SKILLS ========== -->
+  <section id="skills">
+    <p class="section-label">// skills</p>
+    <h2 class="section-title">What I work with</h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <p class="skill-group-title">UI / UX</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Wireframing</span>
+          <span class="skill-tag">Prototyping</span>
+          <span class="skill-tag">User Flows</span>
+          <span class="skill-tag">Design Thinking</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Front-End</p>
+        <div class="skill-tags">
+          <span class="skill-tag">HTML</span>
+          <span class="skill-tag">CSS</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">WordPress</span>
+          <span class="skill-tag">Responsive</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Mobile & Dev</p>
+        <div class="skill-tags">
+          <span class="skill-tag">Flutter</span>
+          <span class="skill-tag">Dart</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">GitHub</span>
+          <span class="skill-tag">Python</span>
+        </div>
       </div>
     </div>
-    <div class="skill-group">
-      <p class="skill-group-title">Mobile & Dev</p>
-      <div class="skill-tags">
-        <span class="skill-tag">Flutter</span>
-        <span class="skill-tag">Dart</span>
-        <span class="skill-tag">Git</span>
-        <span class="skill-tag">GitHub</span>
-        <span class="skill-tag">Python</span>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ========== PROJECTS ========== -->
+  <section id="projects">
+    <p class="section-label">// projects</p>
+    <h2 class="section-title">Things I've built</h2>
+    <div class="projects-grid">
+      <a href="https://github.com/GoldenTitab" class="project-card">
+        <div class="project-icon">🚗</div>
+        <div class="project-name">Car Marketplace Landing Page</div>
+        <p class="project-desc">Modern responsive landing page for a vehicle marketplace platform with CTA sections and pricing components.</p>
+        <div class="project-tags">
+          <span class="project-tag">HTML</span>
+          <span class="project-tag">CSS</span>
+          <span class="project-tag">Responsive</span>
+        </div>
+      </a>
+      <a href="https://github.com/GoldenTitab" class="project-card">
+        <div class="project-icon">💰</div>
+        <div class="project-name">Crypto Landing Page</div>
+        <p class="project-desc">Landing page concept for a cryptocurrency platform with hero section, statistics and dashboard UI.</p>
+        <div class="project-tags">
+          <span class="project-tag">HTML</span>
+          <span class="project-tag">CSS</span>
+          <span class="project-tag">Dashboard UI</span>
+        </div>
+      </a>
+      <a href="https://github.com/GoldenTitab" class="project-card">
+        <div class="project-icon">🎨</div>
+        <div class="project-name">UI/UX Case Studies</div>
+        <p class="project-desc">Collection of design explorations including redesign concepts, UX audits, and product analysis.</p>
+        <div class="project-tags">
+          <span class="project-tag">Figma</span>
+          <span class="project-tag">UX Research</span>
+          <span class="project-tag">Prototyping</span>
+        </div>
+      </a>
+      <a href="https://github.com/GoldenTitab" class="project-card">
+        <div class="project-icon">📱</div>
+        <div class="project-name">Flutter App (In Progress)</div>
+        <p class="project-desc">Mobile application being built with Flutter and Dart as part of my journey into cross-platform development.</p>
+        <div class="project-tags">
+          <span class="project-tag">Flutter</span>
+          <span class="project-tag">Dart</span>
+          <span class="project-tag">Firebase</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ========== JOURNEY ========== -->
+  <section id="journey">
+    <p class="section-label">// journey</p>
+    <h2 class="section-title">How I got here</h2>
+    <div class="journey-list">
+      <div class="journey-item">
+        <span class="journey-year">2025</span>
+        <div class="journey-content">
+          <h3>Started Web Development</h3>
+          <p>Learned HTML, CSS and the basics of UI design. Built first landing pages.</p>
+        </div>
+      </div>
+      <div class="journey-item">
+        <span class="journey-year">2026</span>
+        <div class="journey-content">
+          <h3>Expanded into Design & JS</h3>
+          <p>Picked up JavaScript, WordPress, and dove deep into UI/UX with Figma.</p>
+        </div>
+      </div>
+      <div class="journey-item">
+        <span class="journey-year">Now</span>
+        <div class="journey-content">
+          <h3>Learning Flutter & Dart</h3>
+          <p>Building mobile apps and working toward becoming a Product Designer.</p>
+        </div>
+      </div>
+      <div class="journey-item">
+        <span class="journey-year">Next</span>
+        <div class="journey-content">
+          <h3>Product Designer</h3>
+          <p>Goal: ship real products, build a personal brand, launch a freelance career.</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<hr class="divider"/>
+  <hr class="divider" />
 
-<!-- PROJECTS -->
-<section id="projects">
-  <p class="section-label">// projects</p>
-  <h2 class="section-title">Things I've built</h2>
-  <div class="projects-grid">
-    <a href="https://github.com/GoldenTitab" class="project-card">
-      <div class="project-icon">🚗</div>
-      <div class="project-name">Car Marketplace Landing Page</div>
-      <p class="project-desc">Modern responsive landing page for a vehicle marketplace platform with CTA sections and pricing components.</p>
-      <div class="project-tags">
-        <span class="project-tag">HTML</span>
-        <span class="project-tag">CSS</span>
-        <span class="project-tag">Responsive</span>
-      </div>
-    </a>
-    <a href="https://github.com/GoldenTitab" class="project-card">
-      <div class="project-icon">💰</div>
-      <div class="project-name">Crypto Landing Page</div>
-      <p class="project-desc">Landing page concept for a cryptocurrency platform with hero section, statistics and dashboard UI.</p>
-      <div class="project-tags">
-        <span class="project-tag">HTML</span>
-        <span class="project-tag">CSS</span>
-        <span class="project-tag">Dashboard UI</span>
-      </div>
-    </a>
-    <a href="https://github.com/GoldenTitab" class="project-card">
-      <div class="project-icon">🎨</div>
-      <div class="project-name">UI/UX Case Studies</div>
-      <p class="project-desc">Collection of design explorations including redesign concepts, UX audits, and product analysis.</p>
-      <div class="project-tags">
-        <span class="project-tag">Figma</span>
-        <span class="project-tag">UX Research</span>
-        <span class="project-tag">Prototyping</span>
-      </div>
-    </a>
-    <a href="https://github.com/GoldenTitab" class="project-card">
-      <div class="project-icon">📱</div>
-      <div class="project-name">Flutter App (In Progress)</div>
-      <p class="project-desc">Mobile application being built with Flutter and Dart as part of my journey into cross-platform development.</p>
-      <div class="project-tags">
-        <span class="project-tag">Flutter</span>
-        <span class="project-tag">Dart</span>
-        <span class="project-tag">Firebase</span>
-      </div>
-    </a>
-  </div>
-</section>
-
-<hr class="divider"/>
-
-<!-- JOURNEY -->
-<section id="journey">
-  <p class="section-label">// journey</p>
-  <h2 class="section-title">How I got here</h2>
-  <div class="journey-list">
-    <div class="journey-item">
-      <span class="journey-year">2025</span>
-      <div class="journey-content">
-        <h3>Started Web Development</h3>
-        <p>Learned HTML, CSS and the basics of UI design. Built first landing pages.</p>
+  <!-- ========== CONTACT ========== -->
+  <section id="contact">
+    <p class="section-label">// contact</p>
+    <div class="contact-inner">
+      <h3>Let's work together</h3>
+      <p>Open to freelance projects, collaborations, and internship opportunities.</p>
+      <div class="contact-links">
+        <a href="https://github.com/GoldenTitab" target="_blank" class="btn btn-primary">GitHub</a>
+        <a href="mailto:suicidewithmeagain@gmail.com" class="btn btn-ghost">Email Me</a>
       </div>
     </div>
-    <div class="journey-item">
-      <span class="journey-year">2026</span>
-      <div class="journey-content">
-        <h3>Expanded into Design & JS</h3>
-        <p>Picked up JavaScript, WordPress, and dove deep into UI/UX with Figma.</p>
-      </div>
-    </div>
-    <div class="journey-item">
-      <span class="journey-year">Now</span>
-      <div class="journey-content">
-        <h3>Learning Flutter & Dart</h3>
-        <p>Building mobile apps and working toward becoming a Product Designer.</p>
-      </div>
-    </div>
-    <div class="journey-item">
-      <span class="journey-year">Next</span>
-      <div class="journey-content">
-        <h3>Product Designer</h3>
-        <p>Goal: ship real products, build a personal brand, launch a freelance career.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<hr class="divider"/>
-
-<!-- CONTACT -->
-<section id="contact">
-  <p class="section-label">// contact</p>
-  <div class="contact-inner">
-    <h3>Let's work together</h3>
-    <p>Open to freelance projects, collaborations, and internship opportunities.</p>
-    <div class="contact-links">
-      <a href="https://github.com/GoldenTitab" target="_blank" class="btn btn-primary">GitHub</a>
-      <a href="mailto:suicidewithmeagain@gmail.com" class="btn btn-ghost">Email Me</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <span>built by Ali D. Shah — Kerman, Iran 🇮🇷</span>
-</footer>
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <span>built by Ali D. Shah — Kerman, Iran 🇮🇷</span>
+  </footer>
 
 </body>
 </html>
