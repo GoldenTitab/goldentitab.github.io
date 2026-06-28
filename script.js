@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     // ===== TRANSLATIONS =====
@@ -78,75 +78,77 @@
             navAbout: 'درباره من',
             navSkills: 'مهارت‌ها',
             navProjects: 'پروژه‌ها',
+            navJourney: 'مسیر',
             navContact: 'تماس',
             menuOpenLabel: 'باز کردن منو',
             menuCloseLabel: 'بستن منو',
-            themeToggleLabel: 'تغییر به تم روشن',
-            themeToggleLabelLight: 'تغییر به تم تاریک',
+            themeToggleLabel: 'تغییر به حالت روشن',
+            themeToggleLabelLight: 'تغییر به حالت تاریک',
             langToggleLabel: 'تغییر به انگلیسی',
             langAnnounce: 'زبان به فارسی تغییر کرد',
-            backToTopLabel: 'بازگشت به بالا',
-            heroEyebrow: 'در دسترس برای همکاری',
+            backToTopLabel: 'برگشت به بالا',
+            heroEyebrow: 'آماده همکاری فریلنسری',
             heroName: 'علی د. شاه',
             heroTitle: 'طراح و توسعه‌دهنده',
-            heroSub: 'دانشجوی مهندسی کامپیوتر که تجربه‌های دیجیتالی ساده و شهودی می‌سازد. متمرکز بر طراحی UI/UX، فلاتر و تفکر محصول.',
+            heroSub: 'دانشجوی مهندسی کامپیوتر که تجربه‌های دیجیتالی ساده و کاربرپسند می‌سازد. تخصصم در طراحی UI/UX، فلاتر و تفکر محصول‌محور است.',
             heroCta1: 'مشاهده پروژه‌ها',
             heroCta2: 'پروفایل گیت‌هاب',
             scrollHint: 'اسکرول',
             aboutLabel: '// درباره من',
-            aboutTitle: 'من کیستم',
-            aboutP1: 'من <strong>دانشجوی مهندسی کامپیوتر</strong> از کرمان، ایران هستم و به تقاطع فناوری و طراحی علاقه دارم.',
-            aboutP2: 'سفر من با HTML و CSS شروع شد و به <strong>طراحی UI/UX</strong>، توسعه وردپرس و اکنون <strong>فلاتر و دارت</strong> برای اپلیکیشن‌های موبایل رسید.',
-            aboutP3: 'من معتقدم طراحی خوب نامرئی است — به طور طبیعی کاربران را راهنمایی می‌کند بدون اینکه مانع ایجاد کند.',
+            aboutTitle: 'کی هستم',
+            aboutP1: 'من یک <strong>دانشجوی مهندسی کامپیوتر</strong> از کرمان، ایران هستم که به نقطه تلاقی فناوری و طراحی علاقه دارم.',
+            aboutP2: 'مسیرم از HTML و CSS شروع شد و به <strong>طراحی UI/UX</strong>، توسعه وردپرس، و الان <strong>فلاتر و دارت</strong> برای اپ‌های موبایل رسیده.',
+            aboutP3: 'باورم اینه که طراحی خوب دیده نمی‌شه — بدون دردسر، آدم‌ها رو هدایت می‌کنه.',
             stat1Num: '۲+',
             stat1Label: 'سال یادگیری',
             stat2Num: '۴+',
-            stat2Label: 'پروژه ساخته شده',
+            stat2Label: 'پروژه تموم‌شده',
             stat3Num: '۱۰۰٪',
             stat3Label: 'HTML / CSS',
             stat4Num: '۹۰٪',
             stat4Label: 'فیگما',
             skillsLabel: '// مهارت‌ها',
-            skillsTitle: 'چه چیزهایی کار می‌کنم',
+            skillsTitle: 'با چی کار می‌کنم',
             skillGroup1: 'UI / UX',
             skillGroup2: 'فرانت‌اند',
             skillGroup3: 'موبایل و توسعه',
             projectsLabel: '// پروژه‌ها',
-            projectsTitle: 'چیزهایی که ساخته‌ام',
-            project1Name: 'صفحه فرود بازار خودرو',
-            project1Desc: 'صفحه فرود پاسخگوی مدرن برای پلتفرم بازار خودرو با بخش‌های CTA و اجزای قیمت‌گذاری.',
-            project2Name: 'صفحه فرود ارز دیجیتال',
-            project2Desc: 'کنسپت صفحه فرود برای پلتفرم ارز دیجیتال با بخش قهرمان، آمار و داشبورد UI.',
-            project3Name: 'مطالعات موردی UI/UX',
-            project3Desc: 'مجموعه‌ای از اکتشافات طراحی شامل مفاهیم بازطراحی، ممیزی UX و تحلیل محصول.',
-            project4Name: 'اپلیکیشن فلاتر (در حال توسعه)',
-            project4Desc: 'اپلیکیشن موبایل در حال ساخت با فلاتر و دارت به عنوان بخشی از سفر من به توسعه چندسکویی.',
+            projectsTitle: 'چیزایی که ساختم',
+            project1Name: 'صفحه اصلی بازار خودرو',
+            project1Desc: 'لندینگ پیج ریسپانسیو و مدرن برای یه پلتفرم خرید و فروش خودرو، با بخش‌های CTA و کامپوننت‌های قیمت‌گذاری.',
+            project2Name: 'صفحه اصلی ارز دیجیتال',
+            project2Desc: 'کانسپت لندینگ پیج برای یه پلتفرم کریپتو، شامل هدر اصلی، آمار و رابط داشبورد.',
+            project3Name: 'کیس استادی‌های UI/UX',
+            project3Desc: 'مجموعه‌ای از بررسی‌های طراحی، شامل کانسپت‌های ریدیزاین، آدیت UX و تحلیل محصول.',
+            project4Name: 'اپ فلاتر (در حال توسعه)',
+            project4Desc: 'اپلیکیشن موبایل که با فلاتر و دارت داره ساخته می‌شه؛ بخشی از مسیرم به سمت توسعه چندپلتفرمه.',
             journeyLabel: '// مسیر',
-            journeyTitle: 'چطور به اینجا رسیدم',
+            journeyTitle: 'چطور اینجا رسیدم',
             journey1Year: '۲۰۲۵',
             journey1Title: 'شروع توسعه وب',
-            journey1Desc: 'HTML، CSS و اصول طراحی UI را یاد گرفتم. اولین صفحات فرود را ساختم.',
+            journey1Desc: 'HTML، CSS و اصول طراحی UI رو یاد گرفتم. اولین لندینگ پیج‌هام رو ساختم.',
             journey2Year: '۲۰۲۶',
-            journey2Title: 'گسترش به طراحی و JS',
-            journey2Desc: 'جاوااسکریپت، وردپرس و عمیقاً UI/UX با فیگما را یاد گرفتم.',
-            journey3Year: 'اکنون',
+            journey2Title: 'ورود به طراحی و JS',
+            journey2Desc: 'جاوااسکریپت و وردپرس یاد گرفتم و رفتم توی دنیای UI/UX با فیگما.',
+            journey3Year: 'الان',
             journey3Title: 'یادگیری فلاتر و دارت',
-            journey3Desc: 'در حال ساخت اپلیکیشن‌های موبایل و تلاش برای تبدیل شدن به یک طراح محصول.',
+            journey3Desc: 'دارم اپ‌های موبایل می‌سازم و هدفم اینه که طراح محصول بشم.',
             journey4Year: 'بعدی',
             journey4Title: 'طراح محصول',
-            journey4Desc: 'هدف: عرضه محصولات واقعی، ساخت برند شخصی، شروع حرفه فریلنسری.',
+            journey4Desc: 'هدف: عرضه محصول واقعی، ساخت برند شخصی، و شروع کار فریلنسری.',
             contactLabel: '// تماس',
-            contactTitle: 'بیایید همکاری کنیم',
-            contactDesc: 'برای پروژه‌های فریلنسری، همکاری‌ها و فرصت‌های کارآموزی باز هستم.',
+            contactTitle: 'بزن بریم کار کنیم',
+            contactDesc: 'آماده همکاری توی پروژه‌های فریلنسری، پروژه‌های مشترک، و کارآموزی هستم.',
             contactBtn1: 'گیت‌هاب',
-            contactBtn2: 'ایمیل به من',
-            footerText: 'ساخته شده توسط علی د. شاه — کرمان، ایران 🇮🇷'
+            contactBtn2: 'ایمیل بزن',
+            footerText: 'ساخته‌شده توسط علی د. شاه — کرمان، ایران 🇮🇷'
         }
     };
 
     // ===== INITIAL STATE =====
     let currentLang = localStorage.getItem('aliLang') || 'en';
     let currentTheme = localStorage.getItem('aliTheme') || 'dark';
+    let isThemeTransitioning = false;
 
     const html = document.documentElement;
     const themeCheckbox = document.getElementById('themeCheckbox');
@@ -159,25 +161,59 @@
     const navLinks = navCenter ? Array.from(navCenter.querySelectorAll('a')) : [];
     const backToTop = document.getElementById('backToTop');
 
-    // ===== THEME FUNCTIONS =====
-    function setTheme(theme, announce) {
-        currentTheme = theme;
-        html.setAttribute('data-theme', theme);
-        localStorage.setItem('aliTheme', theme);
-        if (themeCheckbox) {
-            themeCheckbox.checked = (theme === 'dark');
+    // ===== THEME OVERLAY TRANSITION =====
+    function createThemeOverlay() {
+        let overlay = document.getElementById('theme-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'theme-overlay';
+            overlay.style.cssText = `
+                position: fixed; inset: 0; z-index: 9999;
+                pointer-events: none; opacity: 0;
+                background: radial-gradient(circle at var(--ox,50%) var(--oy,50%), var(--overlay-color) 0%, transparent 70%);
+                transition: opacity 0.55s cubic-bezier(0.4,0,0.2,1);
+            `;
+            document.body.appendChild(overlay);
         }
-        const t = translations[currentLang] || translations.en;
-        if (themeCheckbox) {
-            themeCheckbox.setAttribute(
-                'aria-label',
-                theme === 'dark' ? t.themeToggleLabel : t.themeToggleLabelLight
-            );
-        }
+        return overlay;
     }
 
-    function toggleTheme() {
-        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    function setTheme(theme, originX, originY) {
+        if (isThemeTransitioning) return;
+        isThemeTransitioning = true;
+
+        const overlay = createThemeOverlay();
+        const ox = originX != null ? originX : 50;
+        const oy = originY != null ? originY : 50;
+        overlay.style.setProperty('--ox', ox + '%');
+        overlay.style.setProperty('--oy', oy + '%');
+        overlay.style.setProperty('--overlay-color', theme === 'light' ? '#f1f5f9' : '#0a0a0f');
+
+        overlay.style.opacity = '1';
+
+        setTimeout(() => {
+            currentTheme = theme;
+            html.setAttribute('data-theme', theme);
+            localStorage.setItem('aliTheme', theme);
+            if (themeCheckbox) themeCheckbox.checked = (theme === 'dark');
+            const t = translations[currentLang] || translations.en;
+            if (themeCheckbox) {
+                themeCheckbox.setAttribute('aria-label', theme === 'dark' ? t.themeToggleLabel : t.themeToggleLabelLight);
+            }
+
+            overlay.style.opacity = '0';
+            setTimeout(() => { isThemeTransitioning = false; }, 600);
+        }, 280);
+    }
+
+    function toggleTheme(e) {
+        let ox = 50, oy = 10;
+        if (e && e.currentTarget) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            ox = ((rect.left + rect.width / 2) / window.innerWidth) * 100;
+            oy = ((rect.top + rect.height / 2) / window.innerHeight) * 100;
+        }
+        setTheme(currentTheme === 'dark' ? 'light' : 'dark', ox, oy);
     }
 
     // ===== LANGUAGE FUNCTIONS =====
@@ -186,16 +222,13 @@
         localStorage.setItem('aliLang', lang);
         html.setAttribute('lang', lang);
         html.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
-        if (langLabel) {
-            langLabel.textContent = lang === 'en' ? 'EN' : 'FA';
-        }
+        if (langLabel) langLabel.textContent = lang === 'en' ? 'EN' : 'FA';
 
         const t = translations[lang] || translations.en;
 
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (t[key] !== undefined) {
-                // Some values contain HTML (e.g., about paragraphs)
                 if (key === 'aboutP1' || key === 'aboutP2' || key === 'aboutP3') {
                     el.innerHTML = t[key];
                 } else {
@@ -206,12 +239,9 @@
 
         document.querySelectorAll('[data-i18n-aria]').forEach(el => {
             const key = el.getAttribute('data-i18n-aria');
-            if (t[key] !== undefined) {
-                el.setAttribute('aria-label', t[key]);
-            }
+            if (t[key] !== undefined) el.setAttribute('aria-label', t[key]);
         });
 
-        // Update hero split title (separate spans)
         const heroName = document.querySelector('.hero h1 span:not(.gradient-text)');
         if (heroName) {
             const key = heroName.getAttribute('data-i18n');
@@ -223,34 +253,17 @@
             if (key && t[key] !== undefined) heroTitle.textContent = t[key];
         }
 
-        // Update theme switch aria-label to match new language
         if (themeSwitchContainer) {
-            themeSwitchContainer.setAttribute(
-                'aria-label',
-                currentTheme === 'dark' ? t.themeToggleLabel : t.themeToggleLabelLight
-            );
+            themeSwitchContainer.setAttribute('aria-label', currentTheme === 'dark' ? t.themeToggleLabel : t.themeToggleLabelLight);
         }
-
-        // Update lang toggle aria-label (says what it will switch TO)
-        if (langToggle) {
-            langToggle.setAttribute('aria-label', t.langToggleLabel);
-        }
-
-        // Update nav toggle aria-label depending on open state
+        if (langToggle) langToggle.setAttribute('aria-label', t.langToggleLabel);
         if (navToggle) {
             const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
             navToggle.setAttribute('aria-label', isOpen ? t.menuCloseLabel : t.menuOpenLabel);
         }
+        if (backToTop) backToTop.setAttribute('aria-label', t.backToTopLabel);
 
-        // Update back-to-top aria-label
-        if (backToTop) {
-            backToTop.setAttribute('aria-label', t.backToTopLabel);
-        }
-
-        // Announce language change to screen reader users
-        if (announce && langAnnouncer) {
-            langAnnouncer.textContent = t.langAnnounce;
-        }
+        if (announce && langAnnouncer) langAnnouncer.textContent = t.langAnnounce;
     }
 
     function toggleLanguage() {
@@ -262,18 +275,18 @@
         if (!navCenter || !navToggle) return;
         navCenter.classList.add('open');
         navToggle.setAttribute('aria-expanded', 'true');
-        const t = translations[currentLang] || translations.en;
-        navToggle.setAttribute('aria-label', t.menuCloseLabel);
+        navToggle.setAttribute('aria-label', (translations[currentLang] || translations.en).menuCloseLabel);
         navToggle.classList.add('is-active');
+        document.body.style.overflow = '';
     }
 
     function closeMenu() {
         if (!navCenter || !navToggle) return;
         navCenter.classList.remove('open');
         navToggle.setAttribute('aria-expanded', 'false');
-        const t = translations[currentLang] || translations.en;
-        navToggle.setAttribute('aria-label', t.menuOpenLabel);
+        navToggle.setAttribute('aria-label', (translations[currentLang] || translations.en).menuOpenLabel);
         navToggle.classList.remove('is-active');
+        document.body.style.overflow = '';
     }
 
     function isMenuOpen() {
@@ -284,28 +297,17 @@
         if (!navToggle || !navCenter) return;
 
         navToggle.addEventListener('click', () => {
-            if (isMenuOpen()) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
+            isMenuOpen() ? closeMenu() : openMenu();
         });
 
-        // Close on link click
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => closeMenu());
-        });
+        navLinks.forEach(link => link.addEventListener('click', () => closeMenu()));
 
-        // Close on outside click
         document.addEventListener('click', (e) => {
             if (!isMenuOpen()) return;
             const nav = document.querySelector('nav');
-            if (nav && !nav.contains(e.target)) {
-                closeMenu();
-            }
+            if (nav && !nav.contains(e.target)) closeMenu();
         });
 
-        // Close on Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && isMenuOpen()) {
                 closeMenu();
@@ -313,19 +315,14 @@
             }
         });
 
-        // Close menu automatically if viewport grows back to desktop size
-        const mq = window.matchMedia('(min-width: 701px)');
-        const handleViewportChange = (e) => {
-            if (e.matches) closeMenu();
-        };
-        if (mq.addEventListener) {
-            mq.addEventListener('change', handleViewportChange);
-        }
+        const mq = window.matchMedia('(min-width: 769px)');
+        const handleViewportChange = (e) => { if (e.matches) closeMenu(); };
+        if (mq.addEventListener) mq.addEventListener('change', handleViewportChange);
     }
 
     // ===== SCROLL ANIMATIONS =====
     function initScrollAnimations() {
-        const reveals = document.querySelectorAll('.reveal, .stagger-children');
+        const reveals = document.querySelectorAll('.reveal, .stagger-children, .float-in-left, .float-in-right, .scale-in');
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         if (prefersReducedMotion) {
@@ -340,12 +337,12 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
         reveals.forEach(el => observer.observe(el));
     }
 
-    // ===== SCROLLSPY (active nav link) =====
+    // ===== SCROLLSPY =====
     function initScrollSpy() {
         const sections = Array.from(document.querySelectorAll('main section[id]'));
         if (!sections.length || !navLinks.length) return;
@@ -353,9 +350,7 @@
         const linkBySection = {};
         navLinks.forEach(link => {
             const href = link.getAttribute('href');
-            if (href && href.startsWith('#')) {
-                linkBySection[href.slice(1)] = link;
-            }
+            if (href && href.startsWith('#')) linkBySection[href.slice(1)] = link;
         });
 
         const setActive = (id) => {
@@ -371,7 +366,6 @@
         };
 
         const observer = new IntersectionObserver((entries) => {
-            // Pick the entry closest to the top that is intersecting
             const visible = entries.filter(e => e.isIntersecting);
             if (visible.length > 0) {
                 visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
@@ -382,7 +376,7 @@
         sections.forEach(section => observer.observe(section));
     }
 
-    // ===== SMOOTH SCROLL FOR NAV =====
+    // ===== SMOOTH SCROLL =====
     function initSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener('click', (e) => {
@@ -406,51 +400,157 @@
     // ===== BACK TO TOP =====
     function initBackToTop() {
         if (!backToTop) return;
-
         const toggleVisibility = () => {
-            if (window.scrollY > 480) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
+            backToTop.classList.toggle('visible', window.scrollY > 480);
         };
-
         window.addEventListener('scroll', toggleVisibility, { passive: true });
         toggleVisibility();
-
         backToTop.addEventListener('click', () => {
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+            window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
         });
+    }
+
+    // ===== CURSOR GLOW EFFECT (desktop only) =====
+    function initCursorGlow() {
+        if (window.matchMedia('(pointer: coarse)').matches) return;
+        const glow = document.createElement('div');
+        glow.id = 'cursor-glow';
+        glow.style.cssText = `
+            position:fixed; pointer-events:none; z-index:9998;
+            width:400px; height:400px; border-radius:50%;
+            background: radial-gradient(circle, rgba(0,217,255,0.04) 0%, transparent 70%);
+            transform:translate(-50%,-50%); transition:opacity 0.3s ease;
+            opacity:0; will-change:transform;
+        `;
+        document.body.appendChild(glow);
+
+        let raf;
+        let mx = -9999, my = -9999;
+        document.addEventListener('mousemove', (e) => {
+            mx = e.clientX; my = e.clientY;
+            if (!raf) {
+                raf = requestAnimationFrame(() => {
+                    glow.style.left = mx + 'px';
+                    glow.style.top = my + 'px';
+                    glow.style.opacity = '1';
+                    raf = null;
+                });
+            }
+        });
+        document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
+    }
+
+    // ===== TYPEWRITER EFFECT FOR HERO =====
+    function initTypewriter() {
+        const el = document.querySelector('.hero-eyebrow');
+        if (!el) return;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return;
+
+        const origText = el.textContent.trim();
+        el.textContent = '';
+        el.style.opacity = '1';
+
+        let i = 0;
+        const speed = 40;
+        setTimeout(() => {
+            const type = () => {
+                if (i < origText.length) {
+                    el.textContent = origText.slice(0, ++i);
+                    setTimeout(type, speed);
+                }
+            };
+            type();
+        }, 600);
+    }
+
+    // ===== COUNTER ANIMATION FOR STATS =====
+    function initCounters() {
+        const statNumbers = document.querySelectorAll('.stat-number');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const el = entry.target;
+                const text = el.getAttribute('data-target') || el.textContent;
+                const numMatch = text.match(/[\d.]+/);
+                if (!numMatch) return;
+                const end = parseFloat(numMatch[0]);
+                const suffix = text.replace(/[\d.]+/, '');
+                const duration = 1200;
+                const start = performance.now();
+
+                const tick = (now) => {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const value = Math.round(eased * end);
+                    el.textContent = (currentLang === 'fa' ? toFarsiNums(value.toString()) : value) + suffix;
+                    if (progress < 1) requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+                observer.unobserve(el);
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(el => {
+            el.setAttribute('data-target', el.textContent);
+            observer.observe(el);
+        });
+    }
+
+    function toFarsiNums(str) {
+        return str.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+    }
+
+    // ===== NAV SCROLL HIDE/SHOW =====
+    function initNavScroll() {
+        const nav = document.querySelector('nav');
+        if (!nav) return;
+        let lastY = 0;
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const y = window.scrollY;
+                    if (y > 80) {
+                        nav.classList.toggle('nav-hidden', y > lastY && y > 200 && !isMenuOpen());
+                    } else {
+                        nav.classList.remove('nav-hidden');
+                    }
+                    lastY = y;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
     }
 
     // ===== INITIALIZATION =====
     function init() {
-        // Theme
         setTheme(currentTheme);
         if (themeCheckbox) {
             themeCheckbox.addEventListener('change', toggleTheme);
         }
 
-        // Language
         setLanguage(currentLang, false);
-        if (langToggle) {
-            langToggle.addEventListener('click', toggleLanguage);
-        }
+        if (langToggle) langToggle.addEventListener('click', toggleLanguage);
 
-        // Mobile nav, scroll animations, scrollspy, smooth scroll, back-to-top
         initMobileNav();
         initScrollAnimations();
         initScrollSpy();
         initSmoothScroll();
         initBackToTop();
+        initCursorGlow();
+        initTypewriter();
+        initCounters();
+        initNavScroll();
     }
 
-    // Run after DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
-
 })();
