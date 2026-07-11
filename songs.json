@@ -1,0 +1,20 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "title": "Aurora Skies",
+      "artist": "Ali Studio",
+      "duration": 214,
+      "coverUrl": "https://picsum.photos/300?1",
+      "audioUrl": "https://example.com/audio/aurora.mp3"
+    },
+    {
+      "id": 2,
+      "title": "Midnight Circuit",
+      "artist": "Synth Wave",
+      "duration": 187,
+      "coverUrl": "https://picsum.photos/300?2",
+      "audioUrl": "https://example.com/audio/circuit.mp3"
+    }
+  ]
+}
