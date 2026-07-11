@@ -86,5 +86,93 @@
     "releaseYear": 2002,
     "coverUrl": "https://picsum.photos/200/200?random=8",
     "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"
+  },
+    {
+    "id": 1,
+    "title": "Blinding Lights",
+    "artist": "The Weeknd",
+    "album": "After Hours",
+    "genre": "Pop",
+    "duration": 203,
+    "releaseYear": 2020,
+    "coverUrl": "https://picsum.photos/200/200?random=1",
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+  },
+  {
+    "id": 2,
+    "title": "Shape of You",
+    "artist": "Ed Sheeran",
+    "album": "÷ (Divide)",
+    "genre": "Pop",
+    "duration": 233,
+    "releaseYear": 2017,
+    "coverUrl": "https://picsum.photos/200/200?random=2",
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+  },
+  {
+    "id": 3,
+    "title": "Bohemian Rhapsody",
+    "artist": "Queen",
+    "album": "A Night at the Opera",
+    "genre": "Rock",
+    "duration": 354,
+    "releaseYear": 1975,
+    "coverUrl": "https://picsum.photos/200/200?random=3",
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+  },
+  {
+    "id": 4,
+    "title": "Billie Jean",
+    "artist": "Michael Jackson",
+    "album": "Thriller",
+    "genre": "Pop",
+    "duration": 294,
+    "releaseYear": 1982,
+    "coverUrl": "https://picsum.photos/200/200?random=4",
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+  },
+  {
+    "id": 5,
+    "title": "Smells Like Teen Spirit",
+    "artist": "Nirvana",
+    "album": "Nevermind",
+    "genre": "Grunge",
+    "duration": 301,
+    "releaseYear": 1991,
+    "coverUrl": "https://picsum.photos/200/200?random=5",
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+  },
+  {
+    "id": 6,
+    "title": "Rolling in the Deep",
+    "artist": "Adele",
+    "album": "21",
+    "genre": "Soul",
+    "duration": 228,
+    "releaseYear": 2010,
+    "coverUrl": "https://picsum.photos/200/200?random=6",
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+  },
+  {
+    "id": 7,
+    "title": "Stairway to Heaven",
+    "artist": "Led Zeppelin",
+    "album": "Led Zeppelin IV",
+    "genre": "Rock",
+    "duration": 482,
+    "releaseYear": 1971,
+    "coverUrl": "https://picsum.photos/200/200?random=7",
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3"
+  },
+  {
+    "id": 8,
+    "title": "Lose Yourself",
+    "artist": "Eminem",
+    "album": "8 Mile Soundtrack",
+    "genre": "Hip Hop",
+    "duration": 326,
+    "releaseYear": 2002,
+    "coverUrl": "https://picsum.photos/200/200?random=8",
+    "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"
   }
 ]
