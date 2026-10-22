@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تأیید ایمیل — AuroraList</title>
+<style>
+  body { font-family: Tahoma, system-ui, sans-serif; background: #0d1117; color: #e6edf3;
+         display: flex; min-height: 100vh; margin: 0; align-items: center; justify-content: center; }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 16px;
+          padding: 32px 28px; max-width: 420px; width: calc(100% - 48px); text-align: center; }
+  h1 { font-size: 20px; margin: 0 0 12px; }
+  p { line-height: 1.9; color: #9fb0c1; font-size: 14px; }
+  .ok { color: #3fb950; } .err { color: #f85149; }
+  .spin { font-size: 34px; }
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div class="spin" id="icon">⏳</div>
+  <h1 id="title">در حال تأیید ایمیلت…</h1>
+  <p id="msg">چند لحظه صبر کن.</p>
+</div>
+<script>
+  const PROJECT = '6ad89baf00083a09a7cb';
+  const API = 'https://nyc.cloud.appwrite.io/v1';
+  const params = new URLSearchParams(location.search);
+  const userId = params.get('userId');
+  const secret = params.get('secret');
+  // Strip the credentials from the address bar / history right away.
+  history.replaceState(null, '', location.pathname);
+  const icon = document.getElementById('icon');
+  const title = document.getElementById('title');
+  const msg = document.getElementById('msg');
+  function fail(text) {
+    icon.textContent = '⚠️'; icon.className = 'spin err';
+    title.textContent = 'تأیید انجام نشد';
+    msg.textContent = text;
+  }
+  if (!userId || !secret) {
+    fail('این لینک ناقصه. از تو اپ AuroraList دوباره درخواست ایمیل تأیید بده.');
+  } else {
+    fetch(API + '/account/verification', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Appwrite-Project': PROJECT },
+      body: JSON.stringify({ userId: userId, secret: secret })
+    }).then(async (r) => {
+      if (r.ok) {
+        icon.textContent = '✅'; icon.className = 'spin ok';
+        title.textContent = 'ایمیلت تأیید شد';
+        msg.textContent = 'حالا برگرد به اپ AuroraList. اگه هنوز تأییدشده نشون نداد، اپ رو یه بار کامل ببند و دوباره باز کن.';
+      } else {
+        const data = await r.json().catch(() => ({}));
+        if (data.type === 'user_invalid_token') {
+          fail('این لینک منقضی شده یا قبلاً استفاده شده. از تو اپ دوباره درخواست ایمیل تأیید بده و روی لینک ایمیل تازه کلیک کن.');
+        } else {
+          fail('یه مشکلی پیش اومد: ' + (data.message || ('HTTP ' + r.status)));
+        }
+      }
+    }).catch(() => fail('به سرور نرسیدم؛ اینترنتت رو چک کن و صفحه رو دوباره باز کن.'));
+  }
+</script>
+</body>
+</html>
