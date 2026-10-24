@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>تأیید ایمیل — AuroraList</title>
+<title>Email verification — AuroraList</title>
 <style>
-  body { font-family: Tahoma, system-ui, sans-serif; background: #0d1117; color: #e6edf3;
+  body { font-family: system-ui, Tahoma, sans-serif; background: #0d1117; color: #e6edf3;
          display: flex; min-height: 100vh; margin: 0; align-items: center; justify-content: center; }
   .card { background: #161b22; border: 1px solid #30363d; border-radius: 16px;
           padding: 32px 28px; max-width: 420px; width: calc(100% - 48px); text-align: center; }
   h1 { font-size: 20px; margin: 0 0 12px; }
-  p { line-height: 1.9; color: #9fb0c1; font-size: 14px; }
+  p { line-height: 1.7; color: #9fb0c1; font-size: 14px; }
+  .fa { direction: rtl; font-size: 13px; color: #7d8fa3; line-height: 1.9; }
   .ok { color: #3fb950; } .err { color: #f85149; }
   .spin { font-size: 34px; }
 </style>
@@ -18,8 +19,9 @@
 <body>
 <div class="card" id="card">
   <div class="spin" id="icon">⏳</div>
-  <h1 id="title">در حال تأیید ایمیلت…</h1>
-  <p id="msg">چند لحظه صبر کن.</p>
+  <h1 id="title">Verifying your email…</h1>
+  <p id="msg">One moment.</p>
+  <p class="fa" id="msgFa">چند لحظه صبر کن.</p>
 </div>
 <script>
   const PROJECT = '6ad89baf00083a09a7cb';
@@ -32,13 +34,19 @@
   const icon = document.getElementById('icon');
   const title = document.getElementById('title');
   const msg = document.getElementById('msg');
-  function fail(text) {
+  const msgFa = document.getElementById('msgFa');
+  function setText(enTitle, en, fa) {
+    title.textContent = enTitle;
+    msg.textContent = en;
+    msgFa.textContent = fa;
+  }
+  function fail(en, fa) {
     icon.textContent = '⚠️'; icon.className = 'spin err';
-    title.textContent = 'تأیید انجام نشد';
-    msg.textContent = text;
+    setText('Verification failed', en, fa);
   }
   if (!userId || !secret) {
-    fail('این لینک ناقصه. از تو اپ AuroraList دوباره درخواست ایمیل تأیید بده.');
+    fail('This link is incomplete. Request a new verification email from the AuroraList app.',
+         'این لینک ناقصه. از تو اپ AuroraList دوباره درخواست ایمیل تأیید بده.');
   } else {
     fetch(API + '/account/verification', {
       method: 'PUT',
@@ -47,17 +55,21 @@
     }).then(async (r) => {
       if (r.ok) {
         icon.textContent = '✅'; icon.className = 'spin ok';
-        title.textContent = 'ایمیلت تأیید شد';
-        msg.textContent = 'حالا برگرد به اپ AuroraList. اگه هنوز تأییدشده نشون نداد، اپ رو یه بار کامل ببند و دوباره باز کن.';
+        setText('Email verified',
+          'Now go back to the AuroraList app. If it still does not show as verified, close the app completely and reopen it.',
+          'حالا برگرد به اپ AuroraList. اگه هنوز تأییدشده نشون نداد، اپ رو یه بار کامل ببند و دوباره باز کن.');
       } else {
         const data = await r.json().catch(() => ({}));
         if (data.type === 'user_invalid_token') {
-          fail('این لینک منقضی شده یا قبلاً استفاده شده. از تو اپ دوباره درخواست ایمیل تأیید بده و روی لینک ایمیل تازه کلیک کن.');
+          fail('This link has expired or was already used. Request a fresh verification email in the app and tap the new link.',
+               'این لینک منقضی شده یا قبلاً استفاده شده. از تو اپ دوباره درخواست ایمیل تأیید بده و روی لینک ایمیل تازه کلیک کن.');
         } else {
-          fail('یه مشکلی پیش اومد: ' + (data.message || ('HTTP ' + r.status)));
+          fail('Something went wrong: ' + (data.message || ('HTTP ' + r.status)),
+               'یه مشکلی پیش اومد.');
         }
       }
-    }).catch(() => fail('به سرور نرسیدم؛ اینترنتت رو چک کن و صفحه رو دوباره باز کن.'));
+    }).catch(() => fail('Could not reach the server; check your internet connection and reload this page.',
+                         'به سرور نرسیدم؛ اینترنتت رو چک کن و صفحه رو دوباره باز کن.'));
   }
 </script>
 </body>

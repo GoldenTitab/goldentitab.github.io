@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>بازیابی رمز — AuroraList</title>
+<title>Password reset — AuroraList</title>
 <style>
-  body { font-family: Tahoma, system-ui, sans-serif; background: #0d1117; color: #e6edf3;
+  body { font-family: system-ui, Tahoma, sans-serif; background: #0d1117; color: #e6edf3;
          display: flex; min-height: 100vh; margin: 0; align-items: center; justify-content: center; }
   .card { background: #161b22; border: 1px solid #30363d; border-radius: 16px;
           padding: 32px 28px; max-width: 420px; width: calc(100% - 48px); text-align: center; }
   h1 { font-size: 20px; margin: 0 0 12px; }
-  p { line-height: 1.9; color: #9fb0c1; font-size: 14px; }
+  p { line-height: 1.7; color: #9fb0c1; font-size: 14px; }
+  .fa { direction: rtl; font-size: 13px; color: #7d8fa3; line-height: 1.9; }
   input { width: 100%; box-sizing: border-box; padding: 12px; margin: 6px 0;
           border-radius: 10px; border: 1px solid #30363d; background: #0d1117; color: #e6edf3; font-size: 15px; }
   button { width: 100%; padding: 12px; margin-top: 10px; border: 0; border-radius: 10px;
@@ -23,17 +24,19 @@
 <body>
 <div class="card">
   <div id="formBox">
-    <h1>رمز جدیدت رو بذار</h1>
-    <p>برای حساب AuroraList یه رمز تازه انتخاب کن (حداقل ۸ کاراکتر).</p>
-    <input type="password" id="pw1" placeholder="رمز جدید" autocomplete="new-password">
-    <input type="password" id="pw2" placeholder="تکرار رمز جدید" autocomplete="new-password">
+    <h1>Set a new password</h1>
+    <p>Choose a new password for your AuroraList account (at least 8 characters).</p>
+    <p class="fa">برای حساب AuroraList یه رمز تازه انتخاب کن (حداقل ۸ کاراکتر).</p>
+    <input type="password" id="pw1" placeholder="New password" autocomplete="new-password">
+    <input type="password" id="pw2" placeholder="Repeat new password" autocomplete="new-password">
     <div class="err" id="err"></div>
-    <button id="go">عوض کردن رمز</button>
+    <button id="go">Change password</button>
   </div>
   <div id="doneBox" style="display:none">
     <div class="ok">✅</div>
-    <h1>رمزت عوض شد</h1>
-    <p>حالا برگرد به اپ AuroraList و با رمز جدیدت وارد شو.</p>
+    <h1>Password changed</h1>
+    <p>Now go back to the AuroraList app and sign in with your new password.</p>
+    <p class="fa">حالا برگرد به اپ AuroraList و با رمز جدیدت وارد شو.</p>
   </div>
 </div>
 <script>
@@ -46,16 +49,16 @@
   const err = document.getElementById('err');
   const go = document.getElementById('go');
   if (!userId || !secret) {
-    err.textContent = 'این لینک ناقصه. از تو اپ دوباره درخواست بازیابی رمز بده.';
+    err.textContent = 'This link is incomplete. Request a new password reset from the app.';
     go.disabled = true;
   }
   go.addEventListener('click', async () => {
     const pw1 = document.getElementById('pw1').value;
     const pw2 = document.getElementById('pw2').value;
     err.textContent = '';
-    if (pw1.length < 8) { err.textContent = 'رمز باید حداقل ۸ کاراکتر باشه.'; return; }
-    if (pw1 !== pw2) { err.textContent = 'دو تا رمز مثل هم نیستن.'; return; }
-    go.disabled = true; go.textContent = 'در حال انجام…';
+    if (pw1.length < 8) { err.textContent = 'The password must be at least 8 characters.'; return; }
+    if (pw1 !== pw2) { err.textContent = 'The two passwords do not match.'; return; }
+    go.disabled = true; go.textContent = 'Working…';
     try {
       const r = await fetch(API + '/account/recovery', {
         method: 'PUT',
@@ -68,13 +71,13 @@
       } else {
         const data = await r.json().catch(() => ({}));
         err.textContent = data.type === 'user_invalid_token'
-          ? 'این لینک منقضی شده یا قبلاً استفاده شده. از تو اپ دوباره درخواست بازیابی بده.'
-          : 'یه مشکلی پیش اومد: ' + (data.message || ('HTTP ' + r.status));
-        go.disabled = false; go.textContent = 'عوض کردن رمز';
+          ? 'This link has expired or was already used. Request a new password reset from the app.'
+          : 'Something went wrong: ' + (data.message || ('HTTP ' + r.status));
+        go.disabled = false; go.textContent = 'Change password';
       }
     } catch (e) {
-      err.textContent = 'به سرور نرسیدم؛ اینترنتت رو چک کن و دوباره بزن.';
-      go.disabled = false; go.textContent = 'عوض کردن رمز';
+      err.textContent = 'Could not reach the server; check your internet connection and try again.';
+      go.disabled = false; go.textContent = 'Change password';
     }
   });
 </script>
