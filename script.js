@@ -56,16 +56,20 @@
             projectsLabel: '// projects',
             projectsTitle: 'Things I\'ve built',
             projectsSubtitle: 'A selection of projects I\'ve worked on recently',
-            project1Name: 'Car Marketplace Landing Page',
-            project1Desc: 'Modern responsive landing page for a vehicle marketplace platform with CTA sections and pricing components.',
-            project2Name: 'Crypto Landing Page',
-            project2Desc: 'Landing page concept for a cryptocurrency platform with hero section, statistics and dashboard UI.',
-            project3Name: 'UI/UX Case Studies',
-            project3Desc: 'Collection of design explorations including redesign concepts, UX audits, and product analysis.',
-            project4Name: 'Flutter App (In Progress)',
-            project4Desc: 'Mobile application being built with Flutter and Dart as part of my journey into cross-platform development.',
-            project5Name: 'Personal Blog Template',
-            project5Desc: 'A clean, minimal blog template built with modern CSS and semantic HTML for content creators.',
+            project1Name: 'German Pronunciation & Language Learning',
+            project1Desc: 'Single-page web app for learning German from A0 to C1: vocabulary, grammar, verbs, cases, reading, quizzes, spaced-repetition flashcards and a pronunciation masterclass.',
+            project2Name: 'Aurora — Anime Franchise Tracker',
+            project2Desc: 'Offline-first anime franchise tracker built with Flutter: seasons, movies and OVAs grouped under one franchise, with data from AniList and MyAnimeList and a Persian (RTL) interface.',
+            project3Name: 'Aurora Music Player',
+            project3Desc: 'Flutter music player with online streaming, Firebase authentication, light and dark themes, a Persian (RTL) interface and full player controls.',
+            project4Name: 'Monkey D. Luffy Fan Site',
+            project4Desc: 'Fan-made biography website for Monkey D. Luffy from One Piece, with a light/dark theme, scroll animations and a responsive Persian (RTL) layout.',
+            project5Name: 'Car Marketplace Landing Page',
+            project5Desc: 'Modern responsive landing page for a vehicle marketplace platform with CTA sections and pricing components.',
+            project6Name: 'Crypto Landing Page',
+            project6Desc: 'Landing page concept for a cryptocurrency platform with hero section, statistics and dashboard UI.',
+            project7Name: 'UI/UX Case Studies',
+            project7Desc: 'Collection of design explorations including redesign concepts, UX audits, and product analysis.',
             journeyLabel: '// journey',
             journeyTitle: 'How I got here',
             journeySubtitle: 'My path from beginner to where I am today',
@@ -178,16 +182,20 @@
             projectsLabel: '// پروژه‌ها',
             projectsTitle: 'چیزایی که ساختم',
             projectsSubtitle: 'چندتا از پروژه‌هایی که اخیراً روشون کار کردم',
-            project1Name: 'صفحه اصلی بازار خودرو',
-            project1Desc: 'لندینگ پیج ریسپانسیو و مدرن برای یه پلتفرم خرید و فروش خودرو، با بخش‌های CTA و کامپوننت‌های قیمت‌گذاری.',
-            project2Name: 'صفحه اصلی ارز دیجیتال',
-            project2Desc: 'کانسپت لندینگ پیج برای یه پلتفرم کریپتو، شامل هدر اصلی، آمار و رابط داشبورد.',
-            project3Name: 'کیس استادی‌های UI/UX',
-            project3Desc: 'مجموعه‌ای از بررسی‌های طراحی، شامل کانسپت‌های ریدیزاین، آدیت UX و تحلیل محصول.',
-            project4Name: 'اپ فلاتر (در حال توسعه)',
-            project4Desc: 'اپلیکیشن موبایل که با فلاتر و دارت داره ساخته می‌شه؛ بخشی از مسیرم به سمت توسعه چندپلتفرمه.',
-            project5Name: 'قالب وبلاگ شخصی',
-            project5Desc: 'یک قالب وبلاگ مینیمال و تمیز با CSS مدرن و HTML معنایی برای تولیدکنندگان محتوا.',
+            project1Name: 'یادگیری آلمانی و تلفظ',
+            project1Desc: 'وب‌اپ تک‌صفحه‌ای برای یادگیری آلمانی از A0 تا C1: واژگان، گرامر، صرف فعل، حالت‌ها، خواندن، آزمون، فلش‌کارت با تکرار فاصله‌دار و بخش تلفظ.',
+            project2Name: 'آرورا — ردیاب فرنچایز انیمه',
+            project2Desc: 'ردیاب آفلاین فرنچایزهای انیمه با فلاتر: فصل‌ها، فیلم‌ها و OVAها زیر یک فرنچایز، با داده‌های AniList و MyAnimeList و رابط فارسی راست‌به‌چپ.',
+            project3Name: 'موزیک‌پلیر آرورا',
+            project3Desc: 'موزیک‌پلیر فلاتر با پخش آنلاین، ورود با فایربیس، تم روشن و تیره، رابط فارسی راست‌به‌چپ و کنترل‌های کامل پخش.',
+            project4Name: 'سایت فن‌مید مانکی دی. لوفی',
+            project4Desc: 'وب‌سایت فن‌مید برای بیوگرافی مانکی دی. لوفی از وان پیس، با تم روشن و تیره، انیمیشن‌های اسکرول و چیدمان فارسی راست‌به‌چپ.',
+            project5Name: 'صفحه اصلی بازار خودرو',
+            project5Desc: 'لندینگ پیج ریسپانسیو و مدرن برای یه پلتفرم خرید و فروش خودرو، با بخش‌های CTA و کامپوننت‌های قیمت‌گذاری.',
+            project6Name: 'صفحه اصلی ارز دیجیتال',
+            project6Desc: 'کانسپت لندینگ پیج برای یه پلتفرم کریپتو، شامل هدر اصلی، آمار و رابط داشبورد.',
+            project7Name: 'کیس استادی‌های UI/UX',
+            project7Desc: 'مجموعه‌ای از بررسی‌های طراحی، شامل کانسپت‌های ریدیزاین، آدیت UX و تحلیل محصول.',
             journeyLabel: '// مسیر',
             journeyTitle: 'چطور اینجا رسیدم',
             journeySubtitle: 'مسیر من از مبتدی تا جایی که الان هستم',
@@ -616,6 +624,28 @@
         }, { passive: true });
     }
 
+    // ===== CONTACT FORM (static site: open email app) =====
+    function initContactForm() {
+        const form = document.getElementById('contactForm');
+        if (!form) return;
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameEl = document.getElementById('name');
+            const emailEl = document.getElementById('email');
+            const messageEl = document.getElementById('message');
+            const name = nameEl ? nameEl.value.trim() : '';
+            const email = emailEl ? emailEl.value.trim() : '';
+            const message = messageEl ? messageEl.value.trim() : '';
+            const subject = encodeURIComponent('Portfolio contact from ' + name);
+            const body = encodeURIComponent(message + '\n\nFrom: ' + name + ' <' + email + '>');
+            const status = document.getElementById('formStatus');
+            if (status) {
+                status.textContent = currentLang === 'fa' ? 'در حال باز کردن برنامه ایمیل…' : 'Opening your email app…';
+            }
+            window.location.href = 'mailto:suicidewithmeagain@gmail.com?subject=' + subject + '&body=' + body;
+        });
+    }
+
     // ===== INIT =====
     function init() {
         setTheme(currentTheme);
@@ -635,6 +665,7 @@
         initTypewriter();
         initCounters();
         initNavScroll();
+        initContactForm();
     }
 
     if (document.readyState === 'loading') {
