@@ -41,7 +41,7 @@
     msgFa.textContent = fa;
   }
   function fail(en, fa) {
-    icon.textContent = '⚠️'; icon.className = 'spin err';
+    icon.textContent = '✕'; icon.className = 'spin err';
     setText('Verification failed', en, fa);
   }
   if (!userId || !secret) {
@@ -54,7 +54,7 @@
       body: JSON.stringify({ userId: userId, secret: secret })
     }).then(async (r) => {
       if (r.ok) {
-        icon.textContent = '✅'; icon.className = 'spin ok';
+        icon.textContent = '✓'; icon.className = 'spin ok';
         setText('Email verified',
           'Now go back to the AuroraList app. If it still does not show as verified, close the app completely and reopen it.',
           'حالا برگرد به اپ AuroraList. اگه هنوز تأییدشده نشون نداد، اپ رو یه بار کامل ببند و دوباره باز کن.');
