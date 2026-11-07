@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ali's Koi Pond</title>
+<meta name="description" content="A living koi pond drawn from Ali D. Shah's GitHub activity. Every tile is a day, every colour on the koi is a language.">
+<link rel="icon" href="pond.svg" type="image/svg+xml">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #0D1117;
+    color: #C9D1D9;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+  }
+  main { max-width: 960px; margin: 0 auto; padding: 40px 20px 64px; }
+  header { text-align: center; margin-bottom: 28px; }
+  h1 { margin: 0 0 8px; color: #FFFFFF; font-size: 32px; letter-spacing: -0.5px; }
+  header p { margin: 0; color: #8B949E; font-size: 15px; }
+  header p b { color: #00D9FF; font-weight: 600; }
+  .pond-wrap { position: relative; border-radius: 16px; }
+  svg#pond { display: block; width: 100%; height: auto; border-radius: 16px; }
+  svg#pond .tile { cursor: pointer; }
+  svg#pond .tile:hover { stroke-width: 2.5; }
+  svg#pond .patch { cursor: pointer; }
+  svg#pond .patch:hover { filter: brightness(1.2); }
+  .tail { animation: sway 1.1s ease-in-out infinite; transform-box: fill-box; transform-origin: 100% 50%; }
+  .fin { animation: sway 1.1s ease-in-out infinite; transform-box: fill-box; transform-origin: 0% 50%; }
+  @keyframes sway { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+  #tooltip {
+    position: fixed;
+    z-index: 10;
+    pointer-events: none;
+    background: #161B22;
+    border: 1px solid #30363D;
+    color: #E6EDF3;
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+  }
+  .legends {
+    display: flex; flex-wrap: wrap; gap: 8px 24px;
+    align-items: center; justify-content: space-between;
+    margin-top: 18px; font-size: 13px; color: #8B949E;
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+  .legend .item { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .legend .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; border: 1px solid #00D9FF; }
+  .stats { text-align: center; color: #8B949E; font-size: 13px; margin: 18px 0 0; }
+  footer { text-align: center; color: #6E7681; font-size: 13px; margin-top: 28px; }
+  footer a { color: #00D9FF; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  noscript p { text-align: center; color: #FF7B72; }
+  @media (prefers-reduced-motion: reduce) {
+    .tail, .fin { animation: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Ali's Koi Pond</h1>
+    <p>A living pond drawn from my GitHub activity. Every tile is a day, every colour on the koi is a language. <b>Move your mouse — the koi follows.</b></p>
+  </header>
+
+  <div class="pond-wrap" id="pondWrap">
+    <svg id="pond" viewBox="0 0 880 380" role="img" aria-label="Interactive koi pond: a koi swimming over a year of GitHub contributions"></svg>
+    <div id="tooltip" hidden></div>
+  </div>
+  <noscript><p>This pond needs JavaScript to swim.</p></noscript>
+
+  <div class="legends">
+    <div class="legend" id="langLegend"></div>
+    <div class="legend" id="levelLegend"></div>
+  </div>
+  <p class="stats" id="stats"></p>
+
+  <footer>
+    Redrawn nightly from public GitHub activity &middot;
+    <a href="https://github.com/GoldenTitab">github.com/GoldenTitab</a>
+  </footer>
+</main>
+<script src="pond.js" defer></script>
+</body>
+</html>

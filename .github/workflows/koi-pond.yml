@@ -1,0 +1,42 @@
+# Koi Pond — redraws koi/pond.svg (profile README) and koi/data.json
+# (interactive pond page) every night from the account's GitHub activity.
+# The generator is koi/generate_pond.py (stdlib only, GitHub GraphQL via gh).
+# Optional: add a repo secret KOI_TOKEN (a read-only personal token) and the
+# generator will use it instead of the built-in token.
+name: Koi Pond
+
+on:
+  schedule:
+    # Just after midnight UTC, so the pond shows the day that just ended.
+    - cron: "20 0 * * *"
+  workflow_dispatch:
+  push:
+    paths: [.github/workflows/koi-pond.yml, koi/generate_pond.py]
+
+permissions:
+  contents: write
+
+concurrency: koi-pond
+
+jobs:
+  pond:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Redraw the pond
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KOI_TOKEN: ${{ secrets.KOI_TOKEN }}
+        run: python3 koi/generate_pond.py
+      - name: Commit the pond if it changed
+        shell: bash
+        run: |
+          git add koi/pond.svg koi/data.json
+          if git diff --cached --quiet; then
+            echo "The pond is unchanged; nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --quiet --message "koi: redraw the pond"
+          git push --quiet
