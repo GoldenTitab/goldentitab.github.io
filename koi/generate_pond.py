@@ -13,11 +13,16 @@ Pond rules (Ali, 2026-11-07):
 - Empty tile: light-grey fill; EVERY tile has the same blue border.
 - Intensity: 4 levels like GitHub, from quartiles of the positive counts.
 - Fish colours come from the account's languages (body white + patches).
+- The koi itself is the original git-koi pixel-art sprite
+  (yalongwastaken/git-koi, MIT, (c) 2026 Anthony Yalong), extracted by
+  extract_sprite.py (same folder, needs Pillow) into sprite.json and
+  recoloured here so each patch shows one of Ali's languages.
 - The README SVG animates with SMIL only (no script can run in a README).
 
 Outputs (next to this script): pond.svg, data.json.
 """
 import argparse
+import colorsys
 import json
 import os
 import subprocess
@@ -43,26 +48,39 @@ LABEL_FILL = "#6FA8C9"
 CAPTION_FILL = "#7FB3D5"
 SVG_W, SVG_H = 880, 380
 
-# --- the koi (side view, facing right, centred on 0,0; ~230 long) ----------
-BODY_PATH = (
-    "M -108,2 C -96,-26 -56,-40 0,-40 C 56,-40 100,-28 112,-6 "
-    "C 116,2 112,10 104,16 C 84,32 40,42 -5,40 C -56,38 -100,24 -108,2 Z"
-)
-TAIL_PATH = (
-    "M -102,-6 C -138,-30 -172,-36 -194,-20 C -178,-10 -170,-2 -170,4 "
-    "C -188,12 -194,26 -180,34 C -158,42 -128,28 -102,10 Z"
-)
-DORSAL_PATH = "M -24,-38 C -8,-58 22,-60 44,-44 C 24,-40 -2,-38 -24,-38 Z"
-PECTORAL_PATH = "M 18,12 C 34,30 56,34 70,24 C 56,12 36,6 18,12 Z"
-PELVIC_PATH = "M -38,36 C -24,46 -6,46 4,38 C -10,34 -26,32 -38,36 Z"
-# Patches are placed by language rank: 1st language = biggest patch, etc.
-PATCH_PATHS = [
-    "M -34,-38 C 2,-44 34,-32 30,-10 C 26,8 -6,16 -26,6 C -42,-2 -44,-28 -34,-38 Z",
-    "M 52,-38 C 84,-36 104,-26 110,-12 C 100,-4 78,-6 64,-16 C 54,-22 48,-32 52,-38 Z",
-    "M -62,8 C -42,4 -20,8 -28,24 C -38,38 -62,36 -68,22 C -70,14 -68,10 -62,8 Z",
-    "M -102,-14 C -82,-24 -60,-20 -62,-2 C -64,12 -86,16 -100,8 C -108,2 -108,-8 -102,-14 Z",
-]
-SWIM_PATH = "M -260,120 C 100,70 300,170 520,110 C 700,60 900,150 1140,100"
+# --- the koi: the original git-koi pixel sprite (sprite.json) --------------
+# Native 247x118, faces right, centred on (0,0) by the caller. Tail = the
+# forked fin at x < tail_x; it wags around the pivot (peduncle).
+SWIM_PATH = "M -260,105 C 100,65 300,140 520,105 C 700,65 900,140 1140,95"
+KOI_SCALE = 1.0
+
+
+def load_sprite():
+    return json.loads((HERE / "sprite.json").read_text())
+
+
+def shade_hex(hexcol, delta):
+    """Shift a colour's lightness by delta (same math as pond.js)."""
+    r, g, b = (int(hexcol[i:i + 2], 16) / 255 for i in (1, 3, 5))
+    h, li, s = colorsys.rgb_to_hls(r, g, b)
+    li = max(0.08, min(0.92, li + delta))
+    r, g, b = colorsys.hls_to_rgb(h, li, s)
+    return "#%02X%02X%02X" % (round(r * 255), round(g * 255), round(b * 255))
+
+
+def sprite_rects(languages, sprite):
+    """Pixel runs as SVG rects: (tail_runs, body_runs), colours resolved."""
+    tail, body = [], []
+    for y, x, w, group, rank, shade, orig in sprite["runs"]:
+        if rank is not None and rank < len(languages):
+            fill = shade_hex(languages[rank]["color"], shade)
+        elif rank is not None:
+            fill = shade_hex(orig, shade)
+        else:
+            fill = orig
+        rect = f'<rect x="{x}" y="{y}" width="{w}" height="1" fill="{fill}"/>'
+        (tail if group == 1 else body).append(rect)
+    return "".join(tail), "".join(body)
 
 
 def token():
@@ -218,51 +236,30 @@ def month_labels(columns):
     return labels
 
 
-def fish_group(languages):
+def fish_group(languages, sprite):
     """The koi as an SVG group (SMIL-animated). Patches = top languages."""
-    patches = ""
-    for lang, path in zip(languages[:4], PATCH_PATHS):
-        patches += (
-            f'<path d="{path}" fill="{lang["color"]}" opacity="0.95">'
-            f'<title>{lang["name"]}</title></path>'
-        )
+    tail_rects, body_rects = sprite_rects(languages, sprite)
+    px, py = sprite["pivot"]
+    cx, cy = sprite["w"] / 2, sprite["h"] / 2
     return f"""
-  <g>
+  <g shape-rendering="crispEdges">
     <animateMotion dur="26s" repeatCount="indefinite" rotate="auto" path="{SWIM_PATH}"/>
-    <g>
+    <g transform="translate({-cx},{-cy}) scale({KOI_SCALE})">
       <g>
         <animateTransform attributeName="transform" type="rotate"
-          values="-12 -104 0; 12 -104 0; -12 -104 0" dur="1.1s" repeatCount="indefinite"/>
-        <path d="{TAIL_PATH}" fill="#F4F7F9" opacity="0.9"/>
+          values="-7 {px} {py}; 7 {px} {py}; -7 {px} {py}" dur="1.1s" repeatCount="indefinite"/>
+        {tail_rects}
       </g>
-      <path d="{DORSAL_PATH}" fill="#FFFFFF" opacity="0.55"/>
-      <path d="{BODY_PATH}" fill="#F4F7F9" stroke="#08202F" stroke-opacity="0.35" stroke-width="1.5"/>
-      <clipPath id="koiBodyClip"><path d="{BODY_PATH}"/></clipPath>
-      <g clip-path="url(#koiBodyClip)">
-        {patches}
-        <ellipse cx="0" cy="-26" rx="70" ry="10" fill="#FFFFFF" opacity="0.18"/>
-        <ellipse cx="-10" cy="32" rx="60" ry="8" fill="#0B2233" opacity="0.08"/>
-      </g>
-      <g>
-        <animateTransform attributeName="transform" type="rotate"
-          values="-8 20 12; 8 20 12; -8 20 12" dur="1.1s" repeatCount="indefinite"/>
-        <path d="{PECTORAL_PATH}" fill="#FFFFFF" opacity="0.65"/>
-      </g>
-      <path d="{PELVIC_PATH}" fill="#FFFFFF" opacity="0.5"/>
-      <path d="M 64,-28 C 56,-8 56,10 64,26" fill="none" stroke="#0B2233" stroke-opacity="0.15" stroke-width="2"/>
-      <path d="M 106,6 C 114,12 118,20 116,28" fill="none" stroke="#0B2233" stroke-opacity="0.45" stroke-width="1.5"/>
-      <path d="M 100,14 C 104,22 104,28 100,34" fill="none" stroke="#0B2233" stroke-opacity="0.35" stroke-width="1.5"/>
-      <circle cx="88" cy="-8" r="5" fill="#0B2233"/>
-      <circle cx="90" cy="-10" r="1.8" fill="#FFFFFF"/>
+      {body_rects}
     </g>
   </g>
-  <ellipse cx="0" cy="200" rx="90" ry="8" fill="#000000" opacity="0.12">
+  <ellipse cx="0" cy="200" rx="100" ry="8" fill="#000000" opacity="0.12">
     <animateMotion dur="26s" repeatCount="indefinite"
       path="M -260,200 L 1140,200"/>
   </ellipse>"""
 
 
-def render_svg(snapshot):
+def render_svg(snapshot, sprite):
     days = snapshot["days"]
     languages = snapshot["languages"]
     thresholds = level_thresholds(days)
@@ -329,7 +326,7 @@ def render_svg(snapshot):
   {months}
   {''.join(tiles)}
   {bubbles}
-  {fish_group(languages)}
+  {fish_group(languages, sprite)}
   <text x="18" y="352" font-size="11" fill="{CAPTION_FILL}" font-family="sans-serif">{total} contributions in the last year</text>
   <text x="{legend_x}" y="346" font-size="11" fill="{CAPTION_FILL}" font-family="sans-serif">Less</text>
   {swatches}
@@ -360,7 +357,7 @@ def main():
             "border": BORDER,
         },
     }
-    (HERE / "pond.svg").write_text(render_svg(snapshot))
+    (HERE / "pond.svg").write_text(render_svg(snapshot, load_sprite()))
     (HERE / "data.json").write_text(json.dumps(data, indent=2))
     print(f"pond.svg + data.json written: {len(snapshot['days'])} days, "
           f"{snapshot['total_contributions']} contributions, "

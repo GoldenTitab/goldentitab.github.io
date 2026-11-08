@@ -4,6 +4,10 @@
  * to speed, bubbles from the mouth, a soft shadow, ripples on click.
  * Hover a colour on the koi to see its language (name only); hover a tile
  * to see that day's contribution count. Vanilla JS, no dependencies.
+ *
+ * The koi is the original git-koi pixel-art sprite (yalongwastaken/git-koi,
+ * MIT, (c) 2026 Anthony Yalong) in sprite.json, recoloured to Ali's
+ * languages — the same data koi/generate_pond.py uses for the README SVG.
  */
 (function () {
   'use strict';
@@ -11,21 +15,7 @@
   var SVG_W = 880, SVG_H = 380;
   var CELL = 12, GAP = 4, GRID_X = 18, GRID_Y = 206;
   var NS = 'http://www.w3.org/2000/svg';
-
-  /* The koi — same drawing as koi/generate_pond.py (keep in sync). */
-  var BODY_PATH = 'M -108,2 C -96,-26 -56,-40 0,-40 C 56,-40 100,-28 112,-6 '
-    + 'C 116,2 112,10 104,16 C 84,32 40,42 -5,40 C -56,38 -100,24 -108,2 Z';
-  var TAIL_PATH = 'M -102,-6 C -138,-30 -172,-36 -194,-20 C -178,-10 -170,-2 -170,4 '
-    + 'C -188,12 -194,26 -180,34 C -158,42 -128,28 -102,10 Z';
-  var DORSAL_PATH = 'M -24,-38 C -8,-58 22,-60 44,-44 C 24,-40 -2,-38 -24,-38 Z';
-  var PECTORAL_PATH = 'M 18,12 C 34,30 56,34 70,24 C 56,12 36,6 18,12 Z';
-  var PELVIC_PATH = 'M -38,36 C -24,46 -6,46 4,38 C -10,34 -26,32 -38,36 Z';
-  var PATCH_PATHS = [
-    'M -34,-38 C 2,-44 34,-32 30,-10 C 26,8 -6,16 -26,6 C -42,-2 -44,-28 -34,-38 Z',
-    'M 52,-38 C 84,-36 104,-26 110,-12 C 100,-4 78,-6 64,-16 C 54,-22 48,-32 52,-38 Z',
-    'M -62,8 C -42,4 -20,8 -28,24 C -38,38 -62,36 -68,22 C -70,14 -68,10 -62,8 Z',
-    'M -102,-14 C -82,-24 -60,-20 -62,-2 C -64,12 -86,16 -100,8 C -108,2 -108,-8 -102,-14 Z'
-  ];
+  var KOI_SCALE = 1.4;   /* sprite 247x118 -> 346x165 on the page */
 
   var svg = document.getElementById('pond');
   var wrap = document.getElementById('pondWrap');
@@ -70,28 +60,58 @@
     });
   }
 
-  function fishMarkup(languages) {
-    var patches = '';
-    languages.slice(0, 4).forEach(function (lang, i) {
-      patches += '<path class="patch" data-lang="' + lang.name + '" d="'
-        + PATCH_PATHS[i] + '" fill="' + lang.color + '" opacity="0.95"/>';
+  function shadeHex(hex, delta) {
+    /* Same lightness shift as generate_pond.py's shade_hex. */
+    var r = parseInt(hex.slice(1, 3), 16) / 255;
+    var g = parseInt(hex.slice(3, 5), 16) / 255;
+    var b = parseInt(hex.slice(5, 7), 16) / 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+    if (max === min) { h = 0; s = 0; }
+    else {
+      var d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h /= 6;
+    }
+    l = Math.max(0.08, Math.min(0.92, l + delta));
+    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    var p = 2 * l - q;
+    function hue(p, q, t) {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    }
+    r = hue(p, q, h + 1 / 3); g = hue(p, q, h); b = hue(p, q, h - 1 / 3);
+    function hx(v) { var s2 = Math.round(v * 255).toString(16); return s2.length === 1 ? '0' + s2 : s2; }
+    return '#' + hx(r) + hx(g) + hx(b);
+  }
+
+  function fishMarkup(languages, sprite) {
+    var tail = '', body = '';
+    sprite.runs.forEach(function (run) {
+      var y = run[0], x = run[1], w = run[2], group = run[3];
+      var rank = run[4], shade = run[5], orig = run[6];
+      var fill, langAttr = '';
+      if (rank !== null && rank < languages.length) {
+        fill = shadeHex(languages[rank].color, shade);
+        langAttr = ' class="patch" data-lang="' + languages[rank].name + '"';
+      } else if (rank !== null) {
+        fill = shadeHex(orig, shade);
+      } else {
+        fill = orig;
+      }
+      var rect = '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="1" fill="' + fill + '"' + langAttr + '/>';
+      if (group === 1) tail += rect; else body += rect;
     });
-    return '<g class="tail"><path d="' + TAIL_PATH + '" fill="#F4F7F9" opacity="0.9"/></g>'
-      + '<path d="' + DORSAL_PATH + '" fill="#FFFFFF" opacity="0.55"/>'
-      + '<path d="' + BODY_PATH + '" fill="#F4F7F9" stroke="#08202F" stroke-opacity="0.35" stroke-width="1.5"/>'
-      + '<clipPath id="koiBodyClip"><path d="' + BODY_PATH + '"/></clipPath>'
-      + '<g clip-path="url(#koiBodyClip)">'
-      + patches
-      + '<ellipse cx="0" cy="-26" rx="70" ry="10" fill="#FFFFFF" opacity="0.18"/>'
-      + '<ellipse cx="-10" cy="32" rx="60" ry="8" fill="#0B2233" opacity="0.08"/>'
-      + '</g>'
-      + '<g class="fin"><path d="' + PECTORAL_PATH + '" fill="#FFFFFF" opacity="0.65"/></g>'
-      + '<path d="' + PELVIC_PATH + '" fill="#FFFFFF" opacity="0.5"/>'
-      + '<path d="M 64,-28 C 56,-8 56,10 64,26" fill="none" stroke="#0B2233" stroke-opacity="0.15" stroke-width="2"/>'
-      + '<path d="M 106,6 C 114,12 118,20 116,28" fill="none" stroke="#0B2233" stroke-opacity="0.45" stroke-width="1.5"/>'
-      + '<path d="M 100,14 C 104,22 104,28 100,34" fill="none" stroke="#0B2233" stroke-opacity="0.35" stroke-width="1.5"/>'
-      + '<circle cx="88" cy="-8" r="5" fill="#0B2233"/>'
-      + '<circle cx="90" cy="-10" r="1.8" fill="#FFFFFF"/>';
+    return '<g transform="translate(' + (-sprite.w / 2) + ',' + (-sprite.h / 2)
+      + ') scale(' + KOI_SCALE + ')" shape-rendering="crispEdges">'
+      + '<g class="tail">' + tail + '</g>' + body + '</g>';
   }
 
   function ambientSVG() {
@@ -121,7 +141,7 @@
     return rays + ripples + bubbles;
   }
 
-  function buildPond(data) {
+  function buildPond(data, sprite) {
     var columns = buildWeeks(data.days);
     var t = data.levels.thresholds;
     var colors = data.levels.colors;
@@ -156,8 +176,8 @@
       + '<text x="18" y="352" font-size="11" fill="#7FB3D5" font-family="sans-serif">'
       + data.total_contributions + ' contributions in the last year</text>'
       + '<g id="fx"></g>'
-      + '<ellipse id="koiShadow" cx="440" cy="185" rx="90" ry="8" fill="#000000" opacity="0.12"/>'
-      + '<g id="koi">' + fishMarkup(data.languages) + '</g>';
+      + '<ellipse id="koiShadow" cx="440" cy="190" rx="110" ry="8" fill="#000000" opacity="0.12"/>'
+      + '<g id="koi">' + fishMarkup(data.languages, sprite) + '</g>';
 
     var langLegend = document.getElementById('langLegend');
     langLegend.innerHTML = data.languages.map(function (l) {
@@ -187,9 +207,11 @@
     var pt = svg.createSVGPoint();
     pt.x = clientX; pt.y = clientY;
     var p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    /* Clamps keep the whole rotated fish inside the pond (half-size
+       173x82 plus ~15px for the diagonal rotation extent). */
     return {
-      x: Math.max(40, Math.min(SVG_W - 40, p.x)),
-      y: Math.max(50, Math.min(SVG_H - 50, p.y))
+      x: Math.max(190, Math.min(SVG_W - 190, p.x)),
+      y: Math.max(100, Math.min(SVG_H - 100, p.y))
     };
   }
 
@@ -201,7 +223,7 @@
 
   function spawnBubble() {
     var rad = angle * Math.PI / 180;
-    var mx = flip ? -112 : 112;
+    var mx = flip ? -172 : 172;   /* mouth = head tip of the scaled sprite */
     var bx = pos.x + mx * Math.cos(rad) - 2 * Math.sin(rad);
     var by = pos.y + mx * Math.sin(rad) + 2 * Math.cos(rad);
     var c = document.createElementNS(NS, 'circle');
@@ -231,14 +253,17 @@
       return;
     }
     if (now - lastPointer > 4000) {
-      target.x = 440 + 320 * Math.sin(now * 0.00008);
-      target.y = 130 + 70 * Math.sin(now * 0.00013 + 1.3);
+      target.x = 440 + 200 * Math.sin(now * 0.00008);
+      target.y = 155 + 55 * Math.sin(now * 0.00013 + 1.3);
     }
     var dx = target.x - pos.x, dy = target.y - pos.y;
     var dist = Math.sqrt(dx * dx + dy * dy);
     speed = dist;
-    pos.x += dx * 0.07;
-    pos.y += dy * 0.07;
+    /* Slow right down while the pointer rests on a language patch, so the
+       tooltip (and the patch brightening) can actually be read. */
+    var ease = hoveringPatch ? 0.02 : 0.07;
+    pos.x += dx * ease;
+    pos.y += dy * ease;
     if (dist > 2) {
       var desired = Math.atan2(dy, dx) * 180 / Math.PI;
       var newFlip = Math.cos(desired * Math.PI / 180) < 0;
@@ -251,12 +276,10 @@
       'translate(' + pos.x.toFixed(1) + ' ' + pos.y.toFixed(1) + ')'
       + ' rotate(' + angle.toFixed(1) + ') scale(' + (flip ? -1 : 1) + ' 1)');
     shadow.setAttribute('cx', pos.x.toFixed(1));
-    shadow.setAttribute('cy', (pos.y + 55).toFixed(1));
+    shadow.setAttribute('cy', (pos.y + 70).toFixed(1));
     var sway = Math.max(0.45, Math.min(1.4, 1.4 - speed * 0.05));
     var tail = koi.querySelector('.tail');
-    var fin = koi.querySelector('.fin');
     if (tail) tail.style.animationDuration = sway.toFixed(2) + 's';
-    if (fin) fin.style.animationDuration = sway.toFixed(2) + 's';
     if (speed > 1.5 && now - lastBubble > 350) { spawnBubble(); lastBubble = now; }
     for (var i = bubbles.length - 1; i >= 0; i--) {
       var b = bubbles[i];
@@ -278,6 +301,7 @@
   }
 
   /* --- tooltips ---------------------------------------------------------- */
+  var hoveringPatch = false;
   function showTooltip(text, clientX, clientY) {
     tooltip.textContent = text;
     tooltip.hidden = false;
@@ -290,14 +314,26 @@
     tooltip.style.left = x + 'px';
     tooltip.style.top = y + 'px';
   }
-  function hideTooltip() { tooltip.hidden = true; }
+  function hideTooltip() {
+    tooltip.hidden = true;
+    hoveringPatch = false;
+    var hl = svg.querySelectorAll('.patch.hl');
+    for (var i = 0; i < hl.length; i++) hl[i].classList.remove('hl');
+  }
 
   svg.addEventListener('pointermove', function (e) {
     var p = toSVG(e.clientX, e.clientY);
     target = p; lastPointer = performance.now();
     var t = e.target;
     if (t && t.dataset) {
-      if (t.dataset.lang) { showTooltip(t.dataset.lang, e.clientX, e.clientY); return; }
+      if (t.dataset.lang) {
+        hoveringPatch = true;
+        showTooltip(t.dataset.lang, e.clientX, e.clientY);
+        /* Brighten the whole language region, not just the one pixel run. */
+        var all = svg.querySelectorAll('.patch[data-lang="' + t.dataset.lang + '"]');
+        for (var i = 0; i < all.length; i++) all[i].classList.add('hl');
+        return;
+      }
       if (t.dataset.date) {
         var n = parseInt(t.dataset.count, 10);
         var text = n === 0
@@ -314,10 +350,13 @@
     spawnRipple(p.x, p.y);
   });
 
-  fetch('data.json')
-    .then(function (r) { if (!r.ok) throw new Error('data.json ' + r.status); return r.json(); })
-    .then(function (data) {
-      buildPond(data);
+  Promise.all([
+    fetch('data.json').then(function (r) { if (!r.ok) throw new Error('data.json ' + r.status); return r.json(); }),
+    fetch('sprite.json').then(function (r) { if (!r.ok) throw new Error('sprite.json ' + r.status); return r.json(); })
+  ])
+    .then(function (parts) {
+      var data = parts[0], sprite = parts[1];
+      buildPond(data, sprite);
       koi = document.getElementById('koi');
       shadow = document.getElementById('koiShadow');
       fx = document.getElementById('fx');
