@@ -239,6 +239,7 @@
   var pos = { x: 440, y: 120 }, vel = { x: 0, y: 0 };
   var heading = 0, turnRate = 0;
   var wavePhase = 0.8, beatClock = 0, lastT = 0, lastPointer = 0, lastBubble = 0;
+  var curBeatEnv = 0, curTurnNorm = 0;   /* latest frame's wave state, for the hit-test */
   var pointer = { x: 440, y: 120 };
   var lastClient = { x: 0, y: 0 };
   var tooltipKind = null;   /* 'lang' | 'tile' | null */
@@ -321,6 +322,7 @@
     beatClock += dt;
     var cycle = (beatClock % BEAT_PERIOD) / BEAT_PERIOD;
     var beatEnv = cycle < BEAT_SHARE ? Math.sin(Math.PI * cycle / BEAT_SHARE) : 0;
+    curBeatEnv = beatEnv;
     var cruise = rm ? 35 : CRUISE_SPEED;
     var maxSpeed = rm ? 55 : MAX_SPEED;
     var speedCap = cruise + (maxSpeed - cruise) * beatEnv;
@@ -382,16 +384,12 @@
        the wave, and the body bends into the turn (tail sweeps outside). */
     var freq = (rm ? 0.45 : 0.6) + (rm ? 0.3 : 1.2) * beatEnv;
     wavePhase += 2 * Math.PI * freq * dt;
-    var k = 2 * Math.PI / BODY_L;
     var turnNorm = Math.max(-1, Math.min(1, turnRate / TURN_MAX));
+    curTurnNorm = turnNorm;
     for (var i = 0; i < sliceGroups.length; i++) {
       var xc = (SLICE_BOUNDS[i] + SLICE_BOUNDS[i + 1]) / 2;
-      var fromTail = 1 - xc / BODY_L;
-      var amp = (1.5 + 11.5 * Math.pow(fromTail, 1.4))
-        * (0.35 + 0.65 * beatEnv) * (rm ? 0.6 : 1);
-      var off = amp * Math.sin(wavePhase - k * xc)
-        - turnNorm * 14 * fromTail * fromTail;
-      sliceGroups[i].setAttribute('transform', 'translate(0 ' + off.toFixed(2) + ')');
+      sliceGroups[i].setAttribute('transform',
+        'translate(0 ' + sliceOffAt(xc).toFixed(2) + ')');
     }
 
     /* Shadow follows under the fish, rotated with it so it hugs the
@@ -399,7 +397,7 @@
     shadow.setAttribute('transform',
       'translate(' + pos.x.toFixed(1) + ' ' + pos.y.toFixed(1) + ')'
       + ' rotate(' + (heading * 180 / Math.PI).toFixed(1) + ')'
-      + ' translate(0 75)');
+      + ' translate(0 65)');
     shadow.setAttribute('rx', (120 + Math.min(18, speed * 0.06)).toFixed(1));
     if (speed > 60 && now - lastBubble > 320) { spawnBubble(); lastBubble = now; }
 
@@ -448,6 +446,22 @@
     return map;
   }
 
+  /* Vertical shift of the slice containing sprite x, right now — the
+     same offset the renderer applies to that slice, so the hit-test
+     looks the pointer up against the WAVED fish as rendered, not the
+     flat sprite. (A slice is translated rigidly, so its centre offset
+     is exact for every pixel in it.) */
+  function sliceOffAt(sx) {
+    var i = 0;
+    while (i < SLICE_BOUNDS.length - 2 && sx >= SLICE_BOUNDS[i + 1]) i++;
+    var xc = (SLICE_BOUNDS[i] + SLICE_BOUNDS[i + 1]) / 2;
+    var fromTail = 1 - xc / BODY_L;
+    var amp = (1.5 + 11.5 * Math.pow(fromTail, 1.4))
+      * (0.35 + 0.65 * curBeatEnv) * (rm ? 0.6 : 1);
+    return amp * Math.sin(wavePhase - (2 * Math.PI / BODY_L) * xc)
+      - curTurnNorm * 14 * fromTail * fromTail;
+  }
+
   /* Sprite coordinates under the pointer (undoing the fish's
      translate/rotate/scale), or null before the sprite loads. */
   function pointerToSprite(clientX, clientY) {
@@ -462,17 +476,17 @@
     };
   }
 
-  /* Language under the pointer, if any: look the pixel up, with a 6 px
-     tolerance (nearest patch wins), so small dotted patches are hittable. */
+  /* Language under the pointer, if any: look the pixel up in the waved
+     sprite, with a 4 px tolerance (nearest patch wins). */
   function patchLangAt(clientX, clientY) {
     if (!patchMap) return null;
     var sp = pointerToSprite(clientX, clientY);
     if (!sp) return null;
-    var cx = Math.round(sp.x), cy = Math.round(sp.y);
+    var cx = Math.round(sp.x), cy = Math.round(sp.y - sliceOffAt(sp.x));
     var offs = [];
-    for (var dx = -6; dx <= 6; dx++) {
-      for (var dy = -6; dy <= 6; dy++) {
-        if (dx * dx + dy * dy <= 36) offs.push([dx, dy, dx * dx + dy * dy]);
+    for (var dx = -4; dx <= 4; dx++) {
+      for (var dy = -4; dy <= 4; dy++) {
+        if (dx * dx + dy * dy <= 16) offs.push([dx, dy, dx * dx + dy * dy]);
       }
     }
     offs.sort(function (a, b) { return a[2] - b[2]; });
@@ -488,7 +502,7 @@
     if (!fishPixels) return false;
     var sp = pointerToSprite(lastClient.x, lastClient.y);
     if (!sp) return false;
-    return !!fishPixels[Math.round(sp.x) + ',' + Math.round(sp.y)];
+    return !!fishPixels[Math.round(sp.x) + ',' + Math.round(sp.y - sliceOffAt(sp.x))];
   }
 
   function highlightLang(lang) {
