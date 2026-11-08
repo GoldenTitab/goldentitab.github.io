@@ -318,7 +318,7 @@ def fish_group(languages, sprite):
       {slice_groups}
     </g>
   </g>
-  <ellipse cx="0" cy="0" rx="100" ry="8" fill="#000000" opacity="0.12">
+  <ellipse cx="0" cy="0" rx="100" ry="8" fill="#000000" opacity="0.16">
     <animateMotion dur="{LOOP_DUR}s" repeatCount="indefinite" path="{SHADOW_LOOP_PATH}"/>
   </ellipse>"""
 

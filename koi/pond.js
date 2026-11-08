@@ -211,7 +211,7 @@
       + '<text x="18" y="352" font-size="11" fill="#7FB3D5" font-family="sans-serif">'
       + data.total_contributions + ' contributions in the last year</text>'
       + '<g id="fx"></g>'
-      + '<ellipse id="koiShadow" cx="440" cy="190" rx="110" ry="8" fill="#000000" opacity="0.12"/>'
+      + '<ellipse id="koiShadow" cx="440" cy="190" rx="110" ry="8" fill="#000000" opacity="0.16"/>'
       + '<g id="koi">' + fishMarkup(data.languages, sprite) + '</g>';
 
     var langLegend = document.getElementById('langLegend');
@@ -233,7 +233,7 @@
 
   /* --- the living koi ---------------------------------------------------- */
   var koi = null, shadow = null, fx = null, sliceGroups = [];
-  var spriteData = null, patchMap = null;
+  var spriteData = null, patchMap = null, fishPixels = null;
   var pos = { x: 440, y: 120 }, vel = { x: 0, y: 0 };
   var heading = 0, turnRate = 0;
   var wavePhase = 0.8, beatClock = 0, lastT = 0, lastPointer = 0, lastBubble = 0;
@@ -247,11 +247,12 @@
     var pt = svg.createSVGPoint();
     pt.x = clientX; pt.y = clientY;
     var p = pt.matrixTransform(svg.getScreenCTM().inverse());
-    /* Clamps keep the whole rotated fish inside the pond (half-size
-       173x82 plus ~15px for the diagonal rotation extent). */
+    /* Clamps keep the fish's centre in a band where even a vertical
+       fish (length 346) stays mostly inside the pond; the pond's
+       overflow:hidden clips the rest cleanly at the border. */
     return {
       x: Math.max(190, Math.min(SVG_W - 190, p.x)),
-      y: Math.max(100, Math.min(SVG_H - 100, p.y))
+      y: Math.max(130, Math.min(SVG_H - 130, p.y))
     };
   }
 
@@ -298,14 +299,14 @@
        waypoint is just another target for the same physics. */
     var target;
     var distToPointer = Math.hypot(pointer.x - pos.x, pointer.y - pos.y);
-    if (!rm && (now - lastPointer < 6000 || distToPointer > 45)) {
+    if (!rm && (now - lastPointer < 12000 || distToPointer > 45)) {
       target = pointer;
     } else {
       if (!wanderTarget || now > wanderUntil ||
           Math.hypot(wanderTarget.x - pos.x, wanderTarget.y - pos.y) < 40) {
         wanderTarget = {
           x: 190 + Math.random() * (SVG_W - 380),
-          y: 100 + Math.random() * (SVG_H - 200)
+          y: 130 + Math.random() * (SVG_H - 260)
         };
         wanderUntil = now + 5000;
       }
@@ -320,6 +321,9 @@
     var cruise = rm ? 35 : CRUISE_SPEED;
     var maxSpeed = rm ? 55 : MAX_SPEED;
     var speedCap = cruise + (maxSpeed - cruise) * beatEnv;
+    /* Calm down while the cursor rests on the fish, so a patch can
+       actually be aimed at and read. */
+    if (pointerOnFish()) speedCap = Math.min(speedCap, 35);
 
     /* Arrived: orbit the pointer slowly instead of parking dead still. */
     var tx = target.x, ty = target.y;
@@ -344,7 +348,7 @@
     vel.x += ax; vel.y += ay;
     pos.x += vel.x * dt; pos.y += vel.y * dt;
     pos.x = Math.max(190, Math.min(SVG_W - 190, pos.x));
-    pos.y = Math.max(100, Math.min(SVG_H - 100, pos.y));
+    pos.y = Math.max(130, Math.min(SVG_H - 130, pos.y));
     var speed = Math.hypot(vel.x, vel.y);
 
     /* Heading turns toward the velocity at a limited rate, so the fish
@@ -413,38 +417,66 @@
   }
 
   /* --- tooltips ---------------------------------------------------------- */
-  /* Map sprite pixel -> language name, for pixel-perfect patch hover. */
+  /* Map sprite pixel -> language name, for pixel-perfect patch hover,
+     plus the set of all fish pixels (to tell when the cursor is on
+     the fish at all). */
   function buildPatchMap(languages, sprite) {
     var map = {};
+    var all = {};
     sprite.runs.forEach(function (run) {
       var rank = run[4];
-      if (rank === null || rank >= languages.length) return;
-      var lang = languages[rank].name;
       for (var x = run[1]; x < run[1] + run[2]; x++) {
-        map[x + ',' + run[0]] = lang;
+        all[x + ',' + run[0]] = true;
+        if (rank !== null && rank < languages.length) {
+          map[x + ',' + run[0]] = languages[rank].name;
+        }
       }
     });
+    fishPixels = all;
     return map;
   }
 
-  /* Language under the pointer, if any: map the pointer back into the
-     sprite (undoing the fish's translate/rotate/scale) and look the
-     pixel up, with a 2 px tolerance so the patch is easy to hit. */
-  function patchLangAt(clientX, clientY) {
-    if (!patchMap || !spriteData) return null;
+  /* Sprite coordinates under the pointer (undoing the fish's
+     translate/rotate/scale), or null before the sprite loads. */
+  function pointerToSprite(clientX, clientY) {
+    if (!spriteData) return null;
     var p = toSVG(clientX, clientY);
     var dx = p.x - pos.x, dy = p.y - pos.y;
     var c = Math.cos(heading), s = Math.sin(heading);
     var lx = dx * c + dy * s, ly = -dx * s + dy * c;
-    var sx = lx / KOI_SCALE + spriteData.w / 2;
-    var sy = ly / KOI_SCALE + spriteData.h / 2;
-    var offs = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1],
-      [2, 0], [-2, 0], [0, 2], [0, -2], [1, 1], [-1, -1], [1, -1], [-1, 1]];
+    return {
+      x: lx / KOI_SCALE + spriteData.w / 2,
+      y: ly / KOI_SCALE + spriteData.h / 2
+    };
+  }
+
+  /* Language under the pointer, if any: look the pixel up, with a 4 px
+     tolerance (nearest patch wins), so small patches are hittable. */
+  function patchLangAt(clientX, clientY) {
+    if (!patchMap) return null;
+    var sp = pointerToSprite(clientX, clientY);
+    if (!sp) return null;
+    var cx = Math.round(sp.x), cy = Math.round(sp.y);
+    var offs = [];
+    for (var dx = -4; dx <= 4; dx++) {
+      for (var dy = -4; dy <= 4; dy++) {
+        if (dx * dx + dy * dy <= 16) offs.push([dx, dy, dx * dx + dy * dy]);
+      }
+    }
+    offs.sort(function (a, b) { return a[2] - b[2]; });
     for (var i = 0; i < offs.length; i++) {
-      var lang = patchMap[(Math.round(sx) + offs[i][0]) + ',' + (Math.round(sy) + offs[i][1])];
+      var lang = patchMap[(cx + offs[i][0]) + ',' + (cy + offs[i][1])];
       if (lang) return lang;
     }
     return null;
+  }
+
+  /* Is the pointer on the fish at all (any pixel, patch or body)? */
+  function pointerOnFish() {
+    if (!fishPixels) return false;
+    var sp = pointerToSprite(lastClient.x, lastClient.y);
+    if (!sp) return false;
+    return !!fishPixels[Math.round(sp.x) + ',' + Math.round(sp.y)];
   }
 
   function highlightLang(lang) {
