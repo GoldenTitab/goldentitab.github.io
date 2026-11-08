@@ -213,7 +213,7 @@
       + '<text x="18" y="352" font-size="11" fill="#7FB3D5" font-family="sans-serif">'
       + data.total_contributions + ' contributions in the last year</text>'
       + '<g id="fx"></g>'
-      + '<ellipse id="koiShadow" cx="440" cy="195" rx="120" ry="10" fill="#000000" opacity="0.22"/>'
+      + '<ellipse id="koiShadow" cx="0" cy="0" rx="120" ry="10" fill="#000000" opacity="0.22"/>'
       + '<g id="koi">' + fishMarkup(data.languages, sprite) + '</g>';
 
     var langLegend = document.getElementById('langLegend');
@@ -324,11 +324,12 @@
     var cruise = rm ? 35 : CRUISE_SPEED;
     var maxSpeed = rm ? 55 : MAX_SPEED;
     var speedCap = cruise + (maxSpeed - cruise) * beatEnv;
-    /* Calm down while the cursor rests on the fish, so a patch can
-       actually be aimed at and read — and nearly stop while it rests
-       on a coloured patch, so the patch does not swim away. */
+    /* While the cursor rests on a coloured patch the fish holds its
+       position (tail still beating — a koi hovering in place), so the
+       patch stays under the pointer and its tooltip stays readable.
+       On the plain body it just calms down. */
     if (patchLangAt(lastClient.x, lastClient.y)) {
-      speedCap = Math.min(speedCap, 8);
+      speedCap = 0;
     } else if (pointerOnFish()) {
       speedCap = Math.min(speedCap, 35);
     }
@@ -393,10 +394,12 @@
       sliceGroups[i].setAttribute('transform', 'translate(0 ' + off.toFixed(2) + ')');
     }
 
-    /* Shadow follows under the fish — wider than the body and below
-       its belly, so it is not hidden behind the fish. */
-    shadow.setAttribute('cx', pos.x.toFixed(1));
-    shadow.setAttribute('cy', (pos.y + 75).toFixed(1));
+    /* Shadow follows under the fish, rotated with it so it hugs the
+       belly in any orientation instead of lying flat as a streak. */
+    shadow.setAttribute('transform',
+      'translate(' + pos.x.toFixed(1) + ' ' + pos.y.toFixed(1) + ')'
+      + ' rotate(' + (heading * 180 / Math.PI).toFixed(1) + ')'
+      + ' translate(0 75)');
     shadow.setAttribute('rx', (120 + Math.min(18, speed * 0.06)).toFixed(1));
     if (speed > 60 && now - lastBubble > 320) { spawnBubble(); lastBubble = now; }
 
