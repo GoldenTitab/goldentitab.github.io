@@ -1,13 +1,29 @@
 /* Ali's Koi Pond — interactive layer.
  * Builds the pond from data.json (regenerated nightly), then lets the koi
- * follow the pointer with realistic motion: eased turning, tail sway tied
- * to speed, bubbles from the mouth, a soft shadow, ripples on click.
- * Hover a colour on the koi to see its language (name only); hover a tile
- * to see that day's contribution count. Vanilla JS, no dependencies.
+ * swim after the pointer with realistic motion: burst-and-coast strokes,
+ * a body wave that travels head-to-tail, smooth turning with the body
+ * bending into the turn, gentle hovering when it arrives, and a slow
+ * wander when the pointer is idle. Bubbles from the mouth, a soft
+ * shadow, ripples on click. Hover a colour on the koi to see its
+ * language (name only); hover a tile to see that day's count. The
+ * language hover is pixel-perfect: the pointer is mapped into the
+ * sprite and looked up against the actual patch pixels (with a small
+ * tolerance), so the 1 px-tall patch rects themselves are never the
+ * hover target.
+ * Vanilla JS, no dependencies.
  *
  * The koi is the original git-koi pixel-art sprite (yalongwastaken/git-koi,
  * MIT, (c) 2026 Anthony Yalong) in sprite.json, recoloured to Ali's
  * languages — the same data koi/generate_pond.py uses for the README SVG.
+ *
+ * Motion model (real koi, after Wu et al. 2007 and the git-koi cruise
+ * model): koi swim burst-and-coast — a few tail beats, then a glide
+ * with the body straight. The body wave travels head-to-tail with the
+ * amplitude growing toward the tail; the tail lags the wave; speed
+ * peaks just after each stroke. In a turn the body bends into the
+ * turn (up to ~0.6 body lengths in a hard turn) with the tail
+ * sweeping outside. Even with prefers-reduced-motion the fish keeps
+ * swimming, only slower and gentler — it never freezes.
  */
 (function () {
   'use strict';
@@ -16,6 +32,15 @@
   var CELL = 12, GAP = 4, GRID_X = 18, GRID_Y = 206;
   var NS = 'http://www.w3.org/2000/svg';
   var KOI_SCALE = 1.4;   /* sprite 247x118 -> 346x165 on the page */
+  var BODY_L = 247;      /* sprite length in native pixels */
+
+  /* Vertical slices of the sprite for the body wave (shared bounds with
+     generate_pond.py). Each slice is a <g> shifted sideways per frame. */
+  var SLICE_BOUNDS = [0, 25, 50, 74, 99, 124, 148, 173, 198, 222, 247];
+
+  /* Burst-and-coast stroke: 2.4 s cycle, beat for the first 55%, glide. */
+  var BEAT_PERIOD = 2.4, BEAT_SHARE = 0.55;
+  var CRUISE_SPEED = 70, MAX_SPEED = 230, ACCEL = 300, TURN_MAX = 2.2;
 
   var svg = document.getElementById('pond');
   var wrap = document.getElementById('pondWrap');
@@ -93,10 +118,11 @@
   }
 
   function fishMarkup(languages, sprite) {
-    var tail = '', body = '';
+    /* Split the pixel runs at the slice bounds so each slice can move. */
+    var slices = [];
+    for (var i = 0; i < SLICE_BOUNDS.length - 1; i++) slices.push('');
     sprite.runs.forEach(function (run) {
-      var y = run[0], x = run[1], w = run[2], group = run[3];
-      var rank = run[4], shade = run[5], orig = run[6];
+      var y = run[0], x = run[1], w = run[2], rank = run[4], shade = run[5], orig = run[6];
       var fill, langAttr = '';
       if (rank !== null && rank < languages.length) {
         fill = shadeHex(languages[rank].color, shade);
@@ -106,12 +132,21 @@
       } else {
         fill = orig;
       }
-      var rect = '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="1" fill="' + fill + '"' + langAttr + '/>';
-      if (group === 1) tail += rect; else body += rect;
+      var x0 = x, x1 = x + w;
+      for (var s = 0; s < slices.length; s++) {
+        var ax0 = Math.max(x0, SLICE_BOUNDS[s]);
+        var ax1 = Math.min(x1, SLICE_BOUNDS[s + 1]);
+        if (ax1 <= ax0) continue;
+        slices[s] += '<rect x="' + ax0 + '" y="' + y + '" width="' + (ax1 - ax0)
+          + '" height="1" fill="' + fill + '"' + langAttr + '/>';
+      }
     });
-    return '<g transform="translate(' + (-sprite.w / 2) + ',' + (-sprite.h / 2)
-      + ') scale(' + KOI_SCALE + ')" shape-rendering="crispEdges">'
-      + '<g class="tail">' + tail + '</g>' + body + '</g>';
+    var out = '<g transform="translate(' + (-sprite.w / 2) + ',' + (-sprite.h / 2)
+      + ') scale(' + KOI_SCALE + ')" shape-rendering="crispEdges">';
+    slices.forEach(function (rects, i) {
+      out += '<g class="slice" data-slice="' + i + '">' + rects + '</g>';
+    });
+    return out + '</g>';
   }
 
   function ambientSVG() {
@@ -197,10 +232,15 @@
   }
 
   /* --- the living koi ---------------------------------------------------- */
-  var koi = null, shadow = null, fx = null;
-  var pos = { x: 440, y: 120 }, target = { x: 440, y: 120 };
-  var angle = 0, flip = false, speed = 0;
-  var lastPointer = 0, lastBubble = 0;
+  var koi = null, shadow = null, fx = null, sliceGroups = [];
+  var spriteData = null, patchMap = null;
+  var pos = { x: 440, y: 120 }, vel = { x: 0, y: 0 };
+  var heading = 0, turnRate = 0;
+  var wavePhase = 0.8, beatClock = 0, lastT = 0, lastPointer = 0, lastBubble = 0;
+  var pointer = { x: 440, y: 120 };
+  var lastClient = { x: 0, y: 0 };
+  var tooltipKind = null;   /* 'lang' | 'tile' | null */
+  var wanderTarget = null, wanderUntil = 0;
   var bubbles = [], ripples = [];
 
   function toSVG(clientX, clientY) {
@@ -215,17 +255,16 @@
     };
   }
 
-  function normAngle(a) {
-    while (a > 180) a -= 360;
-    while (a < -180) a += 360;
+  function normRad(a) {
+    while (a > Math.PI) a -= 2 * Math.PI;
+    while (a < -Math.PI) a += 2 * Math.PI;
     return a;
   }
 
   function spawnBubble() {
-    var rad = angle * Math.PI / 180;
-    var mx = flip ? -172 : 172;   /* mouth = head tip of the scaled sprite */
-    var bx = pos.x + mx * Math.cos(rad) - 2 * Math.sin(rad);
-    var by = pos.y + mx * Math.sin(rad) + 2 * Math.cos(rad);
+    /* Mouth = head tip, 172px ahead along the heading. */
+    var bx = pos.x + 172 * Math.cos(heading);
+    var by = pos.y + 172 * Math.sin(heading);
     var c = document.createElementNS(NS, 'circle');
     c.setAttribute('cx', bx.toFixed(1));
     c.setAttribute('cy', by.toFixed(1));
@@ -248,39 +287,112 @@
   }
 
   function frame(now) {
-    if (reducedMotion) {
-      koi.setAttribute('transform', 'translate(440 120)');
-      return;
+    var dt = Math.min(0.05, Math.max(0.001, (now - lastT) / 1000));
+    lastT = now;
+    var rm = reducedMotion;
+
+    /* Target: the pointer, or a slow wander once it has been idle 6 s
+       AND the fish has already arrived there. Until it arrives, it
+       keeps chasing — parking the pointer somewhere new always brings
+       the fish over. The switch to wandering is smooth: a wander
+       waypoint is just another target for the same physics. */
+    var target;
+    var distToPointer = Math.hypot(pointer.x - pos.x, pointer.y - pos.y);
+    if (!rm && (now - lastPointer < 6000 || distToPointer > 45)) {
+      target = pointer;
+    } else {
+      if (!wanderTarget || now > wanderUntil ||
+          Math.hypot(wanderTarget.x - pos.x, wanderTarget.y - pos.y) < 40) {
+        wanderTarget = {
+          x: 190 + Math.random() * (SVG_W - 380),
+          y: 100 + Math.random() * (SVG_H - 200)
+        };
+        wanderUntil = now + 5000;
+      }
+      target = wanderTarget;
     }
-    if (now - lastPointer > 4000) {
-      target.x = 440 + 200 * Math.sin(now * 0.00008);
-      target.y = 155 + 55 * Math.sin(now * 0.00013 + 1.3);
+
+    /* Burst-and-coast stroke: a smooth beat, then a glide. Speed peaks
+       just after the stroke, like a real koi. */
+    beatClock += dt;
+    var cycle = (beatClock % BEAT_PERIOD) / BEAT_PERIOD;
+    var beatEnv = cycle < BEAT_SHARE ? Math.sin(Math.PI * cycle / BEAT_SHARE) : 0;
+    var cruise = rm ? 35 : CRUISE_SPEED;
+    var maxSpeed = rm ? 55 : MAX_SPEED;
+    var speedCap = cruise + (maxSpeed - cruise) * beatEnv;
+
+    /* Arrived: orbit the pointer slowly instead of parking dead still. */
+    var tx = target.x, ty = target.y;
+    var dx = tx - pos.x, dy = ty - pos.y;
+    var dist = Math.hypot(dx, dy);
+    if (dist < 45 && target === pointer) {
+      var orbit = now * 0.00045;
+      tx = pointer.x + 26 * Math.cos(orbit);
+      ty = pointer.y + 18 * Math.sin(orbit * 1.3);
+      dx = tx - pos.x; dy = ty - pos.y; dist = Math.hypot(dx, dy);
     }
-    var dx = target.x - pos.x, dy = target.y - pos.y;
-    var dist = Math.sqrt(dx * dx + dy * dy);
-    speed = dist;
-    /* Slow right down while the pointer rests on a language patch, so the
-       tooltip (and the patch brightening) can actually be read. */
-    var ease = hoveringPatch ? 0.02 : 0.07;
-    pos.x += dx * ease;
-    pos.y += dy * ease;
-    if (dist > 2) {
-      var desired = Math.atan2(dy, dx) * 180 / Math.PI;
-      var newFlip = Math.cos(desired * Math.PI / 180) < 0;
-      var display = newFlip ? normAngle(180 - desired) : desired;
-      display = Math.max(-65, Math.min(65, display));
-      if (newFlip !== flip) { angle = display; flip = newFlip; }
-      else { angle += normAngle(display - angle) * 0.15; }
+
+    /* Desired velocity, capped acceleration: smooth starts and stops. */
+    var wantX = 0, wantY = 0;
+    if (dist > 6) {
+      var sp = Math.min(speedCap, 25 + dist * 0.85);
+      wantX = dx / dist * sp; wantY = dy / dist * sp;
+    }
+    var ax = wantX - vel.x, ay = wantY - vel.y;
+    var aLen = Math.hypot(ax, ay), maxA = ACCEL * dt;
+    if (aLen > maxA) { ax = ax / aLen * maxA; ay = ay / aLen * maxA; }
+    vel.x += ax; vel.y += ay;
+    pos.x += vel.x * dt; pos.y += vel.y * dt;
+    pos.x = Math.max(190, Math.min(SVG_W - 190, pos.x));
+    pos.y = Math.max(100, Math.min(SVG_H - 100, pos.y));
+    var speed = Math.hypot(vel.x, vel.y);
+
+    /* Heading turns toward the velocity at a limited rate, so the fish
+       steers instead of snapping. The sprite is a top-down koi, so it
+       rotates freely through 360° — no horizontal flip (flipping would
+       teleport the head across the body mid-turn). */
+    if (speed > 8) {
+      var desired = Math.atan2(vel.y, vel.x);
+      var diff = normRad(desired - heading);
+      var maxTurn = TURN_MAX * dt;
+      var turn = Math.max(-maxTurn, Math.min(maxTurn, diff));
+      heading += turn;
+      turnRate += (turn / dt - turnRate) * 0.2;
+    } else {
+      turnRate *= 0.95;
     }
     koi.setAttribute('transform',
       'translate(' + pos.x.toFixed(1) + ' ' + pos.y.toFixed(1) + ')'
-      + ' rotate(' + angle.toFixed(1) + ') scale(' + (flip ? -1 : 1) + ' 1)');
+      + ' rotate(' + (heading * 180 / Math.PI).toFixed(1) + ')');
+
+    /* Travelling body wave: amplitude grows head-to-tail, the tail lags
+       the wave, and the body bends into the turn (tail sweeps outside). */
+    var freq = (rm ? 0.45 : 0.6) + (rm ? 0.3 : 1.2) * beatEnv;
+    wavePhase += 2 * Math.PI * freq * dt;
+    var k = 2 * Math.PI / BODY_L;
+    var turnNorm = Math.max(-1, Math.min(1, turnRate / TURN_MAX));
+    for (var i = 0; i < sliceGroups.length; i++) {
+      var xc = (SLICE_BOUNDS[i] + SLICE_BOUNDS[i + 1]) / 2;
+      var fromTail = 1 - xc / BODY_L;
+      var amp = (1.5 + 11.5 * Math.pow(fromTail, 1.4))
+        * (0.35 + 0.65 * beatEnv) * (rm ? 0.6 : 1);
+      var off = amp * Math.sin(wavePhase - k * xc)
+        - turnNorm * 14 * fromTail * fromTail;
+      sliceGroups[i].setAttribute('transform', 'translate(0 ' + off.toFixed(2) + ')');
+    }
+
+    /* Shadow follows with the fish; bubbles on the burst. */
     shadow.setAttribute('cx', pos.x.toFixed(1));
     shadow.setAttribute('cy', (pos.y + 70).toFixed(1));
-    var sway = Math.max(0.45, Math.min(1.4, 1.4 - speed * 0.05));
-    var tail = koi.querySelector('.tail');
-    if (tail) tail.style.animationDuration = sway.toFixed(2) + 's';
-    if (speed > 1.5 && now - lastBubble > 350) { spawnBubble(); lastBubble = now; }
+    shadow.setAttribute('rx', (100 + Math.min(18, speed * 0.06)).toFixed(1));
+    if (speed > 60 && now - lastBubble > 320) { spawnBubble(); lastBubble = now; }
+
+    /* A language tooltip must not outlive the hover: if the fish swam
+       away from under a stationary pointer, hide it. */
+    if (tooltipKind === 'lang' && !patchLangAt(lastClient.x, lastClient.y)) {
+      hideTooltip();
+    }
+
     for (var i = bubbles.length - 1; i >= 0; i--) {
       var b = bubbles[i];
       b.life += 1; b.y -= b.vy; b.x += Math.sin((b.life + b.seed) * 0.15) * 0.4;
@@ -301,7 +413,45 @@
   }
 
   /* --- tooltips ---------------------------------------------------------- */
-  var hoveringPatch = false;
+  /* Map sprite pixel -> language name, for pixel-perfect patch hover. */
+  function buildPatchMap(languages, sprite) {
+    var map = {};
+    sprite.runs.forEach(function (run) {
+      var rank = run[4];
+      if (rank === null || rank >= languages.length) return;
+      var lang = languages[rank].name;
+      for (var x = run[1]; x < run[1] + run[2]; x++) {
+        map[x + ',' + run[0]] = lang;
+      }
+    });
+    return map;
+  }
+
+  /* Language under the pointer, if any: map the pointer back into the
+     sprite (undoing the fish's translate/rotate/scale) and look the
+     pixel up, with a 2 px tolerance so the patch is easy to hit. */
+  function patchLangAt(clientX, clientY) {
+    if (!patchMap || !spriteData) return null;
+    var p = toSVG(clientX, clientY);
+    var dx = p.x - pos.x, dy = p.y - pos.y;
+    var c = Math.cos(heading), s = Math.sin(heading);
+    var lx = dx * c + dy * s, ly = -dx * s + dy * c;
+    var sx = lx / KOI_SCALE + spriteData.w / 2;
+    var sy = ly / KOI_SCALE + spriteData.h / 2;
+    var offs = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1],
+      [2, 0], [-2, 0], [0, 2], [0, -2], [1, 1], [-1, -1], [1, -1], [-1, 1]];
+    for (var i = 0; i < offs.length; i++) {
+      var lang = patchMap[(Math.round(sx) + offs[i][0]) + ',' + (Math.round(sy) + offs[i][1])];
+      if (lang) return lang;
+    }
+    return null;
+  }
+
+  function highlightLang(lang) {
+    var all = svg.querySelectorAll('.patch[data-lang="' + lang + '"]');
+    for (var i = 0; i < all.length; i++) all[i].classList.add('hl');
+  }
+
   function showTooltip(text, clientX, clientY) {
     tooltip.textContent = text;
     tooltip.hidden = false;
@@ -316,35 +466,36 @@
   }
   function hideTooltip() {
     tooltip.hidden = true;
-    hoveringPatch = false;
+    tooltipKind = null;
     var hl = svg.querySelectorAll('.patch.hl');
     for (var i = 0; i < hl.length; i++) hl[i].classList.remove('hl');
   }
 
-  svg.addEventListener('pointermove', function (e) {
-    var p = toSVG(e.clientX, e.clientY);
-    target = p; lastPointer = performance.now();
+  /* The pointer is tracked anywhere on the page, not just over the pond,
+     so moving the mouse outside the SVG still steers the fish. */
+  window.addEventListener('pointermove', function (e) {
+    pointer = toSVG(e.clientX, e.clientY);
+    lastPointer = performance.now();
+    lastClient = { x: e.clientX, y: e.clientY };
+    var lang = patchLangAt(e.clientX, e.clientY);
+    if (lang) {
+      showTooltip(lang, e.clientX, e.clientY);
+      tooltipKind = 'lang';
+      highlightLang(lang);
+      return;
+    }
     var t = e.target;
-    if (t && t.dataset) {
-      if (t.dataset.lang) {
-        hoveringPatch = true;
-        showTooltip(t.dataset.lang, e.clientX, e.clientY);
-        /* Brighten the whole language region, not just the one pixel run. */
-        var all = svg.querySelectorAll('.patch[data-lang="' + t.dataset.lang + '"]');
-        for (var i = 0; i < all.length; i++) all[i].classList.add('hl');
-        return;
-      }
-      if (t.dataset.date) {
-        var n = parseInt(t.dataset.count, 10);
-        var text = n === 0
-          ? 'No contributions on ' + fmtDate(t.dataset.date)
-          : n + (n === 1 ? ' contribution on ' : ' contributions on ') + fmtDate(t.dataset.date);
-        showTooltip(text, e.clientX, e.clientY); return;
-      }
+    if (t && svg.contains(t) && t.dataset && t.dataset.date) {
+      var n = parseInt(t.dataset.count, 10);
+      var text = n === 0
+        ? 'No contributions on ' + fmtDate(t.dataset.date)
+        : n + (n === 1 ? ' contribution on ' : ' contributions on ') + fmtDate(t.dataset.date);
+      showTooltip(text, e.clientX, e.clientY);
+      tooltipKind = 'tile';
+      return;
     }
     hideTooltip();
   });
-  svg.addEventListener('pointerleave', hideTooltip);
   svg.addEventListener('pointerdown', function (e) {
     var p = toSVG(e.clientX, e.clientY);
     spawnRipple(p.x, p.y);
@@ -357,14 +508,16 @@
     .then(function (parts) {
       var data = parts[0], sprite = parts[1];
       buildPond(data, sprite);
+      spriteData = sprite;
+      patchMap = buildPatchMap(data.languages, sprite);
       koi = document.getElementById('koi');
       shadow = document.getElementById('koiShadow');
       fx = document.getElementById('fx');
-      if (reducedMotion) {
-        koi.setAttribute('transform', 'translate(440 120)');
-      } else {
-        requestAnimationFrame(frame);
-      }
+      sliceGroups = Array.prototype.slice.call(koi.querySelectorAll('.slice'));
+      koi.setAttribute('transform', 'translate(440 120)');
+      lastT = performance.now();
+      lastPointer = performance.now();
+      requestAnimationFrame(frame);
     })
     .catch(function (err) {
       document.getElementById('stats').textContent =

@@ -17,6 +17,12 @@ Pond rules (Ali, 2026-11-07):
   (yalongwastaken/git-koi, MIT, (c) 2026 Anthony Yalong), extracted by
   extract_sprite.py (same folder, needs Pillow) into sprite.json and
   recoloured here so each patch shows one of Ali's languages.
+- Motion is modelled on real koi (Wu et al. 2007 burst-and-coast; the
+  git-koi cruise model): the README fish swims a closed loop, its body
+  cut into 10 slices that undulate with a head-to-tail wave whose
+  amplitude grows toward the tail, beating in strokes with glides
+  between, and bending into the turns. The page (pond.js) runs the
+  same model live with velocity physics.
 - The README SVG animates with SMIL only (no script can run in a README).
 
 Outputs (next to this script): pond.svg, data.json.
@@ -24,6 +30,7 @@ Outputs (next to this script): pond.svg, data.json.
 import argparse
 import colorsys
 import json
+import math
 import os
 import subprocess
 import sys
@@ -49,10 +56,24 @@ CAPTION_FILL = "#7FB3D5"
 SVG_W, SVG_H = 880, 380
 
 # --- the koi: the original git-koi pixel sprite (sprite.json) --------------
-# Native 247x118, faces right, centred on (0,0) by the caller. Tail = the
-# forked fin at x < tail_x; it wags around the pivot (peduncle).
-SWIM_PATH = "M -260,105 C 100,65 300,140 520,105 C 700,65 900,140 1140,95"
-KOI_SCALE = 1.0
+# Native 247x118, faces right, centred on (0,0) by the caller. The body is
+# cut into 10 vertical slices (same bounds as pond.js); each slice gets a
+# SMIL translate animation: a travelling wave + a bend into the turns.
+SLICE_BOUNDS = [0, 25, 50, 74, 99, 124, 148, 173, 198, 222, 247]
+BODY_L = 247
+# Closed loop in the upper pond (no teleport back to the start), 28 s a lap.
+LOOP_PATH = (
+    "M 100,110 C 300,75 580,75 780,110 C 830,125 830,140 780,148 "
+    "C 580,165 300,165 100,148 C 50,140 50,125 100,110 Z"
+)
+SHADOW_LOOP_PATH = (
+    "M 100,190 C 300,155 580,155 780,190 C 830,205 830,220 780,228 "
+    "C 580,245 300,245 100,228 C 50,220 50,205 100,190 Z"
+)
+LOOP_DUR = 28.0
+BEAT_PERIOD = LOOP_DUR / 12      # 12 strokes per lap, beat then glide
+WAVE_CYCLES = 19                 # body-wave cycles per lap (~0.68 Hz)
+SAMPLE_DT = 0.35
 
 
 def load_sprite():
@@ -68,9 +89,9 @@ def shade_hex(hexcol, delta):
     return "#%02X%02X%02X" % (round(r * 255), round(g * 255), round(b * 255))
 
 
-def sprite_rects(languages, sprite):
-    """Pixel runs as SVG rects: (tail_runs, body_runs), colours resolved."""
-    tail, body = [], []
+def sprite_slices(languages, sprite):
+    """Pixel runs as SVG rects, split into one string per body slice."""
+    slices = [""] * (len(SLICE_BOUNDS) - 1)
     for y, x, w, group, rank, shade, orig in sprite["runs"]:
         if rank is not None and rank < len(languages):
             fill = shade_hex(languages[rank]["color"], shade)
@@ -78,9 +99,50 @@ def sprite_rects(languages, sprite):
             fill = shade_hex(orig, shade)
         else:
             fill = orig
-        rect = f'<rect x="{x}" y="{y}" width="{w}" height="1" fill="{fill}"/>'
-        (tail if group == 1 else body).append(rect)
-    return "".join(tail), "".join(body)
+        x0, x1 = x, x + w
+        for s in range(len(slices)):
+            ax0 = max(x0, SLICE_BOUNDS[s])
+            ax1 = min(x1, SLICE_BOUNDS[s + 1])
+            if ax1 <= ax0:
+                continue
+            slices[s] += (
+                f'<rect x="{ax0}" y="{y}" width="{ax1 - ax0}" height="1" '
+                f'fill="{fill}"/>'
+            )
+    return slices
+
+
+def _beat_env(t):
+    """Stroke strength at time t: a smooth beat, then a glide (0)."""
+    c = (t % BEAT_PERIOD) / BEAT_PERIOD
+    return math.sin(math.pi * c / 0.55) if c < 0.55 else 0.0
+
+
+def _turn_env(t):
+    """How deep the fish is into a turn: bumps at the loop's two ends
+    (right end ~13.4 s, left end ~27.4 s, wrapping to the loop start)."""
+    def gauss(c):
+        return math.exp(-((t - c) / 1.3) ** 2 / 2)
+    return max(gauss(13.4), gauss(27.4), gauss(-0.6))
+
+
+def _wave_keyframes(xc):
+    """SMIL translate values/keyTimes for one slice over one loop."""
+    from_tail = 1 - xc / BODY_L
+    base_amp = 1.5 + 11.5 * from_tail ** 1.4
+    n = int(LOOP_DUR / SAMPLE_DT)
+    vals, times = [], []
+    for i in range(n + 1):
+        t = min(i * SAMPLE_DT, LOOP_DUR)
+        amp = base_amp * (0.35 + 0.65 * _beat_env(t))
+        phase = 0.8 + 2 * math.pi * WAVE_CYCLES * t / LOOP_DUR
+        off = (
+            amp * math.sin(phase - 2 * math.pi * xc / BODY_L)
+            - 14 * from_tail ** 2 * _turn_env(t)
+        )
+        vals.append(f"0,{off:.2f}")
+        times.append(f"{t / LOOP_DUR:.4f}")
+    return "; ".join(vals), "; ".join(times)
 
 
 def token():
@@ -238,24 +300,26 @@ def month_labels(columns):
 
 def fish_group(languages, sprite):
     """The koi as an SVG group (SMIL-animated). Patches = top languages."""
-    tail_rects, body_rects = sprite_rects(languages, sprite)
-    px, py = sprite["pivot"]
+    slices = sprite_slices(languages, sprite)
     cx, cy = sprite["w"] / 2, sprite["h"] / 2
+    slice_groups = ""
+    for i, rects in enumerate(slices):
+        xc = (SLICE_BOUNDS[i] + SLICE_BOUNDS[i + 1]) / 2
+        values, key_times = _wave_keyframes(xc)
+        slice_groups += (
+            f'<g><animateTransform attributeName="transform" type="translate" '
+            f'values="{values}" keyTimes="{key_times}" dur="{LOOP_DUR}s" '
+            f'repeatCount="indefinite"/>{rects}</g>'
+        )
     return f"""
   <g shape-rendering="crispEdges">
-    <animateMotion dur="26s" repeatCount="indefinite" rotate="auto" path="{SWIM_PATH}"/>
-    <g transform="translate({-cx},{-cy}) scale({KOI_SCALE})">
-      <g>
-        <animateTransform attributeName="transform" type="rotate"
-          values="-7 {px} {py}; 7 {px} {py}; -7 {px} {py}" dur="1.1s" repeatCount="indefinite"/>
-        {tail_rects}
-      </g>
-      {body_rects}
+    <animateMotion dur="{LOOP_DUR}s" repeatCount="indefinite" rotate="auto" path="{LOOP_PATH}"/>
+    <g transform="translate({-cx},{-cy})">
+      {slice_groups}
     </g>
   </g>
-  <ellipse cx="0" cy="200" rx="100" ry="8" fill="#000000" opacity="0.12">
-    <animateMotion dur="26s" repeatCount="indefinite"
-      path="M -260,200 L 1140,200"/>
+  <ellipse cx="0" cy="0" rx="100" ry="8" fill="#000000" opacity="0.12">
+    <animateMotion dur="{LOOP_DUR}s" repeatCount="indefinite" path="{SHADOW_LOOP_PATH}"/>
   </ellipse>"""
 
 
