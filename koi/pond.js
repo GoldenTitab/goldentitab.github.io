@@ -246,14 +246,23 @@
   var wanderTarget = null, wanderUntil = 0;
   var bubbles = [], ripples = [];
 
+  /* Screen -> pond coordinates, WITHOUT clamping: the hit-test must
+     see the pointer where it really is. (An earlier version clamped
+     here, which squashed every pointer outside the fish's roaming box
+     onto its edge — so a yellow patch at the fish's nose read as the
+     wrong colour, and empty water could read as a patch.) */
   function toSVG(clientX, clientY) {
     var pt = svg.createSVGPoint();
     pt.x = clientX; pt.y = clientY;
     var p = pt.matrixTransform(svg.getScreenCTM().inverse());
-    /* Clamps keep the whole fish inside the pond in ANY orientation:
-       the centre stays one bounding-circle radius (137) plus a small
-       margin from every edge. The pond's overflow:hidden is only a
-       backstop now. */
+    return { x: p.x, y: p.y };
+  }
+
+  /* Clamp a TARGET point to the fish's roaming box, so the whole fish
+     stays inside the pond in ANY orientation: the centre stays one
+     bounding-circle radius (137) plus a small margin from every edge.
+     Only the target is clamped — never the pointer itself. */
+  function clampToPond(p) {
     return {
       x: Math.max(145, Math.min(SVG_W - 145, p.x)),
       y: Math.max(145, Math.min(SVG_H - 145, p.y))
@@ -457,7 +466,7 @@
     var xc = (SLICE_BOUNDS[i] + SLICE_BOUNDS[i + 1]) / 2;
     var fromTail = 1 - xc / BODY_L;
     var amp = (1.5 + 11.5 * Math.pow(fromTail, 1.4))
-      * (0.35 + 0.65 * curBeatEnv) * (rm ? 0.6 : 1);
+      * (0.35 + 0.65 * curBeatEnv) * (reducedMotion ? 0.6 : 1);
     return amp * Math.sin(wavePhase - (2 * Math.PI / BODY_L) * xc)
       - curTurnNorm * 14 * fromTail * fromTail;
   }
@@ -532,7 +541,7 @@
   /* The pointer is tracked anywhere on the page, not just over the pond,
      so moving the mouse outside the SVG still steers the fish. */
   window.addEventListener('pointermove', function (e) {
-    pointer = toSVG(e.clientX, e.clientY);
+    pointer = clampToPond(toSVG(e.clientX, e.clientY));
     lastPointer = performance.now();
     lastClient = { x: e.clientX, y: e.clientY };
     var lang = patchLangAt(e.clientX, e.clientY);
