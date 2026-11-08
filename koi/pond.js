@@ -31,7 +31,9 @@
   var SVG_W = 880, SVG_H = 380;
   var CELL = 12, GAP = 4, GRID_X = 18, GRID_Y = 206;
   var NS = 'http://www.w3.org/2000/svg';
-  var KOI_SCALE = 1.4;   /* sprite 247x118 -> 346x165 on the page */
+  var KOI_SCALE = 1.0;   /* sprite 247x118, shown at native size: its
+     bounding circle (radius ~137) then fits the 380-tall pond in any
+     orientation, so the fish is never clipped at an edge */
   var BODY_L = 247;      /* sprite length in native pixels */
 
   /* Vertical slices of the sprite for the body wave (shared bounds with
@@ -211,7 +213,7 @@
       + '<text x="18" y="352" font-size="11" fill="#7FB3D5" font-family="sans-serif">'
       + data.total_contributions + ' contributions in the last year</text>'
       + '<g id="fx"></g>'
-      + '<ellipse id="koiShadow" cx="440" cy="190" rx="110" ry="8" fill="#000000" opacity="0.16"/>'
+      + '<ellipse id="koiShadow" cx="440" cy="195" rx="120" ry="10" fill="#000000" opacity="0.22"/>'
       + '<g id="koi">' + fishMarkup(data.languages, sprite) + '</g>';
 
     var langLegend = document.getElementById('langLegend');
@@ -247,12 +249,13 @@
     var pt = svg.createSVGPoint();
     pt.x = clientX; pt.y = clientY;
     var p = pt.matrixTransform(svg.getScreenCTM().inverse());
-    /* Clamps keep the fish's centre in a band where even a vertical
-       fish (length 346) stays mostly inside the pond; the pond's
-       overflow:hidden clips the rest cleanly at the border. */
+    /* Clamps keep the whole fish inside the pond in ANY orientation:
+       the centre stays one bounding-circle radius (137) plus a small
+       margin from every edge. The pond's overflow:hidden is only a
+       backstop now. */
     return {
-      x: Math.max(190, Math.min(SVG_W - 190, p.x)),
-      y: Math.max(130, Math.min(SVG_H - 130, p.y))
+      x: Math.max(145, Math.min(SVG_W - 145, p.x)),
+      y: Math.max(145, Math.min(SVG_H - 145, p.y))
     };
   }
 
@@ -305,8 +308,8 @@
       if (!wanderTarget || now > wanderUntil ||
           Math.hypot(wanderTarget.x - pos.x, wanderTarget.y - pos.y) < 40) {
         wanderTarget = {
-          x: 190 + Math.random() * (SVG_W - 380),
-          y: 130 + Math.random() * (SVG_H - 260)
+          x: 145 + Math.random() * (SVG_W - 290),
+          y: 145 + Math.random() * (SVG_H - 290)
         };
         wanderUntil = now + 5000;
       }
@@ -322,8 +325,13 @@
     var maxSpeed = rm ? 55 : MAX_SPEED;
     var speedCap = cruise + (maxSpeed - cruise) * beatEnv;
     /* Calm down while the cursor rests on the fish, so a patch can
-       actually be aimed at and read. */
-    if (pointerOnFish()) speedCap = Math.min(speedCap, 35);
+       actually be aimed at and read — and nearly stop while it rests
+       on a coloured patch, so the patch does not swim away. */
+    if (patchLangAt(lastClient.x, lastClient.y)) {
+      speedCap = Math.min(speedCap, 8);
+    } else if (pointerOnFish()) {
+      speedCap = Math.min(speedCap, 35);
+    }
 
     /* Arrived: orbit the pointer slowly instead of parking dead still. */
     var tx = target.x, ty = target.y;
@@ -347,8 +355,8 @@
     if (aLen > maxA) { ax = ax / aLen * maxA; ay = ay / aLen * maxA; }
     vel.x += ax; vel.y += ay;
     pos.x += vel.x * dt; pos.y += vel.y * dt;
-    pos.x = Math.max(190, Math.min(SVG_W - 190, pos.x));
-    pos.y = Math.max(130, Math.min(SVG_H - 130, pos.y));
+    pos.x = Math.max(145, Math.min(SVG_W - 145, pos.x));
+    pos.y = Math.max(145, Math.min(SVG_H - 145, pos.y));
     var speed = Math.hypot(vel.x, vel.y);
 
     /* Heading turns toward the velocity at a limited rate, so the fish
@@ -385,10 +393,11 @@
       sliceGroups[i].setAttribute('transform', 'translate(0 ' + off.toFixed(2) + ')');
     }
 
-    /* Shadow follows with the fish; bubbles on the burst. */
+    /* Shadow follows under the fish — wider than the body and below
+       its belly, so it is not hidden behind the fish. */
     shadow.setAttribute('cx', pos.x.toFixed(1));
-    shadow.setAttribute('cy', (pos.y + 70).toFixed(1));
-    shadow.setAttribute('rx', (100 + Math.min(18, speed * 0.06)).toFixed(1));
+    shadow.setAttribute('cy', (pos.y + 75).toFixed(1));
+    shadow.setAttribute('rx', (120 + Math.min(18, speed * 0.06)).toFixed(1));
     if (speed > 60 && now - lastBubble > 320) { spawnBubble(); lastBubble = now; }
 
     /* A language tooltip must not outlive the hover: if the fish swam
@@ -450,17 +459,17 @@
     };
   }
 
-  /* Language under the pointer, if any: look the pixel up, with a 4 px
-     tolerance (nearest patch wins), so small patches are hittable. */
+  /* Language under the pointer, if any: look the pixel up, with a 6 px
+     tolerance (nearest patch wins), so small dotted patches are hittable. */
   function patchLangAt(clientX, clientY) {
     if (!patchMap) return null;
     var sp = pointerToSprite(clientX, clientY);
     if (!sp) return null;
     var cx = Math.round(sp.x), cy = Math.round(sp.y);
     var offs = [];
-    for (var dx = -4; dx <= 4; dx++) {
-      for (var dy = -4; dy <= 4; dy++) {
-        if (dx * dx + dy * dy <= 16) offs.push([dx, dy, dx * dx + dy * dy]);
+    for (var dx = -6; dx <= 6; dx++) {
+      for (var dy = -6; dy <= 6; dy++) {
+        if (dx * dx + dy * dy <= 36) offs.push([dx, dy, dx * dx + dy * dy]);
       }
     }
     offs.sort(function (a, b) { return a[2] - b[2]; });
