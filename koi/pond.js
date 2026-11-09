@@ -10,6 +10,10 @@
  * sprite and looked up against the actual patch pixels (with a small
  * tolerance), so the 1 px-tall patch rects themselves are never the
  * hover target.
+ * Tap or click the water to drop food: pellets float for ~14 s, the
+ * koi turns to the nearest one, swims at it and gulps it down (a ripple
+ * and a couple of bubbles). The loop pauses when the tab is hidden, the
+ * pond is scrolled offscreen, or the visitor presses Pause.
  * Vanilla JS, no dependencies.
  *
  * The koi is the original git-koi pixel-art sprite (yalongwastaken/git-koi,
@@ -43,6 +47,10 @@
   /* Burst-and-coast stroke: 2.4 s cycle, beat for the first 55%, glide. */
   var BEAT_PERIOD = 2.4, BEAT_SHARE = 0.55;
   var CRUISE_SPEED = 70, MAX_SPEED = 230, ACCEL = 300, TURN_MAX = 2.2;
+
+  /* Feeding. */
+  var MAX_PELLETS = 12, PELLET_LIFE = 14000, PELLET_FADE = 3000;
+  var MOUTH = 172;       /* head tip, px ahead of the sprite centre */
 
   var svg = document.getElementById('pond');
   var wrap = document.getElementById('pondWrap');
@@ -245,6 +253,17 @@
   var tooltipKind = null;   /* 'lang' | 'tile' | null */
   var wanderTarget = null, wanderUntil = 0;
   var bubbles = [], ripples = [];
+  var pellets = [], gulpUntil = 0;
+  var hoverActive = false;  /* true only while a mouse is over the page: touch has no hover */
+  var rafId = 0, paused = false, hidden = false, offscreen = false;
+  var PATCH_OFFS = (function () {   /* 4 px hit tolerance, nearest first, built once */
+    var o = [];
+    for (var dx = -4; dx <= 4; dx++)
+      for (var dy = -4; dy <= 4; dy++)
+        if (dx * dx + dy * dy <= 16) o.push([dx, dy, dx * dx + dy * dy]);
+    o.sort(function (a, b) { return a[2] - b[2]; });
+    return o;
+  })();
 
   /* Screen -> pond coordinates, WITHOUT clamping: the hit-test must
      see the pointer where it really is. (An earlier version clamped
@@ -300,7 +319,70 @@
     ripples.push({ el: e, life: 0 });
   }
 
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+  /* Drop a few floating pellets around (x, y), in pond coordinates. */
+  function dropFood(x, y, count) {
+    if (!fx) return;
+    var c = { x: clamp(x, 24, SVG_W - 24), y: clamp(y, 28, SVG_H - 28) };
+    for (var k = 0; k < count && pellets.length < MAX_PELLETS; k++) {
+      var px = clamp(c.x + (Math.random() - 0.5) * 34, 20, SVG_W - 20);
+      var py = clamp(c.y + (Math.random() - 0.5) * 24, 24, SVG_H - 24);
+      var el = document.createElementNS(NS, 'circle');
+      el.setAttribute('r', '3.4');
+      el.setAttribute('fill', '#E0A75E');
+      el.setAttribute('stroke', '#8A5A22');
+      el.setAttribute('stroke-width', '0.7');
+      el.setAttribute('cx', px.toFixed(1)); el.setAttribute('cy', py.toFixed(1));
+      fx.appendChild(el);
+      pellets.push({ el: el, x: px, y: py, born: performance.now(), seed: Math.random() * 6.28 });
+    }
+    spawnRipple(c.x, c.y);
+    wake();
+  }
+
+  function nearestPellet() {
+    var best = null, bd = 1e9;
+    for (var i = 0; i < pellets.length; i++) {
+      var d = Math.hypot(pellets[i].x - pos.x, pellets[i].y - pos.y);
+      if (d < bd) { bd = d; best = pellets[i]; }
+    }
+    return best;
+  }
+
+  function eatPellet(i, now) {
+    var pl = pellets[i];
+    spawnRipple(pl.x, pl.y);
+    spawnBubble(); spawnBubble();
+    pl.el.remove();
+    pellets.splice(i, 1);
+    gulpUntil = now + 450;   /* a brief pause: the koi gulps */
+  }
+
+  function updatePellets(now) {
+    var mx = pos.x + MOUTH * Math.cos(heading);
+    var my = pos.y + MOUTH * Math.sin(heading);
+    for (var i = pellets.length - 1; i >= 0; i--) {
+      var pl = pellets[i], age = now - pl.born;
+      var life = reducedMotion ? PELLET_LIFE * 2.5 : PELLET_LIFE;   /* the slower koi needs longer */
+      if (age > life) { pl.el.remove(); pellets.splice(i, 1); continue; }
+      /* Eaten when the mouth reaches it (or the body swims right over it). */
+      if (Math.hypot(mx - pl.x, my - pl.y) < 22 || Math.hypot(pos.x - pl.x, pos.y - pl.y) < 50) {
+        eatPellet(i, now);
+        continue;
+      }
+      if (!reducedMotion) {
+        pl.el.setAttribute('cx', (pl.x + Math.sin(now * 0.0013 + pl.seed) * 1.3).toFixed(1));
+        pl.el.setAttribute('cy', (pl.y + Math.cos(now * 0.0011 + pl.seed) * 1.0).toFixed(1));
+      }
+      if (age > life - PELLET_FADE) {
+        pl.el.setAttribute('opacity', ((life - age) / PELLET_FADE).toFixed(2));
+      }
+    }
+  }
+
   function frame(now) {
+    rafId = 0;
     var dt = Math.min(0.05, Math.max(0.001, (now - lastT) / 1000));
     lastT = now;
     var rm = reducedMotion;
@@ -311,8 +393,11 @@
        the fish over. The switch to wandering is smooth: a wander
        waypoint is just another target for the same physics. */
     var target;
+    var food = pellets.length ? nearestPellet() : null;
     var distToPointer = Math.hypot(pointer.x - pos.x, pointer.y - pos.y);
-    if (!rm && (now - lastPointer < 12000 || distToPointer > 45)) {
+    if (food) {
+      target = food;          /* food beats the pointer and the wander */
+    } else if (!rm && (now - lastPointer < 12000 || distToPointer > 45)) {
       target = pointer;
     } else {
       if (!wanderTarget || now > wanderUntil ||
@@ -335,14 +420,19 @@
     var cruise = rm ? 35 : CRUISE_SPEED;
     var maxSpeed = rm ? 55 : MAX_SPEED;
     var speedCap = cruise + (maxSpeed - cruise) * beatEnv;
+    if (food) speedCap *= 1.25;                 /* a koi darts at food */
+    if (now < gulpUntil) speedCap = Math.min(speedCap, 20);
     /* While the cursor rests on a coloured patch the fish holds its
        position (tail still beating — a koi hovering in place), so the
        patch stays under the pointer and its tooltip stays readable.
        On the plain body it just calms down. */
-    if (patchLangAt(lastClient.x, lastClient.y)) {
-      speedCap = 0;
-    } else if (pointerOnFish()) {
-      speedCap = Math.min(speedCap, 35);
+    var hoverPatch = hoverActive ? patchLangAt(lastClient.x, lastClient.y) : null;
+    if (!food) {
+      if (hoverPatch) {
+        speedCap = 0;
+      } else if (hoverActive && pointerOnFish()) {
+        speedCap = Math.min(speedCap, 35);
+      }
     }
 
     /* Arrived: orbit the pointer slowly instead of parking dead still. */
@@ -412,7 +502,7 @@
 
     /* A language tooltip must not outlive the hover: if the fish swam
        away from under a stationary pointer, hide it. */
-    if (tooltipKind === 'lang' && !patchLangAt(lastClient.x, lastClient.y)) {
+    if (tooltipKind === 'lang' && !hoverPatch) {
       hideTooltip();
     }
 
@@ -432,7 +522,27 @@
       r.el.setAttribute('opacity', Math.max(0, 0.5 - r.life * 0.012).toFixed(2));
       if (r.life > 45) { r.el.remove(); ripples.splice(j, 1); }
     }
-    requestAnimationFrame(frame);
+    updatePellets(now);
+    if (shouldRun()) rafId = requestAnimationFrame(frame);
+  }
+
+  /* --- loop control: no work while hidden, offscreen or paused ----------- */
+  function shouldRun() { return koi && !paused && !hidden && !offscreen; }
+  function wake() {
+    if (!rafId && shouldRun()) {
+      lastT = performance.now();
+      rafId = requestAnimationFrame(frame);
+    }
+  }
+  document.addEventListener('visibilitychange', function () {
+    hidden = document.hidden;
+    wake();
+  });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      offscreen = !entries[0].isIntersecting;
+      wake();
+    }).observe(wrap);
   }
 
   /* --- tooltips ---------------------------------------------------------- */
@@ -492,13 +602,7 @@
     var sp = pointerToSprite(clientX, clientY);
     if (!sp) return null;
     var cx = Math.round(sp.x), cy = Math.round(sp.y - sliceOffAt(sp.x));
-    var offs = [];
-    for (var dx = -4; dx <= 4; dx++) {
-      for (var dy = -4; dy <= 4; dy++) {
-        if (dx * dx + dy * dy <= 16) offs.push([dx, dy, dx * dx + dy * dy]);
-      }
-    }
-    offs.sort(function (a, b) { return a[2] - b[2]; });
+    var offs = PATCH_OFFS;
     for (var i = 0; i < offs.length; i++) {
       var lang = patchMap[(cx + offs[i][0]) + ',' + (cy + offs[i][1])];
       if (lang) return lang;
@@ -544,6 +648,8 @@
     pointer = clampToPond(toSVG(e.clientX, e.clientY));
     lastPointer = performance.now();
     lastClient = { x: e.clientX, y: e.clientY };
+    hoverActive = e.pointerType === 'mouse';
+    if (!hoverActive) return;   /* touch / pen: steer only, no tooltips */
     var lang = patchLangAt(e.clientX, e.clientY);
     if (lang) {
       showTooltip(lang, e.clientX, e.clientY);
@@ -564,8 +670,22 @@
     hideTooltip();
   });
   svg.addEventListener('pointerdown', function (e) {
+    if (e.button > 0) return;
     var p = toSVG(e.clientX, e.clientY);
-    spawnRipple(p.x, p.y);
+    dropFood(p.x, p.y, 3);
+  });
+
+  /* Buttons: keyboard- and touch-friendly alternatives. */
+  var feedBtn = document.getElementById('feedBtn');
+  var pauseBtn = document.getElementById('pauseBtn');
+  if (feedBtn) feedBtn.addEventListener('click', function () {
+    dropFood(170 + Math.random() * 540, 70 + Math.random() * 100, 3);
+  });
+  if (pauseBtn) pauseBtn.addEventListener('click', function () {
+    paused = !paused;
+    pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+    pauseBtn.textContent = paused ? 'Resume animation' : 'Pause animation';
+    wake();
   });
 
   Promise.all([
@@ -584,7 +704,7 @@
       koi.setAttribute('transform', 'translate(440 120)');
       lastT = performance.now();
       lastPointer = performance.now();
-      requestAnimationFrame(frame);
+      wake();
     })
     .catch(function (err) {
       document.getElementById('stats').textContent =

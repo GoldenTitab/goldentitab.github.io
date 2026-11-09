@@ -25,13 +25,16 @@ Pond rules (Ali, 2026-11-07):
   same model live with velocity physics.
 - The README SVG animates with SMIL only (no script can run in a README).
 
-Outputs (next to this script): pond.svg, data.json.
+Outputs (next to this script): pond.svg, pond-still.svg (no motion, for
+prefers-reduced-motion), data.json.
 """
 import argparse
 import colorsys
 import json
 import math
 import os
+import random
+import re
 import subprocess
 import sys
 import urllib.request
@@ -61,19 +64,22 @@ SVG_W, SVG_H = 880, 380
 # SMIL translate animation: a travelling wave + a bend into the turns.
 SLICE_BOUNDS = [0, 25, 50, 74, 99, 124, 148, 173, 198, 222, 247]
 BODY_L = 247
-# Closed loop in the upper pond (no teleport back to the start), 28 s a lap.
-LOOP_PATH = (
-    "M 100,110 C 300,75 580,75 780,110 C 830,125 830,140 780,148 "
-    "C 580,165 300,165 100,148 C 50,140 50,125 100,110 Z"
-)
-SHADOW_LOOP_PATH = (
-    "M 100,190 C 300,155 580,155 780,190 C 830,205 830,220 780,228 "
-    "C 580,245 300,245 100,228 C 50,220 50,205 100,190 Z"
-)
-LOOP_DUR = 28.0
-BEAT_PERIOD = LOOP_DUR / 12      # 12 strokes per lap, beat then glide
-WAVE_CYCLES = 19                 # body-wave cycles per lap (~0.68 Hz)
-SAMPLE_DT = 0.35
+# The README fish swims one long closed route in the upper pond (no
+# teleport back to the start). The route is an irregular loop (a closed
+# Catmull-Rom spline through ROUTE) so no two stretches look alike; the
+# fish's speed rises and falls with its strokes, the stroke schedule is
+# irregular (seeded, so the file only changes when the data does), and the
+# body bends by the path's real curvature. One lap = LOOP_DUR seconds.
+ROUTE = [(170, 108), (280, 90), (420, 112), (560, 90), (690, 100), (752, 126),
+         (728, 160), (600, 150), (468, 172), (330, 150), (215, 172), (150, 160),
+         (128, 134)]
+SHADOW_DY = 80                   # the shadow swims the same route, lower
+LOOP_DUR = 34.0
+SAMPLE_DT = 0.30                 # keyframe spacing (body wave stays > 4/cycle)
+FINE_DT = 0.05                   # internal integration step
+GLIDE_SPEED, STROKE_BOOST = 0.40, 1.10   # relative speed: coast / extra on a stroke
+WAVE_BASE_HZ, WAVE_BEAT_HZ = 0.45, 0.35  # body-wave frequency: coast / extra
+STROKE_LEN = 0.75                # one tail beat, seconds
 
 
 def load_sprite():
@@ -112,37 +118,179 @@ def sprite_slices(languages, sprite):
     return slices
 
 
-def _beat_env(t):
-    """Stroke strength at time t: a smooth beat, then a glide (0)."""
-    c = (t % BEAT_PERIOD) / BEAT_PERIOD
-    return math.sin(math.pi * c / 0.55) if c < 0.55 else 0.0
+def _route_segments():
+    """Closed Catmull-Rom spline through ROUTE as cubic Bezier segments."""
+    n = len(ROUTE)
+    segs = []
+    for i in range(n):
+        p0, p1, p2, p3 = ROUTE[i - 1], ROUTE[i], ROUTE[(i + 1) % n], ROUTE[(i + 2) % n]
+        c1 = (p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6)
+        c2 = (p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6)
+        segs.append((p1, c1, c2, p2))
+    return segs
 
 
-def _turn_env(t):
-    """How deep the fish is into a turn: bumps at the loop's two ends
-    (right end ~13.4 s, left end ~27.4 s, wrapping to the loop start)."""
-    def gauss(c):
-        return math.exp(-((t - c) / 1.3) ** 2 / 2)
-    return max(gauss(13.4), gauss(27.4), gauss(-0.6))
+def _path_d(segs, dy=0.0):
+    d = f"M {segs[0][0][0]:.1f},{segs[0][0][1] + dy:.1f}"
+    for _, c1, c2, p in segs:
+        d += (f" C {c1[0]:.1f},{c1[1] + dy:.1f} {c2[0]:.1f},{c2[1] + dy:.1f}"
+              f" {p[0]:.1f},{p[1] + dy:.1f}")
+    return d + " Z"
+
+
+def _bezier(seg, u):
+    p0, c1, c2, p1 = seg
+    m = 1 - u
+    x = m**3 * p0[0] + 3 * m * m * u * c1[0] + 3 * m * u * u * c2[0] + u**3 * p1[0]
+    y = m**3 * p0[1] + 3 * m * m * u * c1[1] + 3 * m * u * u * c2[1] + u**3 * p1[1]
+    dx = 3 * (m * m * (c1[0] - p0[0]) + 2 * m * u * (c2[0] - c1[0]) + u * u * (p1[0] - c2[0]))
+    dy = 3 * (m * m * (c1[1] - p0[1]) + 2 * m * u * (c2[1] - c1[1]) + u * u * (p1[1] - c2[1]))
+    return x, y, math.atan2(dy, dx)
+
+
+def _norm_rad(a):
+    while a > math.pi:
+        a -= 2 * math.pi
+    while a < -math.pi:
+        a += 2 * math.pi
+    return a
+
+
+def _strokes():
+    """Irregular burst-and-coast schedule: bursts of 1-3 tail beats with
+    glides of 1.4-3.2 s between, none crossing the lap boundary. Seeded,
+    so the output is identical from night to night."""
+    rng = random.Random(11)
+    out, t = [], 1.0
+    while True:
+        beats = rng.choice([1, 2, 2, 3])
+        strength = rng.uniform(0.6, 1.0)
+        if t + beats * STROKE_LEN > LOOP_DUR - 1.2:
+            break
+        for k in range(beats):
+            out.append((t + k * STROKE_LEN, strength))
+        t += beats * STROKE_LEN + rng.uniform(1.4, 3.2)
+    return out
+
+
+_PLAN = None
+
+
+def motion_plan():
+    """Everything the SMIL needs, computed once: per-sample arc-length
+    progress, stroke envelope, wave phase and signed turn rate."""
+    global _PLAN
+    if _PLAN:
+        return _PLAN
+    segs = _route_segments()
+    # Arc-length table of the route.
+    pts = []
+    for seg in segs:
+        for k in range(80):
+            pts.append(_bezier(seg, k / 80))
+    cum = [0.0]
+    for i in range(1, len(pts) + 1):
+        a, b = pts[i - 1], pts[i % len(pts)]
+        cum.append(cum[-1] + math.hypot(b[0] - a[0], b[1] - a[1]))
+    length = cum[-1]
+
+    def heading_at(s):
+        s %= length
+        lo, hi = 0, len(cum) - 1
+        while hi - lo > 1:
+            mid = (lo + hi) // 2
+            if cum[mid] <= s:
+                lo = mid
+            else:
+                hi = mid
+        return pts[lo % len(pts)][2]
+
+    n = int(round(LOOP_DUR / FINE_DT))
+    strokes = _strokes()
+    env = []
+    for i in range(n + 1):
+        t = i * FINE_DT
+        e = 0.0
+        for st, strength in strokes:
+            if st <= t < st + STROKE_LEN:
+                e += strength * math.sin(math.pi * (t - st) / STROKE_LEN)
+        env.append(min(1.0, e))
+    # Speed lags the stroke a little (peaks just after it). A first-order
+    # filter run over three laps gives the periodic steady state.
+    tau, y, lag = 0.6, 0.0, []
+    for lap in range(3):
+        for i in range(n):
+            y += (env[i] - y) * FINE_DT / tau
+            if lap == 2:
+                lag.append(y)
+    lag.append(lag[0])
+    speed_rel = [GLIDE_SPEED + STROKE_BOOST * v for v in lag]
+    prog = [0.0]
+    for i in range(1, n + 1):
+        prog.append(prog[-1] + 0.5 * (speed_rel[i] + speed_rel[i - 1]))
+    total = prog[-1]
+    prog = [v / total for v in prog]                 # 0 .. 1 along the route
+    # d(progress)/dt = speed_rel / (total * FINE_DT); times route length = px/s.
+    px_per_s = [length * speed_rel[i] / (total * FINE_DT) for i in range(n + 1)]
+    # Wave phase: faster while stroking, scaled to a whole number of cycles
+    # so the lap wraps without a jump.
+    ph = [0.0]
+    for i in range(1, n + 1):
+        f0 = WAVE_BASE_HZ + WAVE_BEAT_HZ * env[i - 1]
+        f1 = WAVE_BASE_HZ + WAVE_BEAT_HZ * env[i]
+        ph.append(ph[-1] + 2 * math.pi * 0.5 * (f0 + f1) * FINE_DT)
+    cycles = round(ph[-1] / (2 * math.pi))
+    ph = [v * (2 * math.pi * cycles) / ph[-1] + 0.8 for v in ph]
+    # Signed turn rate (rad/s, + = clockwise on screen) from the route.
+    ds = 12.0
+    omega = []
+    for i in range(n + 1):
+        s = prog[i] * length
+        dth = _norm_rad(heading_at(s + ds) - heading_at(s - ds))
+        omega.append(dth / (2 * ds) * px_per_s[i])
+    _PLAN = {
+        "segs": segs, "length": length, "env": env, "prog": prog,
+        "phase": ph, "omega": omega, "n": n,
+    }
+    return _PLAN
+
+
+def _sample_indices():
+    n = motion_plan()["n"]
+    step = int(round(SAMPLE_DT / FINE_DT))
+    idx = list(range(0, n, step)) + [n]
+    return idx
+
+
+def _key_times(idx):
+    n = motion_plan()["n"]
+    return "; ".join(f"{i / n:.4f}" for i in idx)
 
 
 def _wave_keyframes(xc):
-    """SMIL translate values/keyTimes for one slice over one loop."""
+    """SMIL translate values/keyTimes for one slice over one lap."""
+    plan = motion_plan()
     from_tail = 1 - xc / BODY_L
     base_amp = 1.5 + 11.5 * from_tail ** 1.4
-    n = int(LOOP_DUR / SAMPLE_DT)
-    vals, times = [], []
-    for i in range(n + 1):
-        t = min(i * SAMPLE_DT, LOOP_DUR)
-        amp = base_amp * (0.35 + 0.65 * _beat_env(t))
-        phase = 0.8 + 2 * math.pi * WAVE_CYCLES * t / LOOP_DUR
+    idx = _sample_indices()
+    vals = []
+    for i in idx:
+        amp = base_amp * (0.35 + 0.65 * plan["env"][i])
+        turn = max(-1.0, min(1.0, plan["omega"][i] / 0.8))
         off = (
-            amp * math.sin(phase - 2 * math.pi * xc / BODY_L)
-            - 14 * from_tail ** 2 * _turn_env(t)
+            amp * math.sin(plan["phase"][i] - 2 * math.pi * xc / BODY_L)
+            - 14 * from_tail ** 2 * turn
         )
         vals.append(f"0,{off:.2f}")
-        times.append(f"{t / LOOP_DUR:.4f}")
-    return "; ".join(vals), "; ".join(times)
+    return "; ".join(vals), _key_times(idx)
+
+
+def _motion_attrs():
+    """keyPoints/keyTimes that make the fish speed up on strokes."""
+    plan = motion_plan()
+    idx = _sample_indices()
+    pts = "; ".join(f"{plan['prog'][i]:.5f}" for i in idx)
+    return f'calcMode="linear" keyPoints="{pts}" keyTimes="{_key_times(idx)}"'
 
 
 def token():
@@ -298,32 +446,49 @@ def month_labels(columns):
     return labels
 
 
-def fish_group(languages, sprite):
-    """The koi as an SVG group (SMIL-animated). Patches = top languages."""
+def fish_group(languages, sprite, animated=True):
+    """The koi as an SVG group (SMIL-animated). Patches = top languages.
+    animated=False gives the still version (prefers-reduced-motion)."""
     slices = sprite_slices(languages, sprite)
     cx, cy = sprite["w"] / 2, sprite["h"] / 2
+    plan = motion_plan()
     slice_groups = ""
     for i, rects in enumerate(slices):
         xc = (SLICE_BOUNDS[i] + SLICE_BOUNDS[i + 1]) / 2
-        values, key_times = _wave_keyframes(xc)
-        slice_groups += (
-            f'<g><animateTransform attributeName="transform" type="translate" '
-            f'values="{values}" keyTimes="{key_times}" dur="{LOOP_DUR}s" '
-            f'repeatCount="indefinite"/>{rects}</g>'
-        )
+        if animated:
+            values, key_times = _wave_keyframes(xc)
+            slice_groups += (
+                f'<g><animateTransform attributeName="transform" type="translate" '
+                f'values="{values}" keyTimes="{key_times}" dur="{LOOP_DUR}s" '
+                f'repeatCount="indefinite"/>{rects}</g>'
+            )
+        else:
+            slice_groups += f"<g>{rects}</g>"
+    loop_path = _path_d(plan["segs"])
+    shadow_path = _path_d(plan["segs"], SHADOW_DY)
+    if not animated:
+        # Rest pose: heading right, a third of the way along the top run.
+        return f"""
+  <ellipse cx="420" cy="{114 + SHADOW_DY}" rx="120" ry="10" fill="#000000" opacity="0.22"/>
+  <g shape-rendering="crispEdges" transform="translate(420,114)">
+    <g transform="translate({-cx},{-cy})">
+      {slice_groups}
+    </g>
+  </g>"""
+    attrs = _motion_attrs()
     return f"""
   <g shape-rendering="crispEdges">
-    <animateMotion dur="{LOOP_DUR}s" repeatCount="indefinite" rotate="auto" path="{LOOP_PATH}"/>
+    <animateMotion dur="{LOOP_DUR}s" repeatCount="indefinite" rotate="auto" {attrs} path="{loop_path}"/>
     <g transform="translate({-cx},{-cy})">
       {slice_groups}
     </g>
   </g>
   <ellipse cx="0" cy="0" rx="120" ry="10" fill="#000000" opacity="0.22">
-    <animateMotion dur="{LOOP_DUR}s" repeatCount="indefinite" path="{SHADOW_LOOP_PATH}"/>
+    <animateMotion dur="{LOOP_DUR}s" repeatCount="indefinite" {attrs} path="{shadow_path}"/>
   </ellipse>"""
 
 
-def render_svg(snapshot, sprite):
+def render_svg(snapshot, sprite, animated=True):
     days = snapshot["days"]
     languages = snapshot["languages"]
     thresholds = level_thresholds(days)
@@ -375,6 +540,9 @@ def render_svg(snapshot, sprite):
         f'fill="{c}" stroke="{BORDER}" stroke-width="1"/>'
         for i, c in enumerate([EMPTY_FILL] + LEVEL_COLORS)
     )
+    if not animated:
+        bubbles = ripples = ""
+        rays = re.sub(r"\s*<animate [^>]*/>", "", rays)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{SVG_W}" height="{SVG_H}" viewBox="0 0 {SVG_W} {SVG_H}" role="img" aria-label="Ali's koi pond: a koi swimming over a year of GitHub contributions">
   <title>Ali's koi pond</title>
   <defs>
@@ -390,7 +558,7 @@ def render_svg(snapshot, sprite):
   {months}
   {''.join(tiles)}
   {bubbles}
-  {fish_group(languages, sprite)}
+  {fish_group(languages, sprite, animated)}
   <text x="18" y="352" font-size="11" fill="{CAPTION_FILL}" font-family="sans-serif">{total} contributions in the last year</text>
   <text x="{legend_x}" y="346" font-size="11" fill="{CAPTION_FILL}" font-family="sans-serif">Less</text>
   {swatches}
@@ -421,9 +589,11 @@ def main():
             "border": BORDER,
         },
     }
-    (HERE / "pond.svg").write_text(render_svg(snapshot, load_sprite()))
+    sprite = load_sprite()
+    (HERE / "pond.svg").write_text(render_svg(snapshot, sprite))
+    (HERE / "pond-still.svg").write_text(render_svg(snapshot, sprite, animated=False))
     (HERE / "data.json").write_text(json.dumps(data, indent=2))
-    print(f"pond.svg + data.json written: {len(snapshot['days'])} days, "
+    print(f"pond.svg + pond-still.svg + data.json written: {len(snapshot['days'])} days, "
           f"{snapshot['total_contributions']} contributions, "
           f"thresholds={thresholds}, "
           f"languages={[l['name'] for l in snapshot['languages']]}")

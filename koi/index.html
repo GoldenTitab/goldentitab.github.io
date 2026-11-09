@@ -22,7 +22,11 @@
   header p { margin: 0; color: #8B949E; font-size: 15px; }
   header p b { color: #00D9FF; font-weight: 600; }
   .pond-wrap { position: relative; border-radius: 16px; }
-  svg#pond { display: block; width: 100%; height: auto; border-radius: 16px; overflow: hidden; }
+  svg#pond { display: block; width: 100%; height: auto; border-radius: 16px; overflow: hidden; touch-action: manipulation; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 16px; }
+  .controls button { font: inherit; font-size: 13px; color: #C9D1D9; background: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+  .controls button:hover { border-color: #00D9FF; color: #FFFFFF; }
+  .controls button:focus-visible { outline: 2px solid #00D9FF; outline-offset: 2px; }
   svg#pond .tile { cursor: pointer; }
   svg#pond .tile:hover { stroke-width: 2.5; }
   svg#pond .patch { cursor: pointer; }
@@ -60,7 +64,7 @@
 <main>
   <header>
     <h1>Ali's Koi Pond</h1>
-    <p>A living pond drawn from my GitHub activity. Every tile is a day, every colour on the koi is a language. <b>Move your mouse — the koi follows.</b></p>
+    <p>A living pond drawn from my GitHub activity. Every tile is a day, every colour on the koi is a language. <b>Move your mouse — the koi follows. Tap the water to feed it.</b></p>
   </header>
 
   <div class="pond-wrap" id="pondWrap">
@@ -71,6 +75,11 @@
     <div id="tooltip" hidden></div>
   </div>
   <noscript><p>This pond needs JavaScript to swim.</p></noscript>
+
+  <div class="controls">
+    <button type="button" id="feedBtn">Feed the koi</button>
+    <button type="button" id="pauseBtn" aria-pressed="false">Pause animation</button>
+  </div>
 
   <div class="legends">
     <div class="legend" id="langLegend"></div>
