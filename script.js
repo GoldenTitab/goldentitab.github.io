@@ -67,7 +67,7 @@
             journey6Year: '2027', journey6Title: 'Product Designer', journey6Desc: 'Goal: ship real products, build a personal brand, launch a freelance career, and contribute to open-source.',
             worldLabel: '// world', worldTitle: 'The World',
             worldSubtitle: 'Drag the globe to explore, then browse every project below.',
-            worldHint: 'Drag to rotate', worldNote: 'Tiles use the existing project artwork. Side-work tiles can be added later — see OPEN-QUESTIONS.',
+            worldHint: 'Drag to rotate', worldNote: 'Tiles use the existing project artwork.',
             worldCta: 'View all projects ↗',
             contactLabel: '// contact', contactTitle: 'Let\'s work together',
             contactSubtitle: 'Have a project in mind? Let\'s discuss how we can collaborate',
@@ -81,7 +81,11 @@
             formFallback: 'Formspree is not set up yet — opening your email app instead.',
             formError: 'Something went wrong. Please email me directly.',
             musicOff: 'Music: Off', musicOn: 'Music: On', musicPending: 'Music: Off — file pending',
-            footerText: 'built by Ali D. Shah — Kerman, Iran'
+            footerText: 'built by Ali D. Shah — Kerman, Iran',
+            error404Label: '// 404',
+            error404Title: 'Page not found',
+            error404Desc: 'The page you are looking for does not exist or has moved.',
+            error404Cta: 'Back to home ↗'
         },
         fa: {
             skipLink: 'رفتن به محتوای اصلی',
@@ -99,7 +103,7 @@
             heroCta1: 'مشاهده پروژه‌ها', heroCta2: 'پروفایل گیت‌هاب', heroWorldLink: 'ورود به دنیا ↗',
             scrollHint: 'اسکرول',
             levelMaster: 'حرفه‌ای', levelAdvanced: 'پیشرفته', levelIntermediate: 'متوسط', levelBeginner: 'مبتدی',
-            phName: 'نام شما', phEmail: 'your@email.com', phMessage: 'درباره پروژه‌ات بگو...', backHome: 'بازگشت به خانه', musicLabel: 'روشن/خاموش کردن موزیک',
+            phName: 'نام شما', phEmail: 'ایمیل شما...', phMessage: 'درباره پروژه‌ات بگو...', backHome: 'بازگشت به خانه', musicLabel: 'روشن/خاموش کردن موزیک',
             aboutLabel: '// درباره من', aboutTitle: 'کی هستم',
             aboutP1: 'من یک <strong>دانشجوی مهندسی کامپیوتر</strong> در دانشگاه ولی‌عصر رفسنجان هستم که به نقطه تلاقی فناوری و طراحی علاقه دارم.',
             aboutP2: 'مسیرم از <strong>HTML و CSS</strong> و جاوااسکریپت پایه شروع شد، سپس به وردپرس، طراحی UI/UX با فیگما و الان <strong>فلاتر و دارت</strong> برای اپ‌های موبایل رسیده.',
@@ -140,7 +144,7 @@
             journey6Year: '۲۰۲۷', journey6Title: 'طراح محصول', journey6Desc: 'هدف: عرضه محصول واقعی، ساخت برند شخصی، شروع کار فریلنسری، و مشارکت در اوپن‌سورس.',
             worldLabel: '// دنیا', worldTitle: 'دنیا',
             worldSubtitle: 'کره رو بکش تا بچرخه، بعد همه پروژه‌ها رو پایین ببین.',
-            worldHint: 'برای چرخوندن بکش', worldNote: 'کاشی‌ها از عکس‌های فعلی پروژه‌ها استفاده می‌کنن. کاشی‌های کار جانبی رو می‌شه بعداً اضافه کرد.',
+            worldHint: 'برای چرخوندن بکش', worldNote: 'کاشی‌ها از عکس‌های فعلی پروژه‌ها استفاده می‌کنن.',
             worldCta: 'مشاهده همه پروژه‌ها ↗',
             contactLabel: '// تماس', contactTitle: 'بزن بریم کار کنیم',
             contactSubtitle: 'یه پروژه توی ذهنت داری؟ بیا ببینیم چطور می‌تونیم همکاری کنیم',
@@ -154,7 +158,11 @@
             formFallback: 'فورم‌اسپری هنوز تنظیم نشده — در عوض برنامه ایمیل باز می‌شه.',
             formError: 'یه مشکلی پیش اومد. لطفاً مستقیم ایمیل بزن.',
             musicOff: 'موزیک: خاموش', musicOn: 'موزیک: روشن', musicPending: 'موزیک: خاموش — فایل در انتظار',
-            footerText: 'ساخته‌شده توسط علی د. شاه — کرمان، ایران'
+            footerText: 'ساخته‌شده توسط علی د. شاه — کرمان، ایران',
+            error404Label: '// ۴۰۴',
+            error404Title: 'صفحه یافت نشد',
+            error404Desc: 'صفحهٔ مورد نظر وجود ندارد یا جابه‌جا شده است.',
+            error404Cta: 'بازگشت به خانه ↗'
         }
     };
 
@@ -166,6 +174,7 @@
     var currentLang = lsGet('aliLang') === 'fa' ? 'fa' : 'en';
     var currentTheme = lsGet('aliTheme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var reducedData = window.matchMedia('(prefers-reduced-data: reduce)').matches || (navigator.connection && navigator.connection.saveData);
     var isCoarse = window.matchMedia('(pointer: coarse)').matches;
     var html = document.documentElement;
     var t = function (key) { var tr = translations[currentLang] || translations.en; return tr[key] !== undefined ? tr[key] : (translations.en[key] || key); };
@@ -333,7 +342,7 @@
         var frames = Array.prototype.slice.call(document.querySelectorAll('.hero-frame'));
         var countEl = document.getElementById('frameCount');
         if (!hero || !frames.length) return;
-        if (reducedMotion || isCoarse || window.innerWidth <= 720) {
+        if (reducedMotion || reducedData || isCoarse || window.innerWidth <= 720) {
             frames.forEach(function (f, i) { f.classList.toggle('is-active', i === 0); });
             if (countEl) countEl.textContent = '01';
             return; // static fallback on mobile / reduced motion
@@ -367,7 +376,7 @@
         var setWidths = function () {
             fills.forEach(function (f) { f.style.width = f.getAttribute('data-pct') + '%'; });
         };
-        if (reducedMotion) { setWidths(); return; }
+        if (reducedMotion || reducedData) { setWidths(); return; }
         var arsenal = document.querySelector('.arsenal');
         if (arsenal && 'IntersectionObserver' in window) {
             var ob = new IntersectionObserver(function (entries) {
@@ -436,7 +445,7 @@
         var canvas = document.getElementById('globeCanvas');
         if (!canvas) return;
         var ctx = canvas.getContext('2d');
-        var rot = 0, vel = 0.0018, dragging = false, lastX = 0, raf = null, visible = true;
+        var rot = 0, vel = 0.0018, dragging = false, lastX = 0, visible = true;
         var DPR = Math.min(window.devicePixelRatio || 1, isCoarse ? 1.5 : 2);
         var size = 640;
         function resize() {
@@ -489,8 +498,8 @@
             if (mzr > 0) { ctx.beginPath(); ctx.arc(cx + mxr * r, cy - my * r, 5, 0, Math.PI * 2); ctx.fill(); }
         }
         function loop() {
-            if (visible && !document.hidden) { if (!dragging && !reducedMotion) rot += vel; draw(); }
-            raf = requestAnimationFrame(loop);
+            if (visible && !document.hidden) { if (!dragging && !reducedMotion && !reducedData) rot += vel; draw(); }
+            requestAnimationFrame(loop);
         }
         canvas.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; canvas.setPointerCapture(e.pointerId); });
         canvas.addEventListener('pointermove', function (e) { if (!dragging) return; rot += (e.clientX - lastX) * 0.008; lastX = e.clientX; draw(); });
@@ -498,12 +507,12 @@
         new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; }).observe(canvas);
         window.addEventListener('resize', function () { resize(); draw(); });
         resize(); draw();
-        if (!reducedMotion) loop(); else draw();
+        if (!reducedMotion && !reducedData) loop(); else draw();
     }
 
     // ===== SCROLL REVEALS / NAV / BACK-TO-TOP / SMOOTH SCROLL =====
     function initChrome() {
-        var prefersReduced = reducedMotion;
+        var prefersReduced = reducedMotion || reducedData;
         var reveals = document.querySelectorAll('.reveal, .float-in-left, .float-in-right');
         if (prefersReduced) { reveals.forEach(function (el) { el.classList.add('visible'); }); }
         else if ('IntersectionObserver' in window) {
