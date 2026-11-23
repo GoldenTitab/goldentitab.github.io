@@ -1,61 +1,44 @@
 (function () {
     'use strict';
 
-    // ===== COMPLETE TRANSLATIONS =====
-    const translations = {
+    // Formspree endpoint ID for the contact form. If empty, the form falls back to the visitor's email app.
+    var FORMSPREE_ID = "xkjrprpb";
+    // Site music file: sent by Ali 2026-11-23 — Odysseus_KLICKAUD.mp3 (8:41, 7.1 MB, loop, preload=none).
+    var MUSIC_SRC = "audio/Odysseus_KLICKAUD.mp3";
+
+    var HERO_STEPS = 30; // scroll-frame hero: 30 steps simulated from 3 key images (not 240 JPGs)
+
+    // ===== TRANSLATIONS (EN + FA, every string on all 3 pages) =====
+    var translations = {
         en: {
             skipLink: 'Skip to main content',
-            navAbout: 'About',
-            navSkills: 'Skills',
-            navProjects: 'Projects',
-            navJourney: 'Journey',
-            navTestimonials: 'Testimonials',
-            navBlog: 'Blog',
-            navContact: 'Contact',
-            menuOpenLabel: 'Open menu',
-            menuCloseLabel: 'Close menu',
-            themeToggleLabel: 'Switch to light theme',
-            themeToggleLabelLight: 'Switch to dark theme',
-            langToggleLabel: 'Switch to Persian',
-            langAnnounce: 'Language switched to English',
+            navIndex: 'Index', navProjects: 'Projects', navContact: 'Contact', navJourney: 'Journey', navWorld: 'World',
+            menuOpenLabel: 'Open menu', menuCloseLabel: 'Close menu',
+            themeToggleLabel: 'Switch theme', langToggleLabel: 'Switch to Persian', langAnnounce: 'Language switched to English',
             backToTopLabel: 'Back to top',
+            gateEyebrow: 'A designer & developer portfolio',
+            gateEnter: 'Enter', gateEnterSilent: 'Enter without audio',
             heroEyebrow: 'Available for freelance',
-            heroName: 'Ali D. Shah',
+            heroName: 'Ali D. Shah — Designer & Developer',
             heroTitle: 'Designer & Developer',
+            heroCreating: 'Creating the', heroUnexpected: 'unexpected',
             heroSub: 'Computer Engineering student building simple, intuitive digital experiences. Focused on UI/UX Design, Flutter, and Product Thinking.',
-            heroCta1: 'View Projects',
-            heroCta2: 'GitHub Profile',
+            heroCta1: 'View Projects', heroCta2: 'GitHub Profile', heroWorldLink: 'Enter the World ↗',
             scrollHint: 'scroll',
-            aboutLabel: '// about me',
-            aboutTitle: 'Who I am',
+            levelMaster: 'Master', levelAdvanced: 'Advanced', levelIntermediate: 'Intermediate', levelBeginner: 'Beginner',
+            phName: 'Your name', phEmail: 'your@email.com', phMessage: 'Tell me about your project...', backHome: 'Back to home', musicLabel: 'Toggle music',
+            aboutLabel: '// about me', aboutTitle: 'Who I am',
             aboutP1: 'I\'m a <strong>Computer Engineering student</strong> at Vali-e-Asr University of Rafsanjan, passionate about the intersection of technology and design.',
             aboutP2: 'My journey started with <strong>HTML &amp; CSS</strong> and basic JavaScript, then expanded into WordPress, UI/UX design with Figma, and now <strong>Flutter &amp; Dart</strong> for mobile apps.',
             aboutP3: 'I believe good design is invisible — it guides people naturally without getting in the way.',
             aboutP4: 'When I\'m not coding, you\'ll find me watching movies and series, listening to music, or learning English and German.',
-            stat1Num: '4+',
-            stat1Label: 'Years learning',
-            stat2Num: '6+',
-            stat2Label: 'Projects built',
-            stat3Num: '80%',
-            stat3Label: 'HTML / CSS',
-            stat4Num: '80%',
-            stat4Label: 'Figma',
-            stat5Num: '70%',
-            stat5Label: 'Flutter',
-            stat6Num: '20%',
-            stat6Label: 'JavaScript',
-            skillsLabel: '// skills',
-            skillsTitle: 'What I work with',
+            stat1Num: '4+', stat1Label: 'Years learning', stat2Num: '8+', stat2Label: 'Projects built',
+            skillsLabel: '// skills', skillsTitle: 'What I work with',
             skillsSubtitle: 'Tools and technologies I use to bring ideas to life',
-            skillGroup1: 'UI / UX',
-            skillGroup2: 'Front-End',
-            skillGroup3: 'Mobile & Dev',
-            skillGroup4: 'Tools',
-            skillGroup5: 'Soft Skills',
-            skillGroup6: 'Learning',
-            projectsLabel: '// projects',
-            projectsTitle: 'Things I\'ve built',
+            skillGroup1: 'UI / UX', skillGroup2: 'Front-End', skillGroup3: 'Mobile & Dev', skillGroup4: 'Tools', skillGroup5: 'Soft Skills', skillGroup6: 'Learning',
+            projectsLabel: '// projects', projectsTitle: 'Things I\'ve built',
             projectsSubtitle: 'A selection of projects I\'ve worked on recently',
+            filterAll: 'All', filterFlutter: 'Flutter', filterWeb: 'Web', filterDart: 'Dart', filterDesign: 'Design',
             project1Name: 'German Pronunciation & Language Learning',
             project1Desc: 'Single-page web app for learning German from A0 to C1: vocabulary, grammar, verbs, cases, reading, quizzes, spaced-repetition flashcards and a pronunciation masterclass.',
             project2Name: 'Aurora — Anime Franchise Tracker',
@@ -72,118 +55,63 @@
             project7Desc: 'A 23-exercise path through Dart fundamentals: input handling, collections, classes, and small console programs.',
             project8Name: 'Gibberish Decoder',
             project8Desc: 'Chrome extension that fixes text typed on the wrong keyboard layout (Persian ↔ English) in chat boxes, plus Persian half-spaces and number conversion. Fully local, no text sent to any server.',
-            journeyLabel: '// journey',
-            journeyTitle: 'How I got here',
+            journeyLabel: '// journey', journeyTitle: 'How I got here',
             journeySubtitle: 'My path from beginner to where I am today',
-            journey1Year: '2022',
-            journey1Title: 'Started Programming',
-            journey1Desc: 'Began learning C and Java at university. Built my first console applications.',
-            journey2Year: '2023',
-            journey2Title: 'Started Web Development',
-            journey2Desc: 'Learned HTML, CSS and the basics of JavaScript. Built first landing pages and responsive websites.',
-            journey3Year: '2024',
-            journey3Title: 'Expanded into UI/UX Design',
-            journey3Desc: 'Dove deep into UI/UX with Figma. Started building interactive prototypes and applied software engineering principles.',
-            journey4Year: '2025',
-            journey4Title: 'Learning WordPress',
-            journey4Desc: 'Built websites and learned how to customize them using the Elementor plugin.',
-            journey5Year: '2026',
-            journey5Title: 'Learning Flutter & Dart',
-            journey5Desc: 'Building mobile apps and working toward becoming a Product Designer. Exploring cross-platform development.',
-            journey6Year: '2027',
-            journey6Title: 'Product Designer',
-            journey6Desc: 'Goal: ship real products, build a personal brand, launch a freelance career, and contribute to open-source.',
-            testimonialsLabel: '// testimonials',
-            testimonialsTitle: 'What people say',
-            testimonialsSubtitle: 'Feedback from colleagues and mentors',
-            testimonial1Text: '"Placeholder testimonial 1 – Replace with real feedback."',
-            testimonial1Name: 'Person 1',
-            testimonial1Role: 'Role / Company',
-            testimonial2Text: '"Placeholder testimonial 2 – Replace with real feedback."',
-            testimonial2Name: 'Person 2',
-            testimonial2Role: 'Role / Company',
-            testimonial3Text: '"Placeholder testimonial 3 – Replace with real feedback."',
-            testimonial3Name: 'Person 3',
-            testimonial3Role: 'Role / Company',
-            blogLabel: '// blog',
-            blogTitle: 'Latest thoughts',
-            blogSubtitle: 'Articles and insights about design and development',
-            blog1Date: 'July 2026',
-            blog1Title: 'Blog Post 1',
-            blog1Excerpt: 'Short description of the first blog post.',
-            blog2Date: 'June 2026',
-            blog2Title: 'Blog Post 2',
-            blog2Excerpt: 'Short description of the second blog post.',
-            blog3Date: 'May 2026',
-            blog3Title: 'Blog Post 3',
-            blog3Excerpt: 'Short description of the third blog post.',
-            contactLabel: '// contact',
-            contactTitle: 'Let\'s work together',
+            journeyTeaserText: 'From C and Java at university to Flutter, UI/UX and product design — six stops along the way.',
+            journeyTeaserCta: 'View the timeline ↗',
+            journey1Year: '2022', journey1Title: 'Started Programming', journey1Desc: 'Began learning C and Java at university. Built my first console applications.',
+            journey2Year: '2023', journey2Title: 'Started Web Development', journey2Desc: 'Learned HTML, CSS and the basics of JavaScript. Built first landing pages and responsive websites.',
+            journey3Year: '2024', journey3Title: 'Expanded into UI/UX Design', journey3Desc: 'Dove deep into UI/UX with Figma. Started building interactive prototypes and applied software engineering principles.',
+            journey4Year: '2025', journey4Title: 'Learning WordPress', journey4Desc: 'Built websites and learned how to customize them using the Elementor plugin.',
+            journey5Year: '2026', journey5Title: 'Learning Flutter & Dart', journey5Desc: 'Building mobile apps and working toward becoming a Product Designer. Exploring cross-platform development.',
+            journey6Year: '2027', journey6Title: 'Product Designer', journey6Desc: 'Goal: ship real products, build a personal brand, launch a freelance career, and contribute to open-source.',
+            worldLabel: '// world', worldTitle: 'The World',
+            worldSubtitle: 'Drag the globe to explore, then browse every project below.',
+            worldHint: 'Drag to rotate', worldNote: 'Tiles use the existing project artwork. Side-work tiles can be added later — see OPEN-QUESTIONS.',
+            worldCta: 'View all projects ↗',
+            contactLabel: '// contact', contactTitle: 'Let\'s work together',
             contactSubtitle: 'Have a project in mind? Let\'s discuss how we can collaborate',
             contactHeading: 'Get in touch',
             contactDesc: 'Open to freelance projects, collaborations, and internship opportunities. I\'m always excited to work on new challenges.',
-            contactEmail: 'Email',
-            contactLocation: 'Location',
-            contactLocationValue: 'Kerman, Iran',
-            formName: 'Name',
-            formEmail: 'Email',
-            formMessage: 'Message',
-            formSubmit: 'Send Message',
+            contactEmail: 'Email', contactLocation: 'Location', contactLocationValue: 'Kerman, Iran',
+            formName: 'Name', formEmail: 'Email', formScope: 'Project scope',
+            scopeFreelance: 'Freelance project', scopeCollab: 'Collaboration', scopeInternship: 'Internship', scopeOther: 'Other',
+            formMessage: 'Message', formSubmit: 'Send Message',
+            formSending: 'Sending…', formSent: 'Message sent — thank you!',
+            formFallback: 'Formspree is not set up yet — opening your email app instead.',
+            formError: 'Something went wrong. Please email me directly.',
+            musicOff: 'Music: Off', musicOn: 'Music: On', musicPending: 'Music: Off — file pending',
             footerText: 'built by Ali D. Shah — Kerman, Iran'
         },
         fa: {
             skipLink: 'رفتن به محتوای اصلی',
-            navAbout: 'درباره من',
-            navSkills: 'مهارت‌ها',
-            navProjects: 'پروژه‌ها',
-            navJourney: 'مسیر',
-            navTestimonials: 'نظرات',
-            navBlog: 'وبلاگ',
-            navContact: 'تماس',
-            menuOpenLabel: 'باز کردن منو',
-            menuCloseLabel: 'بستن منو',
-            themeToggleLabel: 'تغییر به حالت روشن',
-            themeToggleLabelLight: 'تغییر به حالت تاریک',
-            langToggleLabel: 'تغییر به انگلیسی',
-            langAnnounce: 'زبان به فارسی تغییر کرد',
+            navIndex: 'خانه', navProjects: 'پروژه‌ها', navContact: 'تماس', navJourney: 'مسیر', navWorld: 'دنیا',
+            menuOpenLabel: 'باز کردن منو', menuCloseLabel: 'بستن منو',
+            themeToggleLabel: 'تغییر تم', langToggleLabel: 'تغییر به انگلیسی', langAnnounce: 'زبان به فارسی تغییر کرد',
             backToTopLabel: 'برگشت به بالا',
+            gateEyebrow: 'پورتفولیوی طراح و توسعه‌دهنده',
+            gateEnter: 'ورود', gateEnterSilent: 'ورود بدون صدا',
             heroEyebrow: 'آماده همکاری فریلنسری',
-            heroName: 'علی د. شاه',
+            heroName: 'علی د. شاه — طراح و توسعه‌دهنده',
             heroTitle: 'طراح و توسعه‌دهنده',
+            heroCreating: 'خلقِ', heroUnexpected: 'غیرمنتظره',
             heroSub: 'دانشجوی مهندسی کامپیوتر که تجربه‌های دیجیتالی ساده و کاربرپسند می‌سازد. تخصصم در طراحی UI/UX، فلاتر و تفکر محصول‌محور است.',
-            heroCta1: 'مشاهده پروژه‌ها',
-            heroCta2: 'پروفایل گیت‌هاب',
+            heroCta1: 'مشاهده پروژه‌ها', heroCta2: 'پروفایل گیت‌هاب', heroWorldLink: 'ورود به دنیا ↗',
             scrollHint: 'اسکرول',
-            aboutLabel: '// درباره من',
-            aboutTitle: 'کی هستم',
+            levelMaster: 'حرفه‌ای', levelAdvanced: 'پیشرفته', levelIntermediate: 'متوسط', levelBeginner: 'مبتدی',
+            phName: 'نام شما', phEmail: 'your@email.com', phMessage: 'درباره پروژه‌ات بگو...', backHome: 'بازگشت به خانه', musicLabel: 'روشن/خاموش کردن موزیک',
+            aboutLabel: '// درباره من', aboutTitle: 'کی هستم',
             aboutP1: 'من یک <strong>دانشجوی مهندسی کامپیوتر</strong> در دانشگاه ولی‌عصر رفسنجان هستم که به نقطه تلاقی فناوری و طراحی علاقه دارم.',
             aboutP2: 'مسیرم از <strong>HTML و CSS</strong> و جاوااسکریپت پایه شروع شد، سپس به وردپرس، طراحی UI/UX با فیگما و الان <strong>فلاتر و دارت</strong> برای اپ‌های موبایل رسیده.',
             aboutP3: 'باورم اینه که طراحی خوب دیده نمی‌شه — بدون دردسر، آدم‌ها رو هدایت می‌کنه.',
             aboutP4: 'وقتی کدنویسی نمی‌کنم، فیلم و سریال می‌بینم، موسیقی گوش می‌دم یا زبان انگلیسی و آلمانی یاد می‌گیرم.',
-            stat1Num: '۴+',
-            stat1Label: 'سال یادگیری',
-            stat2Num: '۶+',
-            stat2Label: 'پروژه تموم‌شده',
-            stat3Num: '۸۰٪',
-            stat3Label: 'HTML / CSS',
-            stat4Num: '۸۰٪',
-            stat4Label: 'فیگما',
-            stat5Num: '۷۰٪',
-            stat5Label: 'فلاتر',
-            stat6Num: '۲۰٪',
-            stat6Label: 'جاوااسکریپت',
-            skillsLabel: '// مهارت‌ها',
-            skillsTitle: 'با چی کار می‌کنم',
+            stat1Num: '۴+', stat1Label: 'سال یادگیری', stat2Num: '۸+', stat2Label: 'پروژه تموم‌شده',
+            skillsLabel: '// مهارت‌ها', skillsTitle: 'با چی کار می‌کنم',
             skillsSubtitle: 'ابزارها و فناوری‌هایی که برای زنده کردن ایده‌ها استفاده می‌کنم',
-            skillGroup1: 'UI / UX',
-            skillGroup2: 'فرانت‌اند',
-            skillGroup3: 'موبایل و توسعه',
-            skillGroup4: 'ابزارها',
-            skillGroup5: 'مهارت‌های نرم',
-            skillGroup6: 'در حال یادگیری',
-            projectsLabel: '// پروژه‌ها',
-            projectsTitle: 'چیزایی که ساختم',
+            skillGroup1: 'UI / UX', skillGroup2: 'فرانت‌اند', skillGroup3: 'موبایل و توسعه', skillGroup4: 'ابزارها', skillGroup5: 'مهارت‌های نرم', skillGroup6: 'در حال یادگیری',
+            projectsLabel: '// پروژه‌ها', projectsTitle: 'چیزایی که ساختم',
             projectsSubtitle: 'چندتا از پروژه‌هایی که اخیراً روشون کار کردم',
+            filterAll: 'همه', filterFlutter: 'فلاتر', filterWeb: 'وب', filterDart: 'دارت', filterDesign: 'دیزاین',
             project1Name: 'یادگیری آلمانی و تلفظ',
             project1Desc: 'وب‌اپ تک‌صفحه‌ای برای یادگیری آلمانی از A0 تا C1: واژگان، گرامر، صرف فعل، حالت‌ها، خواندن، آزمون، فلش‌کارت با تکرار فاصله‌دار و بخش تلفظ.',
             project2Name: 'آرورا — ردیاب فرنچایز انیمه',
@@ -200,481 +128,466 @@
             project7Desc: 'یه مسیر 23 تمرینی برای یادگیری مبانی Dart: مدیریت ورودی، کالکشن‌ها، کلاس‌ها، و برنامه‌های کنسولی کوچیک.',
             project8Name: 'Gibberish Decoder',
             project8Desc: 'اکستنشن کروم که متن تایپ‌شده با کیبورد اشتباه (فارسی ↔ انگلیسی) رو توی باکس‌های چت درست می‌کنه، به‌علاوه نیم‌فاصله فارسی و تبدیل عددها. کاملا آفلاین، هیچ متنی به هیچ سروری فرستاده نمی‌شه.',
-            journeyLabel: '// مسیر',
-            journeyTitle: 'چطور اینجا رسیدم',
+            journeyLabel: '// مسیر', journeyTitle: 'چطور اینجا رسیدم',
             journeySubtitle: 'مسیر من از مبتدی تا جایی که الان هستم',
-            journey1Year: '۲۰۲۲',
-            journey1Title: 'شروع برنامه‌نویسی',
-            journey1Desc: 'یادگیری C و Java در دانشگاه. اولین اپ‌های کنسولی رو ساختم.',
-            journey2Year: '۲۰۲۳',
-            journey2Title: 'شروع توسعه وب',
-            journey2Desc: 'HTML، CSS و مبانی جاوااسکریپت رو یاد گرفتم. اولین لندینگ پیج‌ها و سایت‌های ریسپانسیو رو ساختم.',
-            journey3Year: '۲۰۲۴',
-            journey3Title: 'ورود به طراحی UI/UX',
-            journey3Desc: 'رفتم توی دنیای UI/UX با فیگما. شروع به ساخت پروتوتایپ‌های تعاملی و به‌کارگیری اصول مهندسی نرم‌افزار کردم.',
-            journey4Year: '۲۰۲۵',
-            journey4Title: 'یادگیری وردپرس',
-            journey4Desc: 'سایت ساختم و یاد گرفتم چطور با پلاگین المنتور اون‌ها رو سفارشی‌سازی کنم.',
-            journey5Year: '۲۰۲۶',
-            journey5Title: 'یادگیری فلاتر و دارت',
-            journey5Desc: 'دارم اپ‌های موبایل می‌سازم و هدفم اینه که طراح محصول بشم. دارم توسعه چندپلتفرمه رو کاوش می‌کنم.',
-            journey6Year: '۲۰۲۷',
-            journey6Title: 'طراح محصول',
-            journey6Desc: 'هدف: عرضه محصول واقعی، ساخت برند شخصی، شروع کار فریلنسری، و مشارکت در اوپن‌سورس.',
-            testimonialsLabel: '// نظرات',
-            testimonialsTitle: 'دیگه چی می‌گن',
-            testimonialsSubtitle: 'بازخورد همکاران و مربیان',
-            testimonial1Text: '"نظر تستی ۱ – با بازخورد واقعی جایگزین کن."',
-            testimonial1Name: 'شخص ۱',
-            testimonial1Role: 'سمت / شرکت',
-            testimonial2Text: '"نظر تستی ۲ – با بازخورد واقعی جایگزین کن."',
-            testimonial2Name: 'شخص ۲',
-            testimonial2Role: 'سمت / شرکت',
-            testimonial3Text: '"نظر تستی ۳ – با بازخورد واقعی جایگزین کن."',
-            testimonial3Name: 'شخص ۳',
-            testimonial3Role: 'سمت / شرکت',
-            blogLabel: '// وبلاگ',
-            blogTitle: 'آخرین نوشته‌ها',
-            blogSubtitle: 'مقاله‌ها و دیدگاه‌هایی درباره طراحی و توسعه',
-            blog1Date: 'تیر ۱۴۰۵',
-            blog1Title: 'پست وبلاگ ۱',
-            blog1Excerpt: 'توضیح کوتاه پست اول.',
-            blog2Date: 'خرداد ۱۴۰۵',
-            blog2Title: 'پست وبلاگ ۲',
-            blog2Excerpt: 'توضیح کوتاه پست دوم.',
-            blog3Date: 'اردیبهشت ۱۴۰۵',
-            blog3Title: 'پست وبلاگ ۳',
-            blog3Excerpt: 'توضیح کوتاه پست سوم.',
-            contactLabel: '// تماس',
-            contactTitle: 'بزن بریم کار کنیم',
+            journeyTeaserText: 'از C و Java در دانشگاه تا فلاتر، UI/UX و طراحی محصول — شش ایستگاه در این مسیر.',
+            journeyTeaserCta: 'مشاهده تایم‌لاین ↗',
+            journey1Year: '۲۰۲۲', journey1Title: 'شروع برنامه‌نویسی', journey1Desc: 'یادگیری C و Java در دانشگاه. اولین اپ‌های کنسولی رو ساختم.',
+            journey2Year: '۲۰۲۳', journey2Title: 'شروع توسعه وب', journey2Desc: 'HTML، CSS و مبانی جاوااسکریپت رو یاد گرفتم. اولین لندینگ پیج‌ها و سایت‌های ریسپانسیو رو ساختم.',
+            journey3Year: '۲۰۲۴', journey3Title: 'ورود به طراحی UI/UX', journey3Desc: 'رفتم توی دنیای UI/UX با فیگما. شروع به ساخت پروتوتایپ‌های تعاملی و به‌کارگیری اصول مهندسی نرم‌افزار کردم.',
+            journey4Year: '۲۰۲۵', journey4Title: 'یادگیری وردپرس', journey4Desc: 'سایت ساختم و یاد گرفتم چطور با پلاگین المنتور اون‌ها رو سفارشی‌سازی کنم.',
+            journey5Year: '۲۰۲۶', journey5Title: 'یادگیری فلاتر و دارت', journey5Desc: 'دارم اپ‌های موبایل می‌سازم و هدفم اینه که طراح محصول بشم. دارم توسعه چندپلتفرمه رو کاوش می‌کنم.',
+            journey6Year: '۲۰۲۷', journey6Title: 'طراح محصول', journey6Desc: 'هدف: عرضه محصول واقعی، ساخت برند شخصی، شروع کار فریلنسری، و مشارکت در اوپن‌سورس.',
+            worldLabel: '// دنیا', worldTitle: 'دنیا',
+            worldSubtitle: 'کره رو بکش تا بچرخه، بعد همه پروژه‌ها رو پایین ببین.',
+            worldHint: 'برای چرخوندن بکش', worldNote: 'کاشی‌ها از عکس‌های فعلی پروژه‌ها استفاده می‌کنن. کاشی‌های کار جانبی رو می‌شه بعداً اضافه کرد.',
+            worldCta: 'مشاهده همه پروژه‌ها ↗',
+            contactLabel: '// تماس', contactTitle: 'بزن بریم کار کنیم',
             contactSubtitle: 'یه پروژه توی ذهنت داری؟ بیا ببینیم چطور می‌تونیم همکاری کنیم',
             contactHeading: 'ارتباط با من',
             contactDesc: 'آماده همکاری توی پروژه‌های فریلنسری، پروژه‌های مشترک، و کارآموزی هستم. همیشه از کار روی چالش‌های جدید هیجان‌زده می‌شم.',
-            contactEmail: 'ایمیل',
-            contactLocation: 'موقعیت',
-            contactLocationValue: 'کرمان، ایران',
-            formName: 'نام',
-            formEmail: 'ایمیل',
-            formMessage: 'پیام',
-            formSubmit: 'ارسال پیام',
+            contactEmail: 'ایمیل', contactLocation: 'موقعیت', contactLocationValue: 'کرمان، ایران',
+            formName: 'نام', formEmail: 'ایمیل', formScope: 'نوع پروژه',
+            scopeFreelance: 'پروژه فریلنسری', scopeCollab: 'همکاری', scopeInternship: 'کارآموزی', scopeOther: 'دیگه',
+            formMessage: 'پیام', formSubmit: 'ارسال پیام',
+            formSending: 'در حال ارسال…', formSent: 'پیام ارسال شد — ممنون!',
+            formFallback: 'فورم‌اسپری هنوز تنظیم نشده — در عوض برنامه ایمیل باز می‌شه.',
+            formError: 'یه مشکلی پیش اومد. لطفاً مستقیم ایمیل بزن.',
+            musicOff: 'موزیک: خاموش', musicOn: 'موزیک: روشن', musicPending: 'موزیک: خاموش — فایل در انتظار',
             footerText: 'ساخته‌شده توسط علی د. شاه — کرمان، ایران'
         }
     };
 
-    let currentLang = localStorage.getItem('aliLang') || 'en';
-    let currentTheme = localStorage.getItem('aliTheme') || 'dark';
-    let isThemeTransitioning = false;
+    // Storage can throw (private mode / blocked cookies) — never let that kill the whole script.
+    function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } }
+    function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
+    function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* ignore */ } }
+    var currentLang = lsGet('aliLang') === 'fa' ? 'fa' : 'en';
+    var currentTheme = lsGet('aliTheme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var isCoarse = window.matchMedia('(pointer: coarse)').matches;
+    var html = document.documentElement;
+    var t = function (key) { var tr = translations[currentLang] || translations.en; return tr[key] !== undefined ? tr[key] : (translations.en[key] || key); };
 
-    const html = document.documentElement;
-    const themeCheckbox = document.getElementById('themeCheckbox');
-    const themeSwitchContainer = document.querySelector('.theme-switch__container');
-    const langLabel = document.getElementById('langLabel');
-    const langToggle = document.getElementById('langToggle');
-    const langAnnouncer = document.getElementById('langAnnouncer');
-    const navToggle = document.getElementById('navToggle');
-    const navCenter = document.getElementById('navCenter');
-    const navLinks = navCenter ? Array.from(navCenter.querySelectorAll('a')) : [];
-    const backToTop = document.getElementById('backToTop');
-
-    // ===== THEME OVERLAY =====
-    function createThemeOverlay() {
-        let overlay = document.getElementById('theme-overlay');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'theme-overlay';
-            overlay.style.cssText = `
-                position: fixed; inset: 0; z-index: 9999;
-                pointer-events: none; opacity: 0;
-                background: radial-gradient(circle at var(--ox,50%) var(--oy,50%), var(--overlay-color) 0%, transparent 70%);
-                transition: opacity 0.55s cubic-bezier(0.4,0,0.2,1);
-            `;
-            document.body.appendChild(overlay);
-        }
-        return overlay;
+    // ===== THEME =====
+    function applyTheme(theme) {
+        currentTheme = theme;
+        html.setAttribute('data-theme', theme);
+        lsSet('aliTheme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#0a0a14' : '#f6eef2');
     }
-
-    function setTheme(theme, originX, originY) {
-        if (isThemeTransitioning) return;
-        isThemeTransitioning = true;
-
-        const overlay = createThemeOverlay();
-        const ox = originX != null ? originX : 50;
-        const oy = originY != null ? originY : 50;
-        overlay.style.setProperty('--ox', ox + '%');
-        overlay.style.setProperty('--oy', oy + '%');
-        overlay.style.setProperty('--overlay-color', theme === 'light' ? '#f1f5f9' : '#0a0a0f');
-
-        overlay.style.opacity = '1';
-
-        setTimeout(() => {
-            currentTheme = theme;
-            html.setAttribute('data-theme', theme);
-            localStorage.setItem('aliTheme', theme);
-            if (themeCheckbox) themeCheckbox.checked = (theme === 'dark');
-            const t = translations[currentLang] || translations.en;
-            if (themeCheckbox) {
-                themeCheckbox.setAttribute('aria-label', theme === 'dark' ? t.themeToggleLabel : t.themeToggleLabelLight);
-            }
-
-            overlay.style.opacity = '0';
-            setTimeout(() => { isThemeTransitioning = false; }, 600);
-        }, 280);
-    }
-
-    function toggleTheme(e) {
-        let ox = 50, oy = 10;
-        if (e && e.currentTarget) {
-            const rect = e.currentTarget.getBoundingClientRect();
-            ox = ((rect.left + rect.width / 2) / window.innerWidth) * 100;
-            oy = ((rect.top + rect.height / 2) / window.innerHeight) * 100;
-        }
-        setTheme(currentTheme === 'dark' ? 'light' : 'dark', ox, oy);
-    }
+    function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
 
     // ===== LANGUAGE =====
     function setLanguage(lang, announce) {
         currentLang = lang;
-        localStorage.setItem('aliLang', lang);
+        lsSet('aliLang', lang);
         html.setAttribute('lang', lang);
         html.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
+        var langLabel = document.getElementById('langLabel');
         if (langLabel) langLabel.textContent = lang === 'en' ? 'EN' : 'FA';
-
-        const t = translations[lang] || translations.en;
-
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if (t[key] !== undefined) {
-                el.innerHTML = t[key];
-            }
+        var tr = translations[lang] || translations.en;
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+            var key = el.getAttribute('data-i18n');
+            if (tr[key] !== undefined) el.innerHTML = tr[key];
         });
-
-        document.querySelectorAll('[data-i18n-aria]').forEach(el => {
-            const key = el.getAttribute('data-i18n-aria');
-            if (t[key] !== undefined) el.setAttribute('aria-label', t[key]);
-        });
-
-        if (themeSwitchContainer) {
-            themeSwitchContainer.setAttribute('aria-label', currentTheme === 'dark' ? t.themeToggleLabel : t.themeToggleLabelLight);
-        }
-        if (langToggle) langToggle.setAttribute('aria-label', t.langToggleLabel);
-        if (navToggle) {
-            const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
-            navToggle.setAttribute('aria-label', isOpen ? t.menuCloseLabel : t.menuOpenLabel);
-        }
-        if (backToTop) backToTop.setAttribute('aria-label', t.backToTopLabel);
-
-        if (announce && langAnnouncer) langAnnouncer.textContent = t.langAnnounce;
-    }
-
-    function toggleLanguage() {
-        setLanguage(currentLang === 'en' ? 'fa' : 'en', true);
-    }
-
-    // ===== MOBILE NAV =====
-    function openMenu() {
-        if (!navCenter || !navToggle) return;
-        navCenter.classList.add('open');
-        navToggle.setAttribute('aria-expanded', 'true');
-        navToggle.setAttribute('aria-label', (translations[currentLang] || translations.en).menuCloseLabel);
-        navToggle.classList.add('is-active');
-        document.body.style.overflow = '';
-    }
-
-    function closeMenu() {
-        if (!navCenter || !navToggle) return;
-        navCenter.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-        navToggle.setAttribute('aria-label', (translations[currentLang] || translations.en).menuOpenLabel);
-        navToggle.classList.remove('is-active');
-        document.body.style.overflow = '';
-    }
-
-    function isMenuOpen() {
-        return !!(navCenter && navCenter.classList.contains('open'));
-    }
-
-    function initMobileNav() {
-        if (!navToggle || !navCenter) return;
-
-        navToggle.addEventListener('click', () => {
-            isMenuOpen() ? closeMenu() : openMenu();
-        });
-
-        navLinks.forEach(link => link.addEventListener('click', () => closeMenu()));
-
-        document.addEventListener('click', (e) => {
-            if (!isMenuOpen()) return;
-            const nav = document.querySelector('nav');
-            if (nav && !nav.contains(e.target)) closeMenu();
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isMenuOpen()) {
-                closeMenu();
-                navToggle.focus();
-            }
-        });
-
-        const mq = window.matchMedia('(min-width: 769px)');
-        const handleViewportChange = (e) => { if (e.matches) closeMenu(); };
-        if (mq.addEventListener) mq.addEventListener('change', handleViewportChange);
-    }
-
-    // ===== SCROLL ANIMATIONS =====
-    function initScrollAnimations() {
-        const reveals = document.querySelectorAll('.reveal, .stagger-children, .float-in-left, .float-in-right, .scale-in');
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        if (prefersReducedMotion) {
-            reveals.forEach(el => el.classList.add('visible'));
-            return;
-        }
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
+        document.querySelectorAll('[data-i18n-attr]').forEach(function (el) {
+            el.getAttribute('data-i18n-attr').split(';').forEach(function (pair) {
+                var kv = pair.split(':');
+                if (kv.length === 2 && tr[kv[1]] !== undefined) el.setAttribute(kv[0], tr[kv[1]]);
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-
-        reveals.forEach(el => observer.observe(el));
+        });
+        var sp = document.getElementById('stackPrev'), sn = document.getElementById('stackNext');
+        if (sp) sp.textContent = lang === 'fa' ? '→' : '←';
+        if (sn) sn.textContent = lang === 'fa' ? '←' : '→';
+        var langToggle = document.getElementById('langToggle');
+        if (langToggle) langToggle.setAttribute('aria-label', tr.langToggleLabel);
+        var announcer = document.getElementById('langAnnouncer');
+        if (announce && announcer) announcer.textContent = tr.langAnnounce;
+        updateMusicLabel();
     }
 
-    // ===== SCROLLSPY =====
-    function initScrollSpy() {
-        const sections = Array.from(document.querySelectorAll('main section[id]'));
-        if (!sections.length || !navLinks.length) return;
-
-        const linkBySection = {};
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && href.startsWith('#')) linkBySection[href.slice(1)] = link;
+    // ===== MUSIC — audio/Odysseus_KLICKAUD.mp3; on/off + position kept in sessionStorage across pages =====
+    // (A full page load still has a short silence between pages; truly gapless needs a single-page app.)
+    var audio = document.getElementById('siteAudio');
+    var musicWanted = ssGet('auroraMusicWanted') === '1';
+    var lastSave = 0;
+    function saveMusicState() {
+        ssSet('auroraMusicWanted', musicWanted ? '1' : '0');
+        if (audio && isFinite(audio.currentTime) && audio.currentTime > 0) ssSet('auroraMusicTime', String(audio.currentTime));
+    }
+    function savedMusicTime() { var s = parseFloat(ssGet('auroraMusicTime')); return isFinite(s) && s > 0 ? s : 0; }
+    function updateMusicLabel() {
+        var el = document.querySelector('#musicToggle .music-state');
+        var btn = document.getElementById('musicToggle');
+        var on = musicWanted && !!MUSIC_SRC;
+        if (el) el.textContent = !MUSIC_SRC ? t('musicPending') : (musicWanted ? t('musicOn') : t('musicOff'));
+        if (btn) { btn.setAttribute('aria-pressed', String(on)); btn.classList.toggle('is-on', on); }
+    }
+    function tryPlayMusic() {
+        if (!MUSIC_SRC || !audio) return;
+        if (!audio.getAttribute('src')) {
+            // preload="none" never fires loadedmetadata until play() is called, so play first, seek once metadata arrives.
+            var startAt = savedMusicTime();
+            audio.preload = 'auto';
+            audio.src = MUSIC_SRC;
+            if (startAt > 0) audio.addEventListener('loadedmetadata', function () {
+                try { if (startAt < audio.duration - 1) audio.currentTime = startAt; } catch (e) { /* seek not ready */ }
+            }, { once: true });
+        }
+        var p = audio.play();
+        if (p && p.catch) p.catch(function () {
+            // Autoplay blocked on this page load — resume on the first user gesture instead.
+            var resume = function () { if (musicWanted) audio.play().catch(function () {}); };
+            document.addEventListener('pointerdown', resume, { once: true });
+            document.addEventListener('keydown', resume, { once: true });
         });
+    }
+    function resumeMusicIfWanted() { if (musicWanted && ssGet('aliGateSeen')) tryPlayMusic(); }
+    function toggleMusic() {
+        musicWanted = !musicWanted;
+        if (musicWanted) tryPlayMusic(); else if (audio) audio.pause();
+        saveMusicState();
+        updateMusicLabel();
+    }
+    if (audio) {
+        audio.addEventListener('timeupdate', function () { if (Date.now() - lastSave > 3000) { lastSave = Date.now(); saveMusicState(); } });
+        audio.addEventListener('error', function () { if (audio.getAttribute('src')) { musicWanted = false; saveMusicState(); updateMusicLabel(); } });
+        window.addEventListener('pagehide', saveMusicState);
+    }
 
-        const setActive = (id) => {
-            navLinks.forEach(link => {
-                link.removeAttribute('aria-current');
-                link.classList.remove('active');
-            });
-            const active = linkBySection[id];
-            if (active) {
-                active.setAttribute('aria-current', 'true');
-                active.classList.add('active');
-            }
+    function scrollToHash() {
+        if (!location.hash || location.hash.length < 2) return;
+        var id; try { id = decodeURIComponent(location.hash.slice(1)); } catch (e) { return; }
+        var target = document.getElementById(id);
+        if (target) target.scrollIntoView();
+    }
+    function setShellInert(on) {
+        document.querySelectorAll('nav, main, footer, .back-to-top').forEach(function (n) { if (on) n.setAttribute('inert', ''); else n.removeAttribute('inert'); });
+    }
+
+    // ===== ENTER GATE — once per tab =====
+    function initGate() {
+        var gate = document.getElementById('gate');
+        if (!gate) return;
+        if (ssGet('aliGateSeen')) { gate.remove(); return; }
+        var done = false;
+        setShellInert(true);
+        document.body.style.overflow = 'hidden';
+        var enter = function (withAudio) {
+            if (done) return; done = true;
+            musicWanted = !!withAudio;
+            ssSet('aliGateSeen', '1');
+            saveMusicState();
+            gate.classList.add('is-hidden');
+            document.body.style.overflow = '';
+            setShellInert(false);
+            if (withAudio) tryPlayMusic();
+            updateMusicLabel();
+            setTimeout(function () { gate.remove(); }, 650);
+            scrollToHash();
         };
-
-        const observer = new IntersectionObserver((entries) => {
-            const visible = entries.filter(e => e.isIntersecting);
-            if (visible.length > 0) {
-                visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-                setActive(visible[0].target.id);
-            }
-        }, { rootMargin: '-30% 0px -55% 0px', threshold: 0 });
-
-        sections.forEach(section => observer.observe(section));
+        var enterBtn = document.getElementById('gateEnter');
+        enterBtn.addEventListener('click', function () { enter(true); });
+        document.getElementById('gateEnterSilent').addEventListener('click', function () { enter(false); });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') enter(false); });
+        enterBtn.focus({ preventScroll: true });
     }
 
-    // ===== SMOOTH SCROLL =====
-    function initSmoothScroll() {
-        document.querySelectorAll('a[href^="#"]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
+    // ===== FULLSCREEN MENU =====
+    function initMenu() {
+        var menu = document.getElementById('fullscreenMenu');
+        var openBtn = document.getElementById('menuToggle');
+        var closeBtn = document.getElementById('menuClose');
+        if (!menu || !openBtn) return;
+        var open = function () {
+            menu.hidden = false; openBtn.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden'; setShellInert(true);
+            if (closeBtn) closeBtn.focus();
+        };
+        var close = function () {
+            menu.hidden = true; openBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = ''; setShellInert(false);
+            openBtn.focus({ preventScroll: true });
+        };
+        openBtn.addEventListener('click', open);
+        if (closeBtn) closeBtn.addEventListener('click', close);
+        menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
+        document.addEventListener('keydown', function (e) {
+            if (menu.hidden) return;
+            if (e.key === 'Escape') { close(); return; }
+            if (e.key !== 'Tab') return; // simple focus trap
+            var f = menu.querySelectorAll('a[href], button');
+            if (!f.length) return;
+            var first = f[0], last = f[f.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        });
+    }
+
+    // ===== HERO SCROLL-FRAME — 30 steps from 3 key images, rAF-throttled, pauses off-screen =====
+    function initHero() {
+        var hero = document.querySelector('.hero');
+        var frames = Array.prototype.slice.call(document.querySelectorAll('.hero-frame'));
+        var countEl = document.getElementById('frameCount');
+        if (!hero || !frames.length) return;
+        if (reducedMotion || isCoarse || window.innerWidth <= 720) {
+            frames.forEach(function (f, i) { f.classList.toggle('is-active', i === 0); });
+            if (countEl) countEl.textContent = '01';
+            return; // static fallback on mobile / reduced motion
+        }
+        var heroVisible = true, ticking = false;
+        new IntersectionObserver(function (entries) { heroVisible = entries[0].isIntersecting; }, { threshold: 0 }).observe(hero);
+        document.addEventListener('visibilitychange', function () { if (!document.hidden) update(); });
+        var update = function () {
+            ticking = false;
+            if (!heroVisible || document.hidden) return;
+            var rect = hero.getBoundingClientRect();
+            var total = hero.offsetHeight - window.innerHeight;
+            var p = total > 0 ? Math.min(Math.max(-rect.top / total, 0), 1) : 0;
+            var step = Math.min(Math.floor(p * HERO_STEPS), HERO_STEPS - 1);
+            var imgIdx = Math.min(Math.floor(p * frames.length), frames.length - 1);
+            frames.forEach(function (f, i) {
+                f.classList.toggle('is-active', i === imgIdx);
+                if (i === imgIdx) f.style.transform = 'scale(' + (1.02 + p * 0.16).toFixed(3) + ') translateY(' + (-p * 24).toFixed(1) + 'px)';
+            });
+            if (countEl) countEl.textContent = String(step + 1).padStart(2, '0');
+        };
+        var onScroll = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        update();
+    }
+
+    // ===== ARSENAL BARS — widths come from data-pct (values sent by Ali), animated on reveal =====
+    function initArsenal() {
+        var fills = document.querySelectorAll('.arsenal-fill[data-pct]');
+        if (!fills.length) return;
+        var setWidths = function () {
+            fills.forEach(function (f) { f.style.width = f.getAttribute('data-pct') + '%'; });
+        };
+        if (reducedMotion) { setWidths(); return; }
+        var arsenal = document.querySelector('.arsenal');
+        if (arsenal && 'IntersectionObserver' in window) {
+            var ob = new IntersectionObserver(function (entries) {
+                entries.forEach(function (en) { if (en.isIntersecting) { setWidths(); ob.disconnect(); } });
+            }, { threshold: 0.3 });
+            ob.observe(arsenal);
+        } else setWidths();
+    }
+
+    // ===== PROJECTS STACK =====
+    function initStack() {
+        var stack = document.getElementById('projectStack');
+        if (!stack) return;
+        var wrap = stack.closest('.stack-wrap') || stack;
+        var allCards = Array.prototype.slice.call(stack.querySelectorAll('.stack-card'));
+        var visible = allCards.slice();
+        var idx = 0;
+        var curEl = document.getElementById('stackCurrent');
+        var totEl = document.getElementById('stackTotal');
+        var rtl = function () { return html.getAttribute('dir') === 'rtl'; };
+        var render = function () {
+            allCards.forEach(function (card) { // every card, so a filtered-out card never keeps is-active
+                var i = visible.indexOf(card);
+                card.classList.toggle('is-active', i === idx);
+                card.classList.toggle('is-next', i !== -1 && i === idx + 1);
+                card.setAttribute('aria-hidden', i === idx ? 'false' : 'true');
+                card.tabIndex = i === idx ? 0 : -1;
+            });
+            if (curEl) curEl.textContent = visible.length ? idx + 1 : 0;
+            if (totEl) totEl.textContent = visible.length;
+        };
+        var go = function (d) { if (!visible.length) return; idx = (idx + d + visible.length) % visible.length; render(); };
+        document.getElementById('stackPrev').addEventListener('click', function () { go(-1); });
+        document.getElementById('stackNext').addEventListener('click', function () { go(1); });
+        document.addEventListener('keydown', function (e) {
+            if (!wrap.contains(document.activeElement) && !wrap.matches(':hover')) return;
+            if (e.key === 'ArrowLeft') go(rtl() ? 1 : -1);
+            if (e.key === 'ArrowRight') go(rtl() ? -1 : 1);
+        });
+        // swipe on touch screens; a swipe must not also open the project link
+        var sx = null, swiped = false;
+        stack.addEventListener('pointerdown', function (e) { sx = e.clientX; swiped = false; });
+        stack.addEventListener('pointerup', function (e) {
+            if (sx === null) return;
+            var dx = e.clientX - sx; sx = null;
+            if (Math.abs(dx) > 50) { swiped = true; go((dx < 0) !== rtl() ? 1 : -1); }
+        });
+        stack.addEventListener('click', function (e) { if (swiped) { e.preventDefault(); swiped = false; } }, true);
+        var filters = document.querySelectorAll('.stack-filter');
+        filters.forEach(function (btn) {
+            btn.setAttribute('aria-pressed', String(btn.classList.contains('is-active')));
+            btn.addEventListener('click', function () {
+                filters.forEach(function (b) { b.classList.remove('is-active'); b.setAttribute('aria-pressed', 'false'); });
+                btn.classList.add('is-active'); btn.setAttribute('aria-pressed', 'true');
+                var f = btn.getAttribute('data-filter');
+                visible = f === 'all' ? allCards.slice() : allCards.filter(function (c) { return (c.getAttribute('data-cat') || '').split(' ').indexOf(f) !== -1; });
+                idx = 0;
+                render();
+            });
+        });
+        render();
+    }
+
+    // ===== WORLD GLOBE — light 2D canvas wireframe, drag to rotate =====
+    function initGlobe() {
+        var canvas = document.getElementById('globeCanvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var rot = 0, vel = 0.0018, dragging = false, lastX = 0, raf = null, visible = true;
+        var DPR = Math.min(window.devicePixelRatio || 1, isCoarse ? 1.5 : 2);
+        var size = 640;
+        function resize() {
+            var w = canvas.clientWidth || 640;
+            canvas.width = w * DPR; canvas.height = w * DPR;
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            size = w;
+        }
+        function draw() {
+            var cx = size / 2, cy = size / 2, r = size * 0.36;
+            var accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#00B6F0';
+            ctx.clearRect(0, 0, size, size);
+            ctx.strokeStyle = accent; ctx.lineWidth = 1.2; ctx.globalAlpha = 0.85;
+            ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+            var i, j, x, y, z, px, py, pen;
+            for (i = -3; i <= 3; i++) { // latitude lines
+                ctx.beginPath();
+                pen = false;
+                for (j = 0; j <= 64; j++) {
+                    var a = (j / 64) * Math.PI * 2;
+                    var lat = (i / 4) * (Math.PI / 2);
+                    x = Math.cos(a) * Math.cos(lat); y = Math.sin(lat); z = Math.sin(a) * Math.cos(lat);
+                    var xr = x * Math.cos(rot) + z * Math.sin(rot), zr = -x * Math.sin(rot) + z * Math.cos(rot);
+                    px = cx + xr * r; py = cy + y * r;
+                    if (zr < -0.15) { pen = false; continue; }
+                    ctx.globalAlpha = 0.25 + 0.6 * Math.max(zr, 0);
+                    if (!pen) { ctx.moveTo(px, py); pen = true; } else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            }
+            for (i = 0; i < 12; i++) { // longitude lines
+                ctx.beginPath();
+                pen = false;
+                for (j = 0; j <= 64; j++) {
+                    var b = (j / 64) * Math.PI;
+                    x = Math.sin(b) * Math.cos((i / 12) * Math.PI * 2); y = Math.cos(b); z = Math.sin(b) * Math.sin((i / 12) * Math.PI * 2);
+                    var xr2 = x * Math.cos(rot) + z * Math.sin(rot), zr2 = -x * Math.sin(rot) + z * Math.cos(rot);
+                    px = cx + xr2 * r; py = cy + y * r;
+                    if (zr2 < -0.15) { pen = false; continue; }
+                    ctx.globalAlpha = 0.25 + 0.6 * Math.max(zr2, 0);
+                    if (!pen) { ctx.moveTo(px, py); pen = true; } else ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = accent;
+            var mlat = 0.35, mlon = 0.9 + rot * 0 ; // marker pinned to the sphere, rotates with it
+            var mx = Math.cos(mlon) * Math.cos(mlat), my = Math.sin(mlat), mz = Math.sin(mlon) * Math.cos(mlat);
+            var mxr = mx * Math.cos(rot) + mz * Math.sin(rot), mzr = -mx * Math.sin(rot) + mz * Math.cos(rot);
+            if (mzr > 0) { ctx.beginPath(); ctx.arc(cx + mxr * r, cy - my * r, 5, 0, Math.PI * 2); ctx.fill(); }
+        }
+        function loop() {
+            if (visible && !document.hidden) { if (!dragging && !reducedMotion) rot += vel; draw(); }
+            raf = requestAnimationFrame(loop);
+        }
+        canvas.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; canvas.setPointerCapture(e.pointerId); });
+        canvas.addEventListener('pointermove', function (e) { if (!dragging) return; rot += (e.clientX - lastX) * 0.008; lastX = e.clientX; draw(); });
+        ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (ev) { canvas.addEventListener(ev, function () { dragging = false; }); });
+        new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; }).observe(canvas);
+        window.addEventListener('resize', function () { resize(); draw(); });
+        resize(); draw();
+        if (!reducedMotion) loop(); else draw();
+    }
+
+    // ===== SCROLL REVEALS / NAV / BACK-TO-TOP / SMOOTH SCROLL =====
+    function initChrome() {
+        var prefersReduced = reducedMotion;
+        var reveals = document.querySelectorAll('.reveal, .float-in-left, .float-in-right');
+        if (prefersReduced) { reveals.forEach(function (el) { el.classList.add('visible'); }); }
+        else if ('IntersectionObserver' in window) {
+            var ob = new IntersectionObserver(function (entries) {
+                entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('visible'); ob.unobserve(en.target); } });
+            }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+            reveals.forEach(function (el) { ob.observe(el); });
+        } else { reveals.forEach(function (el) { el.classList.add('visible'); }); }
+        var nav = document.querySelector('nav');
+        var backToTop = document.getElementById('backToTop');
+        var lastY = 0, ticking = false;
+        window.addEventListener('scroll', function () {
+            if (ticking) return; ticking = true;
+            requestAnimationFrame(function () {
+                var y = window.scrollY;
+                if (nav) nav.classList.toggle('nav-hidden', y > lastY && y > 200);
+                if (backToTop) backToTop.classList.toggle('visible', y > 480);
+                lastY = y; ticking = false;
+            });
+        }, { passive: true });
+        if (backToTop) backToTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' }); });
+        document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                var href = link.getAttribute('href');
                 if (href && href.length > 1) {
-                    const target = document.querySelector(href);
+                    var target = document.querySelector(href);
                     if (target) {
                         e.preventDefault();
-                        const navHeight = document.querySelector('nav').offsetHeight;
-                        const top = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
-                        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                        window.scrollTo({ top, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-                        target.setAttribute('tabindex', '-1');
-                        target.focus({ preventScroll: true });
+                        var top = target.getBoundingClientRect().top + window.pageYOffset - 80;
+                        window.scrollTo({ top: top, behavior: prefersReduced ? 'auto' : 'smooth' });
+                        try { history.pushState(null, '', href); } catch (err) { /* file:// etc. */ }
+                        if (target.id) { if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
                     }
                 }
             });
         });
     }
 
-    // ===== BACK TO TOP =====
-    function initBackToTop() {
-        if (!backToTop) return;
-        const toggleVisibility = () => {
-            backToTop.classList.toggle('visible', window.scrollY > 480);
-        };
-        window.addEventListener('scroll', toggleVisibility, { passive: true });
-        toggleVisibility();
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-        });
-    }
-
-    // ===== CURSOR GLOW =====
-    function initCursorGlow() {
-        if (window.matchMedia('(pointer: coarse)').matches) return;
-        const glow = document.createElement('div');
-        glow.id = 'cursor-glow';
-        glow.style.cssText = `
-            position:fixed; pointer-events:none; z-index:9998;
-            width:400px; height:400px; border-radius:50%;
-            background: radial-gradient(circle, rgba(0,217,255,0.04) 0%, transparent 70%);
-            transform:translate(-50%,-50%); transition:opacity 0.3s ease;
-            opacity:0; will-change:transform;
-        `;
-        document.body.appendChild(glow);
-
-        let raf;
-        let mx = -9999, my = -9999;
-        document.addEventListener('mousemove', (e) => {
-            mx = e.clientX; my = e.clientY;
-            if (!raf) {
-                raf = requestAnimationFrame(() => {
-                    glow.style.left = mx + 'px';
-                    glow.style.top = my + 'px';
-                    glow.style.opacity = '1';
-                    raf = null;
-                });
-            }
-        });
-        document.addEventListener('mouseleave', () => { glow.style.opacity = '0'; });
-    }
-
-    // ===== TYPEWRITER =====
-    function initTypewriter() {
-        const el = document.querySelector('.availability-badge span[data-i18n="heroEyebrow"]');
-        if (!el) return;
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) return;
-
-        const origText = el.textContent.trim();
-        el.textContent = '';
-        el.style.opacity = '1';
-
-        let i = 0;
-        const speed = 40;
-        setTimeout(() => {
-            const type = () => {
-                if (i < origText.length) {
-                    el.textContent = origText.slice(0, ++i);
-                    setTimeout(type, speed);
-                }
-            };
-            type();
-        }, 600);
-    }
-
-    // ===== COUNTER ANIMATION =====
-    function initCounters() {
-        const statNumbers = document.querySelectorAll('.stat-number');
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) return;
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                const el = entry.target;
-                const text = el.getAttribute('data-target') || el.textContent;
-                const numMatch = text.match(/[\d.]+/);
-                if (!numMatch) return;
-                const end = parseFloat(numMatch[0]);
-                const suffix = text.replace(/[\d.]+/, '');
-                const duration = 1200;
-                const start = performance.now();
-
-                const tick = (now) => {
-                    const progress = Math.min((now - start) / duration, 1);
-                    const eased = 1 - Math.pow(1 - progress, 3);
-                    const value = Math.round(eased * end);
-                    const display = currentLang === 'fa' ? toFarsiNums(value.toString()) : value.toString();
-                    el.textContent = display + suffix;
-                    if (progress < 1) requestAnimationFrame(tick);
-                };
-                requestAnimationFrame(tick);
-                observer.unobserve(el);
-            });
-        }, { threshold: 0.5 });
-
-        statNumbers.forEach(el => {
-            el.setAttribute('data-target', el.textContent);
-            observer.observe(el);
-        });
-    }
-
-    function toFarsiNums(str) {
-        return str.replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
-    }
-
-    // ===== NAV SCROLL HIDE =====
-    function initNavScroll() {
-        const nav = document.querySelector('nav');
-        if (!nav) return;
-        let lastY = 0;
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    const y = window.scrollY;
-                    if (y > 80) {
-                        nav.classList.toggle('nav-hidden', y > lastY && y > 200 && !isMenuOpen());
-                    } else {
-                        nav.classList.remove('nav-hidden');
-                    }
-                    lastY = y;
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-    }
-
-    // ===== CONTACT FORM (static site: open email app) =====
+    // ===== CONTACT FORM — Formspree when FORMSPREE_ID is set, mailto fallback otherwise =====
     function initContactForm() {
-        const form = document.getElementById('contactForm');
+        var form = document.getElementById('contactForm');
         if (!form) return;
-        form.addEventListener('submit', (e) => {
+        var submitBtn = form.querySelector('button[type="submit"]');
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
-            const nameEl = document.getElementById('name');
-            const emailEl = document.getElementById('email');
-            const messageEl = document.getElementById('message');
-            const name = nameEl ? nameEl.value.trim() : '';
-            const email = emailEl ? emailEl.value.trim() : '';
-            const message = messageEl ? messageEl.value.trim() : '';
-            const subject = encodeURIComponent('Portfolio contact from ' + name);
-            const body = encodeURIComponent(message + '\n\nFrom: ' + name + ' <' + email + '>');
-            const status = document.getElementById('formStatus');
-            if (status) {
-                status.textContent = currentLang === 'fa' ? 'در حال باز کردن برنامه ایمیل…' : 'Opening your email app…';
+            if (form.elements._gotcha && form.elements._gotcha.value) return; // honeypot: bots fill hidden fields
+            var status = document.getElementById('formStatus');
+            var name = form.elements.name.value, email = form.elements.email.value;
+            var scope = form.elements.projectScope.value, message = form.elements.message.value;
+            if (!FORMSPREE_ID) {
+                if (status) { status.textContent = t('formFallback'); status.className = ''; }
+                var subject = encodeURIComponent('Portfolio contact from ' + name + ' [' + scope + ']');
+                var body = encodeURIComponent(message + '\n\nFrom: ' + name + ' <' + email + '>');
+                window.location.href = 'mailto:suicidewithmeagain@gmail.com?subject=' + subject + '&body=' + body;
+                return;
             }
-            window.location.href = 'mailto:suicidewithmeagain@gmail.com?subject=' + subject + '&body=' + body;
+            if (submitBtn) submitBtn.disabled = true; // no double submits
+            if (status) { status.textContent = t('formSending'); status.className = ''; }
+            fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+                method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name, email: email, projectScope: scope, message: message })
+            }).then(function (res) {
+                if (res.ok) { if (status) { status.textContent = t('formSent'); status.className = 'is-ok'; } form.reset(); }
+                else if (status) { status.textContent = t('formError'); status.className = 'is-error'; }
+            }).catch(function () {
+                if (status) { status.textContent = t('formError'); status.className = 'is-error'; }
+            }).then(function () { if (submitBtn) submitBtn.disabled = false; });
         });
     }
 
-    // ===== INIT =====
     function init() {
-        setTheme(currentTheme);
-        if (themeCheckbox) {
-            themeCheckbox.addEventListener('change', toggleTheme);
-        }
-
+        applyTheme(currentTheme);
+        var yr = document.getElementById('year'); if (yr) yr.textContent = new Date().getFullYear();
+        var themeBtn = document.getElementById('themeToggle');
+        if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
         setLanguage(currentLang, false);
-        if (langToggle) langToggle.addEventListener('click', toggleLanguage);
-
-        initMobileNav();
-        initScrollAnimations();
-        initScrollSpy();
-        initSmoothScroll();
-        initBackToTop();
-        initCursorGlow();
-        initTypewriter();
-        initCounters();
-        initNavScroll();
-        initContactForm();
+        var langBtn = document.getElementById('langToggle');
+        if (langBtn) langBtn.addEventListener('click', function () { setLanguage(currentLang === 'en' ? 'fa' : 'en', true); });
+        var musicBtn = document.getElementById('musicToggle');
+        if (musicBtn) musicBtn.addEventListener('click', toggleMusic);
+        updateMusicLabel();
+        initGate(); resumeMusicIfWanted(); initMenu(); initHero(); initArsenal(); initStack(); initGlobe(); initChrome(); initContactForm();
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
 })();

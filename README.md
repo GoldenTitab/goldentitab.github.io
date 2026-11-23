@@ -1,6 +1,6 @@
 # Ali D. Shah — Portfolio
 
-> Personal portfolio website for Ali D. Shah, UI/UX designer and Flutter developer, and Computer Engineering student: about, skills, projects, journey, testimonials, blog and contact, in one responsive static site.
+> Personal portfolio website for Ali D. Shah, UI/UX designer and Flutter developer, and Computer Engineering student: about, skills, projects, journey, world and contact, in a responsive, bilingual (EN/FA) static site inspired by unseen.co.
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -18,8 +18,8 @@ The journey told on the site starts with HTML, CSS and basic JavaScript, expands
 - **Skills** — the tools and technologies he uses: UI/UX (Figma, wireframing, prototyping, user flows, design thinking, usability testing), front-end (HTML5, CSS3, JavaScript, WordPress, responsive design), and mobile (Flutter and Dart).
 - **Projects** — selected work, with project cards and links.
 - **Journey** — a timeline from starting programming, through web development and UI/UX design, to learning WordPress and then Flutter and Dart.
-- **Testimonials** — what people say about working with him.
-- **Blog** — latest thoughts and posts.
+- **World** — a draggable wireframe globe plus a tile gallery of every project (`world.html`).
+- **Enter gate + music** — unseen-style entry screen with optional background music that resumes across pages.
 - **Contact** — a "Let's work together" section and a "Get in touch" form, with an availability note for freelance work.
 - **Responsive design** — a layout that adapts to mobile and desktop, with a bilingual interface.
 
@@ -52,16 +52,15 @@ Open `index.html` directly in a browser, or serve the repository root with any s
 ## Project Structure
 
 ```
-index.html      # Main portfolio page
-script.js       # Site interaction and language handling
-logo.png        # Site logo
-profile.png     # Profile photo
-auroralist/     # AuroraList-related pages and assets
+index.html / experience.html / world.html   # Pages
+style.css, script.js                        # Styles; interaction, i18n (EN/FA), music, gate
+images/, audio/                             # Artwork and site music
+auroralist/, koi/                           # Separate side pages (not part of the portfolio UI)
 ```
 
 ## Usage
 
-Browse the site from the top navigation: About, Skills, Projects, Journey, Testimonials, Blog and Contact. Use the language toggle to switch the interface language.
+Browse the site from the top navigation: Index, Projects, Journey, World and Contact. Use the language toggle to switch the interface language.
 
 ## Contributing
 

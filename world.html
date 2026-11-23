@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" dir="ltr" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <script>(function(){var d=document.documentElement;d.className="js";try{var th=localStorage.getItem("aliTheme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");var l=localStorage.getItem("aliLang")||"en";d.setAttribute("data-theme",th);d.setAttribute("lang",l);d.setAttribute("dir",l==="fa"?"rtl":"ltr");if(sessionStorage.getItem("aliGateSeen"))d.classList.add("gate-seen");}catch(e){}})();</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World — Ali D. Shah</title>
+    <meta name="description" content="The World of Ali D. Shah — a rotating globe gallery of his projects.">
+    <meta name="author" content="Ali D. Shah">
+    <meta name="theme-color" content="#f6eef2">
+    <link rel="icon" type="image/png" href="images/aurora-logo-light-180.png" media="(prefers-color-scheme: light)">
+    <link rel="icon" type="image/png" href="images/aurora-logo-180.png" media="(prefers-color-scheme: dark)">
+    <link rel="apple-touch-icon" href="images/aurora-logo-180.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="#main" class="skip-link" data-i18n="skipLink">Skip to main content</a>
+    <div id="langAnnouncer" class="visually-hidden" role="status" aria-live="polite"></div>
+    <audio id="siteAudio" preload="none" loop></audio>
+
+    <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+        <p class="gate-brand">ALI D. SHAH<sup>®</sup></p>
+        <p class="gate-eyebrow" data-i18n="gateEyebrow">A designer &amp; developer portfolio</p>
+        <p id="gateTitle" class="gate-title"><span class="serif-i" data-i18n="heroTitle">Designer &amp; Developer</span></p>
+        <p class="gate-sub" data-i18n="heroSub">Computer Engineering student building simple, intuitive digital experiences. Focused on UI/UX Design, Flutter, and Product Thinking.</p>
+        <button type="button" id="gateEnter" class="btn btn-pill" data-i18n="gateEnter">Enter</button>
+        <button type="button" id="gateEnterSilent" class="gate-silent" data-i18n="gateEnterSilent">Enter without audio</button>
+    </div>
+
+    <nav role="navigation" aria-label="Main navigation">
+        <a href="index.html" class="nav-logo">ali<span class="serif-i">.shah</span>()</a>
+        <ul class="nav-center" id="navCenter" role="list">
+            <li><a href="index.html" data-i18n="navIndex">Index</a></li>
+            <li><a href="index.html#projects" data-i18n="navProjects">Projects</a></li>
+            <li><a href="index.html#contact" data-i18n="navContact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button type="button" id="musicToggle" class="nav-icon-btn" aria-label="Toggle music" data-i18n-attr="aria-label:musicLabel" aria-pressed="false"><span aria-hidden="true">♪</span><span class="music-state" data-i18n="musicOff">Music: Off</span></button>
+            <button type="button" id="themeToggle" class="nav-icon-btn" aria-label="Switch theme" data-i18n-attr="aria-label:themeToggleLabel"><span aria-hidden="true">◐</span><span class="visually-hidden" data-i18n="themeToggleLabel">Switch theme</span></button>
+            <button type="button" id="langToggle" class="nav-icon-btn" aria-label="Switch to Persian" title="Toggle language"><span id="langLabel" aria-hidden="true">EN</span></button>
+            <button type="button" id="menuToggle" class="nav-icon-btn menu-dots" aria-expanded="false" aria-controls="fullscreenMenu" aria-label="Open menu" data-i18n-attr="aria-label:menuOpenLabel"><span aria-hidden="true">••</span></button>
+        </div>
+    </nav>
+
+    <div id="fullscreenMenu" class="fullscreen-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+        <button type="button" id="menuClose" class="menu-close" aria-label="Close menu" data-i18n-attr="aria-label:menuCloseLabel">✕</button>
+        <ol class="menu-list">
+            <li><a href="index.html"><span class="menu-num">01</span><span data-i18n="navIndex">Index</span></a></li>
+            <li><a href="index.html#projects"><span class="menu-num">02</span><span data-i18n="navProjects">Projects</span></a></li>
+            <li><a href="experience.html"><span class="menu-num">03</span><span data-i18n="navJourney">Journey</span></a></li>
+            <li><a href="world.html"><span class="menu-num">04</span><span data-i18n="navWorld">World</span></a></li>
+            <li><a href="index.html#contact"><span class="menu-num">05</span><span data-i18n="navContact">Contact</span></a></li>
+        </ol>
+        <div class="menu-foot">
+            <a href="mailto:suicidewithmeagain@gmail.com">suicidewithmeagain@gmail.com</a>
+            <span class="menu-socials">
+                <a href="https://github.com/GoldenTitab" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://x.com/GoldenTitabExe" target="_blank" rel="noopener noreferrer">X</a>
+                <a href="https://www.instagram.com/GoldenTitab.exe" target="_blank" rel="noopener noreferrer">Instagram</a>
+                <a href="https://t.me/AuroraUXUI_Studio" target="_blank" rel="noopener noreferrer">Telegram</a>
+            </span>
+        </div>
+    </div>
+
+    <main id="main" tabindex="-1">
+        <section class="page-head world-stage">
+            <p class="section-label reveal" data-i18n="worldLabel" style="justify-content:center">// world</p>
+            <h1 class="section-title reveal"><span class="serif-i" data-i18n="worldTitle">The World</span></h1>
+            <p class="section-subtitle reveal" data-i18n="worldSubtitle" style="margin:0 auto">Drag the globe to explore, then browse every project below.</p>
+            <div class="globe-wrap">
+                <canvas id="globeCanvas" role="img" aria-label="Rotating wireframe globe"></canvas>
+                <p class="globe-hint" data-i18n="worldHint">Drag to rotate</p>
+            </div>
+            <div class="world-tiles">
+                <a class="world-tile" href="https://github.com/GoldenTitab/Deutsch-Pronunciation" target="_blank" rel="noopener noreferrer"><img src="images/project-deutsch.jpg" alt="" loading="lazy"><span data-i18n="project1Name">German Pronunciation &amp; Language Learning</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/Aurora" target="_blank" rel="noopener noreferrer"><img src="images/project-aurora.jpg" alt="" loading="lazy"><span data-i18n="project2Name">Aurora — Anime Franchise Tracker</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/First-App" target="_blank" rel="noopener noreferrer"><img src="images/project-music.jpg" alt="" loading="lazy"><span data-i18n="project3Name">Aurora Music Player</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/Monkey-D.-Luffy" target="_blank" rel="noopener noreferrer"><img src="images/project-luffy.jpg" alt="" loading="lazy"><span data-i18n="project4Name">Monkey D. Luffy Fan Site</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/titab-ai-telegram-bot" target="_blank" rel="noopener noreferrer"><img src="images/project-bot.jpg" alt="" loading="lazy"><span data-i18n="project5Name">Titab AI Telegram Bot</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/dart-cli-calculator" target="_blank" rel="noopener noreferrer"><img src="images/project-calculator.jpg" alt="" loading="lazy"><span data-i18n="project6Name">Dart CLI Calculator</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/dart-fundamentals-exercises" target="_blank" rel="noopener noreferrer"><img src="images/project-fundamentals.jpg" alt="" loading="lazy"><span data-i18n="project7Name">Dart Fundamentals Exercises</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/gibberish-decoder" target="_blank" rel="noopener noreferrer"><img src="images/project-gibberish.jpg" alt="" loading="lazy"><span data-i18n="project8Name">Gibberish Decoder</span></a>
+            </div>
+            <p style="margin-top:1.4rem;"><a href="index.html#projects" class="btn btn-pill" data-i18n="worldCta">View all projects ↗</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-socials">
+                <a href="https://github.com/GoldenTitab" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="GitHub">GitHub</a>
+                <a href="mailto:suicidewithmeagain@gmail.com" class="footer-social" aria-label="Email">Email</a>
+                <a href="https://x.com/GoldenTitabExe" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Twitter">X</a>
+                <a href="https://www.instagram.com/GoldenTitab.exe" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Instagram">Instagram</a>
+                <a href="https://t.me/AuroraUXUI_Studio" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Telegram">Telegram</a>
+            </div>
+            <p class="footer-text" data-i18n="footerText">built by Ali D. Shah — Kerman, Iran</p>
+            <p class="footer-text">© <span id="year">2026</span></p>
+        </div>
+    </footer>
+    <button type="button" id="backToTop" class="back-to-top" aria-label="Back to top" data-i18n-attr="aria-label:backToTopLabel">↑</button>
+    <script src="script.js"></script>
+</body>
+</html>
