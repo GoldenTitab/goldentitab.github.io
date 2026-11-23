@@ -1,0 +1,31 @@
+{
+  "env": { "browser": true, "es2021": true },
+  "parserOptions": { "ecmaVersion": 2021, "sourceType": "script" },
+  "rules": {
+    "no-undef": "error",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "eqeqeq": ["error", "always"],
+    "no-var": "off",
+    "vars-on-top": "off",
+    "prefer-arrow-callback": "off",
+    "func-names": "off",
+    "object-shorthand": "off",
+    "prefer-template": "off",
+    "quote-props": "off",
+    "indent": ["error", 4],
+    "no-plusplus": "off",
+    "no-restricted-syntax": ["error", "ForInStatement"],
+    "no-param-reassign": "off",
+    "no-console": "warn",
+    "no-bitwise": "off",
+    "no-continue": "off",
+    "no-else-return": "off",
+    "max-len": "off",
+    "no-mixed-operators": "off",
+    "brace-style": "off",
+    "object-curly-newline": "off",
+    "comma-dangle": "off",
+    "object-property-newline": "off"
+  },
+  "globals": { "document": "readonly", "window": "readonly", "localStorage": "readonly", "sessionStorage": "readonly", "matchMedia": "readonly", "IntersectionObserver": "readonly", "requestAnimationFrame": "readonly", "fetch": "readonly", "Response": "readonly", "URL": "readonly" }
+}

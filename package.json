@@ -1,0 +1,27 @@
+{
+  "name": "goldentitab.github.io",
+  "version": "1.0.0",
+  "description": "Ali D. Shah's personal portfolio — static site, no build step",
+  "private": true,
+  "scripts": {
+    "test": "npm run lint:js && npm run lint:css && npm run lint:html && npm run test:i18n && npm run test:axe",
+    "lint:js": "eslint script.js",
+    "lint:css": "stylelint style.css",
+    "lint:html": "html-validate *.html",
+    "test:i18n": "node tests/i18n-parity.js",
+    "test:axe": "node tests/axe-scan.js",
+    "test:playwright": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "axe-core": "^4.9.1",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "html-validate": "^8.23.0",
+    "lighthouse": "^13.6.0",
+    "playwright": "^1.49.0",
+    "stylelint": "^16.10.0",
+    "stylelint-config-standard": "^36.0.0"
+  }
+}

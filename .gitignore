@@ -1,0 +1,16 @@
+# Dev tooling (optional, not required to run the site)
+node_modules/
+package-lock.json
+npm-debug.log*
+test-results/
+playwright-report/
+
+# Lighthouse reports
+lighthouse-*.json
+
+# Responsive screenshot matrix (Phase C)
+screenshots/
+
+# OS
+.DS_Store
+Thumbs.db
