@@ -16,7 +16,7 @@
     <link rel="apple-touch-icon" href="/images/aurora-logo-180.png">
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="preload" as="font" href="/fonts/Vazirmatn-Regular.woff2" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="/style.css?v=20261123">
+    <link rel="stylesheet" href="/style.css?v=20261124">
 </head>
 <body data-page="404">
     <noscript><div class="noscript-msg"><p>JavaScript is required to view this portfolio. Please enable it in your browser.</p></div></noscript>
@@ -26,20 +26,35 @@
     <audio id="siteAudio" preload="none" loop></audio>
 
     <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+        <div class="gate-stage" aria-hidden="true">
+            <div class="gate-cube">
+                <span>A</span><span>L</span><span>I</span><span>S</span><span>H</span><span>✦</span>
+            </div>
+        </div>
         <p class="gate-brand" dir="ltr">ALI D. SHAH<sup>®</sup></p>
         <p class="gate-eyebrow" data-i18n="gateEyebrow">A designer &amp; developer portfolio</p>
         <p id="gateTitle" class="gate-title"><span class="serif-i" data-i18n="heroTitle">Designer &amp; Developer</span></p>
         <p class="gate-sub" data-i18n="heroSub">Computer Engineering student building simple, intuitive digital experiences. Focused on UI/UX Design, Flutter, and Product Thinking.</p>
-        <button type="button" id="gateEnter" class="btn btn-pill" data-i18n="gateEnter">Enter</button>
-        <button type="button" id="gateEnterSilent" class="gate-silent" data-i18n="gateEnterSilent">Enter without audio</button>
+        <div class="gate-actions">
+            <button type="button" id="gateEnter" class="btn btn-pill">
+                <span class="btn-swap">
+                    <span class="btn-swap-primary" data-i18n="gateEnter">Enter</span>
+                    <span class="btn-swap-clone" aria-hidden="true" data-i18n="gateEnter">Enter</span>
+                </span>
+            </button>
+            <button type="button" id="gateEnterSilent" class="split-link">
+                <span data-i18n="gateEnterSilent">Enter without audio</span>
+                <span class="split-link-bar" aria-hidden="true"><span></span><span></span></span>
+            </button>
+        </div>
     </div>
 
-    <nav aria-label="Main navigation" data-i18n-attr="aria-label:navLabel">
+    <nav class="site-header" aria-label="Main navigation" data-i18n-attr="aria-label:navLabel">
         <a href="/index.html" class="nav-logo" dir="ltr">ali<span class="serif-i">.shah</span>()</a>
         <ul class="nav-center" id="navCenter">
-            <li><a href="/index.html" data-i18n="navIndex">Index</a></li>
-            <li><a href="/index.html#projects" data-i18n="navProjects">Projects</a></li>
-            <li><a href="/index.html#contact" data-i18n="navContact">Contact</a></li>
+            <li><a href="/index.html"><span class="nav-link-text" data-i18n="navIndex">Index</span><span class="nav-link-hover" aria-hidden="true" data-i18n="navIndex">Index</span></a></li>
+            <li><a href="/index.html#projects"><span class="nav-link-text" data-i18n="navProjects">Projects</span><span class="nav-link-hover" aria-hidden="true" data-i18n="navProjects">Projects</span></a></li>
+            <li><a href="/index.html#contact"><span class="nav-link-text" data-i18n="navContact">Contact</span><span class="nav-link-hover" aria-hidden="true" data-i18n="navContact">Contact</span></a></li>
         </ul>
         <div class="nav-actions">
             <button type="button" id="musicToggle" class="nav-icon-btn" aria-label="Toggle music" data-i18n-attr="aria-label:musicLabel" aria-pressed="false"><span aria-hidden="true">♪</span><span class="music-state" data-i18n="musicOff">Music: Off</span></button>
@@ -51,13 +66,20 @@
 
     <div id="fullscreenMenu" class="fullscreen-menu" role="dialog" aria-modal="true" aria-label="Menu" data-i18n-attr="aria-label:menuLabel" hidden>
         <button type="button" id="menuClose" class="menu-close" aria-label="Close menu" data-i18n-attr="aria-label:menuCloseLabel">✕</button>
-        <ol class="menu-list">
-            <li><a href="/index.html"><span class="menu-num">01</span><span data-i18n="navIndex">Index</span></a></li>
-            <li><a href="/index.html#projects"><span class="menu-num">02</span><span data-i18n="navProjects">Projects</span></a></li>
-            <li><a href="/experience.html"><span class="menu-num">03</span><span data-i18n="navJourney">Journey</span></a></li>
-            <li><a href="/world.html"><span class="menu-num">04</span><span data-i18n="navWorld">World</span></a></li>
-            <li><a href="/index.html#contact"><span class="menu-num">05</span><span data-i18n="navContact">Contact</span></a></li>
-        </ol>
+        <div class="menu-grid">
+            <ol class="menu-list">
+                <li><a href="/index.html"><span class="menu-num">01</span><span class="menu-label" data-i18n="navIndex">Index</span></a></li>
+                <li><a href="/index.html#projects"><span class="menu-num">02</span><span class="menu-label" data-i18n="navProjects">Projects</span></a></li>
+                <li><a href="/experience.html"><span class="menu-num">03</span><span class="menu-label" data-i18n="navJourney">Journey</span></a></li>
+                <li><a href="/world.html"><span class="menu-num">04</span><span class="menu-label" data-i18n="navWorld">World</span></a></li>
+                <li><a href="/index.html#contact"><span class="menu-num">05</span><span class="menu-label" data-i18n="navContact">Contact</span></a></li>
+            </ol>
+            <div class="menu-aside">
+                <p class="menu-aside-name" dir="ltr">Ali D. Shah</p>
+                <p class="menu-aside-note" data-i18n="heroSub">Computer Engineering student building simple, intuitive digital experiences. Focused on UI/UX Design, Flutter, and Product Thinking.</p>
+                <p class="menu-aside-note" data-i18n="contactLocationValue">Kerman, Iran</p>
+            </div>
+        </div>
         <div class="menu-foot">
             <a href="mailto:suicidewithmeagain@gmail.com" dir="ltr">suicidewithmeagain@gmail.com</a>
             <span class="menu-socials">
@@ -71,12 +93,13 @@
 
     <main id="main" tabindex="-1">
         <section class="page-head">
-            <p class="section-label reveal" data-i18n="error404Label">// 404</p>
+            <p class="section-kicker reveal"><span class="section-index">00</span><span data-i18n="error404Label">Error</span></p>
             <h1 class="section-title reveal" data-i18n="error404Title">Page not found</h1>
             <p class="section-subtitle reveal" data-i18n="error404Desc">The page you are looking for does not exist or has moved.</p>
         </section>
-        <section class="glass-card error-card">
-            <a href="/index.html" class="btn btn-pill" data-i18n="error404Cta">Back to home ↗</a>
+        <section class="glass-surface error-card">
+            <p class="error-code serif-i" dir="ltr">404</p>
+            <a href="/index.html" class="btn btn-pill"><span class="btn-swap"><span class="btn-swap-primary" data-i18n="error404Cta">Back to home ↗</span><span class="btn-swap-clone" aria-hidden="true" data-i18n="error404Cta">Back to home ↗</span></span></a>
         </section>
     </main>
 
@@ -94,6 +117,6 @@
         </div>
     </footer>
     <button type="button" id="backToTop" class="back-to-top" aria-label="Back to top" data-i18n-attr="aria-label:backToTopLabel">↑</button>
-    <script src="/script.js?v=20261123"></script>
+    <script src="/script.js?v=20261124"></script>
 </body>
 </html>

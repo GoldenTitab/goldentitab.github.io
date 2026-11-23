@@ -21,7 +21,7 @@
     <link rel="apple-touch-icon" href="images/aurora-logo-180.png">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="preload" as="font" href="fonts/Vazirmatn-Regular.woff2" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="style.css?v=20261123">
+    <link rel="stylesheet" href="style.css?v=20261124">
 </head>
 <body data-page="experience">
     <noscript><div class="noscript-msg"><p>JavaScript is required to view this portfolio. Please enable it in your browser.</p></div></noscript>
@@ -30,20 +30,35 @@
     <audio id="siteAudio" preload="none" loop></audio>
 
     <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+        <div class="gate-stage" aria-hidden="true">
+            <div class="gate-cube">
+                <span>A</span><span>L</span><span>I</span><span>S</span><span>H</span><span>✦</span>
+            </div>
+        </div>
         <p class="gate-brand" dir="ltr">ALI D. SHAH<sup>®</sup></p>
         <p class="gate-eyebrow" data-i18n="gateEyebrow">A designer &amp; developer portfolio</p>
         <p id="gateTitle" class="gate-title"><span class="serif-i" data-i18n="heroTitle">Designer &amp; Developer</span></p>
         <p class="gate-sub" data-i18n="heroSub">Computer Engineering student building simple, intuitive digital experiences. Focused on UI/UX Design, Flutter, and Product Thinking.</p>
-        <button type="button" id="gateEnter" class="btn btn-pill" data-i18n="gateEnter">Enter</button>
-        <button type="button" id="gateEnterSilent" class="gate-silent" data-i18n="gateEnterSilent">Enter without audio</button>
+        <div class="gate-actions">
+            <button type="button" id="gateEnter" class="btn btn-pill">
+                <span class="btn-swap">
+                    <span class="btn-swap-primary" data-i18n="gateEnter">Enter</span>
+                    <span class="btn-swap-clone" aria-hidden="true" data-i18n="gateEnter">Enter</span>
+                </span>
+            </button>
+            <button type="button" id="gateEnterSilent" class="split-link">
+                <span data-i18n="gateEnterSilent">Enter without audio</span>
+                <span class="split-link-bar" aria-hidden="true"><span></span><span></span></span>
+            </button>
+        </div>
     </div>
 
-    <nav aria-label="Main navigation" data-i18n-attr="aria-label:navLabel">
+    <nav class="site-header" aria-label="Main navigation" data-i18n-attr="aria-label:navLabel">
         <a href="index.html" class="nav-logo" dir="ltr">ali<span class="serif-i">.shah</span>()</a>
         <ul class="nav-center" id="navCenter">
-            <li><a href="index.html" data-i18n="navIndex">Index</a></li>
-            <li><a href="index.html#projects" data-i18n="navProjects">Projects</a></li>
-            <li><a href="index.html#contact" data-i18n="navContact">Contact</a></li>
+            <li><a href="index.html"><span class="nav-link-text" data-i18n="navIndex">Index</span><span class="nav-link-hover" aria-hidden="true" data-i18n="navIndex">Index</span></a></li>
+            <li><a href="index.html#projects"><span class="nav-link-text" data-i18n="navProjects">Projects</span><span class="nav-link-hover" aria-hidden="true" data-i18n="navProjects">Projects</span></a></li>
+            <li><a href="index.html#contact"><span class="nav-link-text" data-i18n="navContact">Contact</span><span class="nav-link-hover" aria-hidden="true" data-i18n="navContact">Contact</span></a></li>
         </ul>
         <div class="nav-actions">
             <button type="button" id="musicToggle" class="nav-icon-btn" aria-label="Toggle music" data-i18n-attr="aria-label:musicLabel" aria-pressed="false"><span aria-hidden="true">♪</span><span class="music-state" data-i18n="musicOff">Music: Off</span></button>
@@ -55,13 +70,20 @@
 
     <div id="fullscreenMenu" class="fullscreen-menu" role="dialog" aria-modal="true" aria-label="Menu" data-i18n-attr="aria-label:menuLabel" hidden>
         <button type="button" id="menuClose" class="menu-close" aria-label="Close menu" data-i18n-attr="aria-label:menuCloseLabel">✕</button>
-        <ol class="menu-list">
-            <li><a href="index.html"><span class="menu-num">01</span><span data-i18n="navIndex">Index</span></a></li>
-            <li><a href="index.html#projects"><span class="menu-num">02</span><span data-i18n="navProjects">Projects</span></a></li>
-            <li><a href="experience.html"><span class="menu-num">03</span><span data-i18n="navJourney">Journey</span></a></li>
-            <li><a href="world.html"><span class="menu-num">04</span><span data-i18n="navWorld">World</span></a></li>
-            <li><a href="index.html#contact"><span class="menu-num">05</span><span data-i18n="navContact">Contact</span></a></li>
-        </ol>
+        <div class="menu-grid">
+            <ol class="menu-list">
+                <li><a href="index.html"><span class="menu-num">01</span><span class="menu-label" data-i18n="navIndex">Index</span></a></li>
+                <li><a href="index.html#projects"><span class="menu-num">02</span><span class="menu-label" data-i18n="navProjects">Projects</span></a></li>
+                <li><a href="experience.html"><span class="menu-num">03</span><span class="menu-label" data-i18n="navJourney">Journey</span></a></li>
+                <li><a href="world.html"><span class="menu-num">04</span><span class="menu-label" data-i18n="navWorld">World</span></a></li>
+                <li><a href="index.html#contact"><span class="menu-num">05</span><span class="menu-label" data-i18n="navContact">Contact</span></a></li>
+            </ol>
+            <div class="menu-aside">
+                <p class="menu-aside-name" dir="ltr">Ali D. Shah</p>
+                <p class="menu-aside-note" data-i18n="heroSub">Computer Engineering student building simple, intuitive digital experiences. Focused on UI/UX Design, Flutter, and Product Thinking.</p>
+                <p class="menu-aside-note" data-i18n="contactLocationValue">Kerman, Iran</p>
+            </div>
+        </div>
         <div class="menu-foot">
             <a href="mailto:suicidewithmeagain@gmail.com" dir="ltr">suicidewithmeagain@gmail.com</a>
             <span class="menu-socials">
@@ -75,20 +97,20 @@
 
     <main id="main" tabindex="-1">
         <section class="page-head">
-            <p class="section-label reveal" data-i18n="journeyLabel">// journey</p>
+            <p class="section-kicker reveal"><span class="section-index">04</span><span data-i18n="journeyLabel">Journey</span></p>
             <h1 class="section-title reveal" data-i18n="journeyTitle">How I got here</h1>
             <p class="section-subtitle reveal" data-i18n="journeySubtitle">My path from beginner to where I am today</p>
         </section>
-        <section>
+        <section class="section-band">
             <div class="timeline">
-                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey1Year">2022</div><h2 data-i18n="journey1Title">Started Programming</h2><p data-i18n="journey1Desc">Began learning C and Java at university. Built my first console applications.</p><div class="timeline-tags"><span>C</span><span>Java</span><span>CS Fundamentals</span></div></div>
-                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey2Year">2023</div><h2 data-i18n="journey2Title">Started Web Development</h2><p data-i18n="journey2Desc">Learned HTML, CSS and the basics of JavaScript. Built first landing pages and responsive websites.</p><div class="timeline-tags"><span>HTML</span><span>CSS</span><span>JavaScript</span></div></div>
-                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey3Year">2024</div><h2 data-i18n="journey3Title">Expanded into UI/UX Design</h2><p data-i18n="journey3Desc">Dove deep into UI/UX with Figma. Started building interactive prototypes and applied software engineering principles.</p><div class="timeline-tags"><span>UI/UX</span><span>Figma</span><span>Software Engineering</span></div></div>
-                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey4Year">2025</div><h2 data-i18n="journey4Title">Learning WordPress</h2><p data-i18n="journey4Desc">Built websites and learned how to customize them using the Elementor plugin.</p><div class="timeline-tags"><span>WordPress</span><span>Elementor</span><span>CMS</span></div></div>
-                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey5Year">2026</div><h2 data-i18n="journey5Title">Learning Flutter &amp; Dart</h2><p data-i18n="journey5Desc">Building mobile apps and working toward becoming a Product Designer. Exploring cross-platform development.</p><div class="timeline-tags"><span>Flutter</span><span>Dart</span><span>Firebase</span></div></div>
-                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey6Year">2027</div><h2 data-i18n="journey6Title">Product Designer</h2><p data-i18n="journey6Desc">Goal: ship real products, build a personal brand, launch a freelance career, and contribute to open-source.</p><div class="timeline-tags"><span>Product Design</span><span>Freelance</span><span>Open Source</span></div></div>
+                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey1Year">2022</div><div><h2 data-i18n="journey1Title">Started Programming</h2><p data-i18n="journey1Desc">Began learning C and Java at university. Built my first console applications.</p><p class="timeline-tags">C <span class="skill-sep" aria-hidden="true">·</span> Java <span class="skill-sep" aria-hidden="true">·</span> CS Fundamentals</p></div></div>
+                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey2Year">2023</div><div><h2 data-i18n="journey2Title">Started Web Development</h2><p data-i18n="journey2Desc">Learned HTML, CSS and the basics of JavaScript. Built first landing pages and responsive websites.</p><p class="timeline-tags">HTML <span class="skill-sep" aria-hidden="true">·</span> CSS <span class="skill-sep" aria-hidden="true">·</span> JavaScript</p></div></div>
+                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey3Year">2024</div><div><h2 data-i18n="journey3Title">Expanded into UI/UX Design</h2><p data-i18n="journey3Desc">Dove deep into UI/UX with Figma. Started building interactive prototypes and applied software engineering principles.</p><p class="timeline-tags">UI/UX <span class="skill-sep" aria-hidden="true">·</span> Figma <span class="skill-sep" aria-hidden="true">·</span> Software Engineering</p></div></div>
+                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey4Year">2025</div><div><h2 data-i18n="journey4Title">Learning WordPress</h2><p data-i18n="journey4Desc">Built websites and learned how to customize them using the Elementor plugin.</p><p class="timeline-tags">WordPress <span class="skill-sep" aria-hidden="true">·</span> Elementor <span class="skill-sep" aria-hidden="true">·</span> CMS</p></div></div>
+                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey5Year">2026</div><div><h2 data-i18n="journey5Title">Learning Flutter &amp; Dart</h2><p data-i18n="journey5Desc">Building mobile apps and working toward becoming a Product Designer. Exploring cross-platform development.</p><p class="timeline-tags">Flutter <span class="skill-sep" aria-hidden="true">·</span> Dart <span class="skill-sep" aria-hidden="true">·</span> Firebase</p></div></div>
+                <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey6Year">2027</div><div><h2 data-i18n="journey6Title">Product Designer</h2><p data-i18n="journey6Desc">Goal: ship real products, build a personal brand, launch a freelance career, and contribute to open-source.</p><p class="timeline-tags">Product Design <span class="skill-sep" aria-hidden="true">·</span> Freelance <span class="skill-sep" aria-hidden="true">·</span> Open Source</p></div></div>
             </div>
-            <p class="back-home"><a href="index.html" class="btn btn-pill" data-i18n="backHome">Back to home</a></p>
+            <p class="back-home"><a href="index.html" class="btn btn-pill"><span class="btn-swap"><span class="btn-swap-primary" data-i18n="backHome">Back to home</span><span class="btn-swap-clone" aria-hidden="true" data-i18n="backHome">Back to home</span></span></a></p>
         </section>
     </main>
 
@@ -106,7 +128,6 @@
         </div>
     </footer>
     <button type="button" id="backToTop" class="back-to-top" aria-label="Back to top" data-i18n-attr="aria-label:backToTopLabel">↑</button>
-    <script src="script.js?v=20261123"></script>
+    <script src="script.js?v=20261124"></script>
 </body>
 </html>
-

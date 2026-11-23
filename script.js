@@ -30,26 +30,27 @@
             heroTitle: 'Designer & Developer',
             heroCreating: 'Creating the', heroUnexpected: 'unexpected',
             heroSub: 'Computer Engineering student building simple, intuitive digital experiences. Focused on UI/UX Design, Flutter, and Product Thinking.',
-            heroCta1: 'View Projects', heroCta2: 'GitHub Profile', heroWorldLink: 'Enter the World ↗',
+            heroCta1: 'View Projects', heroCta2: 'GitHub Profile', heroWorldLink: 'Enter the World',
             scrollHint: 'scroll',
             levelMaster: 'Master', levelAdvanced: 'Advanced', levelIntermediate: 'Intermediate', levelBeginner: 'Beginner',
             phName: 'Your name', phEmail: 'your@email.com', phMessage: 'Tell me about your project...', backHome: 'Back to home', musicLabel: 'Toggle music',
-            aboutLabel: '// about me', aboutTitle: 'Who I am',
+            aboutLabel: 'About', aboutTitle: 'Who I am',
             aboutP1: 'I\'m a <strong>Computer Engineering student</strong> at Vali-e-Asr University of Rafsanjan, passionate about the intersection of technology and design.',
             aboutP2: 'My journey started with <strong>HTML &amp; CSS</strong> and basic JavaScript, then expanded into WordPress, UI/UX design with Figma, and now <strong>Flutter &amp; Dart</strong> for mobile apps.',
             aboutP3: 'I believe good design is invisible — it guides people naturally without getting in the way.',
             aboutP4: 'When I\'m not coding, you\'ll find me watching movies and series, listening to music, or learning English and German.',
             stat1Num: '4+', stat1Label: 'Years learning', stat2Num: '8+', stat2Label: 'Projects built',
-            skillsLabel: '// skills', skillsTitle: 'What I work with',
+            skillsLabel: 'Capabilities', skillsTitle: 'What I work with',
             skillsSubtitle: 'Tools and technologies I use to bring ideas to life',
             skillGroup1: 'UI / UX', skillGroup2: 'Front-End', skillGroup3: 'Mobile & Dev', skillGroup4: 'Tools', skillGroup5: 'Soft Skills', skillGroup6: 'Learning',
-            projectsLabel: '// projects', projectsTitle: 'Things I\'ve built',
+            projectsLabel: 'Selected Works', projectsTitle: 'Things I\'ve built',
             projectsSubtitle: 'A selection of projects I\'ve worked on recently',
             filtersLabel: 'Filter projects',
             projectsCarouselLabel: 'Projects',
             stackPrevLabel: 'Previous project',
             stackNextLabel: 'Next project',
             filterAll: 'All', filterFlutter: 'Flutter', filterWeb: 'Web', filterDart: 'Dart', filterDesign: 'Design',
+            projectOpenCta: 'View repository ↗',
             project1Alt: 'German language learning illustration: open book and flashcards',
             project2Alt: 'Anime franchise tracker illustration: poster shelf with progress bars',
             project3Alt: 'Music player illustration: headphones, vinyl and sound waves',
@@ -74,7 +75,7 @@
             project7Desc: 'A 23-exercise path through Dart fundamentals: input handling, collections, classes, and small console programs.',
             project8Name: 'Gibberish Decoder',
             project8Desc: 'Chrome extension that fixes text typed on the wrong keyboard layout (Persian ↔ English) in chat boxes, plus Persian half-spaces and number conversion. Fully local, no text sent to any server.',
-            journeyLabel: '// journey', journeyTitle: 'How I got here',
+            journeyLabel: 'Journey', journeyTitle: 'How I got here',
             journeySubtitle: 'My path from beginner to where I am today',
             journeyTeaserText: 'From C and Java at university to Flutter, UI/UX and product design — six stops along the way.',
             journeyTeaserCta: 'View the timeline ↗',
@@ -84,12 +85,12 @@
             journey4Year: '2025', journey4Title: 'Learning WordPress', journey4Desc: 'Built websites and learned how to customize them using the Elementor plugin.',
             journey5Year: '2026', journey5Title: 'Learning Flutter & Dart', journey5Desc: 'Building mobile apps and working toward becoming a Product Designer. Exploring cross-platform development.',
             journey6Year: '2027', journey6Title: 'Product Designer', journey6Desc: 'Goal: ship real products, build a personal brand, launch a freelance career, and contribute to open-source.',
-            worldLabel: '// world', worldTitle: 'The World',
+            worldLabel: 'World', worldTitle: 'The World',
             worldSubtitle: 'Drag the globe to explore, then browse every project below.',
             globeLabel: 'Rotating wireframe globe',
             worldHint: 'Drag to rotate', worldNote: 'Tiles use the existing project artwork.',
             worldCta: 'View all projects ↗',
-            contactLabel: '// contact', contactTitle: 'Let\'s work together',
+            contactLabel: 'Contact', contactTitle: 'Let\'s work together',
             contactSubtitle: 'Have a project in mind? Let\'s discuss how we can collaborate',
             contactHeading: 'Get in touch',
             contactDesc: 'Open to freelance projects, collaborations, and internship opportunities. I\'m always excited to work on new challenges.',
@@ -107,7 +108,7 @@
             footerInstagramLabel: 'Instagram',
             footerTelegramLabel: 'Telegram',
             footerText: 'built by Ali D. Shah — Kerman, Iran',
-            error404Label: '// 404',
+            error404Label: 'Error',
             error404Title: 'Page not found',
             error404Desc: 'The page you are looking for does not exist or has moved.',
             error404Cta: 'Back to home ↗'
@@ -132,26 +133,27 @@
             heroTitle: 'طراح و توسعه‌دهنده',
             heroCreating: 'خلقِ', heroUnexpected: 'غیرمنتظره',
             heroSub: 'دانشجوی مهندسی کامپیوتر که تجربه‌های دیجیتالی ساده و کاربرپسند می‌سازد. تخصصم در طراحی UI/UX، فلاتر و تفکر محصول‌محور است.',
-            heroCta1: 'مشاهده پروژه‌ها', heroCta2: 'پروفایل گیت‌هاب', heroWorldLink: 'ورود به دنیا ↗',
+            heroCta1: 'مشاهده پروژه‌ها', heroCta2: 'پروفایل گیت‌هاب', heroWorldLink: 'ورود به دنیا',
             scrollHint: 'اسکرول',
             levelMaster: 'حرفه‌ای', levelAdvanced: 'پیشرفته', levelIntermediate: 'متوسط', levelBeginner: 'مبتدی',
             phName: 'نام شما', phEmail: 'you@example.com', phMessage: 'درباره پروژه‌ات بگو...', backHome: 'بازگشت به خانه', musicLabel: 'روشن/خاموش کردن موزیک',
-            aboutLabel: '// درباره من', aboutTitle: 'کی هستم',
+            aboutLabel: 'درباره من', aboutTitle: 'کی هستم',
             aboutP1: 'من یک <strong>دانشجوی مهندسی کامپیوتر</strong> در دانشگاه ولی‌عصر رفسنجان هستم که به نقطه تلاقی فناوری و طراحی علاقه دارم.',
             aboutP2: 'مسیرم از <strong>HTML و CSS</strong> و جاوااسکریپت پایه شروع شد، سپس به وردپرس، طراحی UI/UX با فیگما و الان <strong>فلاتر و دارت</strong> برای اپ‌های موبایل رسیده.',
             aboutP3: 'باورم اینه که طراحی خوب دیده نمی‌شه — بدون دردسر، آدم‌ها رو هدایت می‌کنه.',
             aboutP4: 'وقتی کدنویسی نمی‌کنم، فیلم و سریال می‌بینم، موسیقی گوش می‌دم یا زبان انگلیسی و آلمانی یاد می‌گیرم.',
             stat1Num: '۴+', stat1Label: 'سال یادگیری', stat2Num: '۸+', stat2Label: 'پروژه تموم‌شده',
-            skillsLabel: '// مهارت‌ها', skillsTitle: 'با چی کار می‌کنم',
+            skillsLabel: 'توانمندی‌ها', skillsTitle: 'با چی کار می‌کنم',
             skillsSubtitle: 'ابزارها و فناوری‌هایی که برای زنده کردن ایده‌ها استفاده می‌کنم',
             skillGroup1: 'UI / UX', skillGroup2: 'فرانت‌اند', skillGroup3: 'موبایل و توسعه', skillGroup4: 'ابزارها', skillGroup5: 'مهارت‌های نرم', skillGroup6: 'در حال یادگیری',
-            projectsLabel: '// پروژه‌ها', projectsTitle: 'چیزایی که ساختم',
+            projectsLabel: 'آثار برگزیده', projectsTitle: 'چیزایی که ساختم',
             projectsSubtitle: 'چندتا از پروژه‌هایی که اخیراً روشون کار کردم',
             filtersLabel: 'فیلتر پروژه‌ها',
             projectsCarouselLabel: 'پروژه‌ها',
             stackPrevLabel: 'پروژه قبلی',
             stackNextLabel: 'پروژه بعدی',
             filterAll: 'همه', filterFlutter: 'فلاتر', filterWeb: 'وب', filterDart: 'دارت', filterDesign: 'دیزاین',
+            projectOpenCta: 'مشاهده مخزن ↗',
             project1Alt: 'تصویرسازی یادگیری زبان آلمانی: کتاب باز و فلش‌کارت‌ها',
             project2Alt: 'تصویرسازی ردیاب فرنچایز انیمه: قفسه پوسترها با نوار پیشرفت',
             project3Alt: 'تصویرسازی موزیک‌پلیر: هدفون، صفحه وینیل و امواج صدا',
@@ -176,7 +178,7 @@
             project7Desc: 'یه مسیر 23 تمرینی برای یادگیری مبانی Dart: مدیریت ورودی، کالکشن‌ها، کلاس‌ها، و برنامه‌های کنسولی کوچیک.',
             project8Name: 'مبدل حروف اشتباه کیبورد',
             project8Desc: 'اکستنشن کروم که متن تایپ‌شده با کیبورد اشتباه (فارسی ↔ انگلیسی) رو توی باکس‌های چت درست می‌کنه، به‌علاوه نیم‌فاصله فارسی و تبدیل عددها. کاملا آفلاین، هیچ متنی به هیچ سروری فرستاده نمی‌شه.',
-            journeyLabel: '// مسیر', journeyTitle: 'چطور اینجا رسیدم',
+            journeyLabel: 'مسیر', journeyTitle: 'چطور اینجا رسیدم',
             journeySubtitle: 'مسیر من از مبتدی تا جایی که الان هستم',
             journeyTeaserText: 'از C و Java در دانشگاه تا فلاتر، UI/UX و طراحی محصول — شش ایستگاه در این مسیر.',
             journeyTeaserCta: 'مشاهده تایم‌لاین ↗',
@@ -186,12 +188,12 @@
             journey4Year: '۲۰۲۵', journey4Title: 'یادگیری وردپرس', journey4Desc: 'سایت ساختم و یاد گرفتم چطور با پلاگین المنتور اون‌ها رو سفارشی‌سازی کنم.',
             journey5Year: '۲۰۲۶', journey5Title: 'یادگیری فلاتر و دارت', journey5Desc: 'دارم اپ‌های موبایل می‌سازم و هدفم اینه که طراح محصول بشم. دارم توسعه چندپلتفرمه رو کاوش می‌کنم.',
             journey6Year: '۲۰۲۷', journey6Title: 'طراح محصول', journey6Desc: 'هدف: عرضه محصول واقعی، ساخت برند شخصی، شروع کار فریلنسری، و مشارکت در اوپن‌سورس.',
-            worldLabel: '// دنیا', worldTitle: 'دنیا',
+            worldLabel: 'دنیا', worldTitle: 'دنیا',
             worldSubtitle: 'کره رو بکش تا بچرخه، بعد همه پروژه‌ها رو پایین ببین.',
             globeLabel: 'کره سیمی چرخان',
             worldHint: 'برای چرخوندن بکش', worldNote: 'کاشی‌ها از عکس‌های فعلی پروژه‌ها استفاده می‌کنن.',
             worldCta: 'مشاهده همه پروژه‌ها ↗',
-            contactLabel: '// تماس', contactTitle: 'بزن بریم کار کنیم',
+            contactLabel: 'تماس', contactTitle: 'بزن بریم کار کنیم',
             contactSubtitle: 'یه پروژه توی ذهنت داری؟ بیا ببینیم چطور می‌تونیم همکاری کنیم',
             contactHeading: 'ارتباط با من',
             contactDesc: 'آماده همکاری توی پروژه‌های فریلنسری، پروژه‌های مشترک، و کارآموزی هستم. همیشه از کار روی چالش‌های جدید هیجان‌زده می‌شم.',
@@ -209,7 +211,7 @@
             footerInstagramLabel: 'اینستاگرام',
             footerTelegramLabel: 'تلگرام',
             footerText: 'ساخته‌شده توسط علی د. شاه — کرمان، ایران',
-            error404Label: '// ۴۰۴',
+            error404Label: 'خطا',
             error404Title: 'صفحه یافت نشد',
             error404Desc: 'صفحهٔ مورد نظر وجود ندارد یا جابه‌جا شده است.',
             error404Cta: 'بازگشت به خانه ↗'
@@ -411,11 +413,10 @@
             if (countEl) countEl.textContent = '01';
             return; // static fallback on mobile / reduced motion
         }
-        var heroVisible = true, ticking = false;
+        var heroVisible = true, ticking = false, mx = 0, my = 0;
         if ('IntersectionObserver' in window) {
             new IntersectionObserver(function (entries) { heroVisible = entries[0].isIntersecting; }, { threshold: 0 }).observe(hero);
         }
-        document.addEventListener('visibilitychange', function () { if (!document.hidden) update(); });
         var update = function () {
             ticking = false;
             if (!heroVisible || document.hidden) return;
@@ -426,12 +427,24 @@
             var imgIdx = Math.min(Math.floor(p * frames.length), frames.length - 1);
             frames.forEach(function (f, i) {
                 f.classList.toggle('is-active', i === imgIdx);
-                if (i === imgIdx) f.style.transform = 'scale(' + (1.02 + p * 0.16).toFixed(3) + ') translateY(' + (-p * 24).toFixed(1) + 'px)';
+                if (i === imgIdx) {
+                    f.style.transform = 'scale(' + (1.03 + p * 0.14).toFixed(3) + ') translate3d(' + (-mx).toFixed(1) + 'px, ' + (-p * 24 - my).toFixed(1) + 'px, 0)';
+                }
             });
             if (countEl) countEl.textContent = String(step + 1).padStart(2, '0');
         };
-        var onScroll = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
-        window.addEventListener('scroll', onScroll, { passive: true });
+        var scheduleUpdate = function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+        document.addEventListener('visibilitychange', function () { if (!document.hidden) update(); });
+        window.addEventListener('scroll', scheduleUpdate, { passive: true });
+        hero.addEventListener('pointermove', function (e) {
+            mx = ((e.clientX / window.innerWidth) - 0.5) * 14;
+            my = ((e.clientY / window.innerHeight) - 0.5) * 10;
+            scheduleUpdate();
+        }, { passive: true });
+        hero.addEventListener('pointerleave', function () {
+            mx = 0; my = 0;
+            scheduleUpdate();
+        });
         update();
     }
 
@@ -452,7 +465,7 @@
         } else setWidths();
     }
 
-    // ===== PROJECTS STACK =====
+    // ===== PROJECTS STACK & UNSEEN INDEX STRIP =====
     function initStack() {
         var stack = document.getElementById('projectStack');
         if (!stack) return;
@@ -462,19 +475,59 @@
         var idx = 0;
         var curEl = document.getElementById('stackCurrent');
         var totEl = document.getElementById('stackTotal');
+        var stripEl = document.getElementById('projectIndexStrip');
         var rtl = function () { return html.getAttribute('dir') === 'rtl'; };
+        var indexBtns = [];
         var render = function () {
             var nextIdx = visible.length > 1 ? (idx + 1) % visible.length : -1;
-            allCards.forEach(function (card) { // every card, so a filtered-out card never keeps is-active
+            allCards.forEach(function (card, cardPos) { // every card, so a filtered-out card never keeps is-active
                 var i = visible.indexOf(card);
                 card.classList.toggle('is-active', i === idx);
                 card.classList.toggle('is-next', i !== -1 && i === nextIdx);
                 card.setAttribute('aria-hidden', i === idx ? 'false' : 'true');
                 card.tabIndex = i === idx ? 0 : -1;
+                if (indexBtns[cardPos]) {
+                    indexBtns[cardPos].hidden = (i === -1);
+                    indexBtns[cardPos].classList.toggle('is-current', i === idx);
+                    indexBtns[cardPos].setAttribute('aria-pressed', i === idx ? 'true' : 'false');
+                }
             });
             if (curEl) curEl.textContent = visible.length ? idx + 1 : 0;
             if (totEl) totEl.textContent = visible.length;
         };
+        if (stripEl) {
+            stripEl.innerHTML = '';
+            allCards.forEach(function (card, cardPos) {
+                var titleEl = card.querySelector('.project-name');
+                var nameKey = titleEl ? titleEl.getAttribute('data-i18n') : '';
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'project-index-btn';
+                var num = document.createElement('span');
+                num.className = 'project-index-num';
+                num.setAttribute('dir', 'ltr');
+                num.textContent = String(cardPos + 1).padStart(2, '0');
+                var lbl = document.createElement('span');
+                lbl.className = 'project-index-label';
+                if (nameKey) {
+                    lbl.setAttribute('data-i18n', nameKey);
+                    lbl.innerHTML = t(nameKey);
+                } else if (titleEl) {
+                    lbl.textContent = titleEl.textContent;
+                }
+                btn.appendChild(num);
+                btn.appendChild(lbl);
+                btn.addEventListener('click', function () {
+                    var targetIdx = visible.indexOf(card);
+                    if (targetIdx !== -1) {
+                        idx = targetIdx;
+                        render();
+                    }
+                });
+                stripEl.appendChild(btn);
+                indexBtns.push(btn);
+            });
+        }
         var go = function (d) { if (!visible.length) return; idx = (idx + d + visible.length) % visible.length; render(); };
         document.getElementById('stackPrev').addEventListener('click', function () { go(-1); });
         document.getElementById('stackNext').addEventListener('click', function () { go(1); });
@@ -604,6 +657,7 @@
                 a.setAttribute('aria-current', 'page');
             }
         });
+        var heroEl = document.querySelector('.hero');
         var nav = document.querySelector('nav');
         var backToTop = document.getElementById('backToTop');
         var lastY = 0, ticking = false;
@@ -611,8 +665,9 @@
             if (ticking) return; ticking = true;
             requestAnimationFrame(function () {
                 var y = window.scrollY;
+                var topThreshold = heroEl ? Math.max(480, heroEl.offsetHeight - window.innerHeight + 120) : 480;
                 if (nav) nav.classList.toggle('nav-hidden', y > lastY && y > 200);
-                if (backToTop) backToTop.classList.toggle('visible', y > 480);
+                if (backToTop) backToTop.classList.toggle('visible', y > topThreshold);
                 lastY = y; ticking = false;
             });
         }, { passive: true });
