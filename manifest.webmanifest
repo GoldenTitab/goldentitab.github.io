@@ -1,0 +1,15 @@
+{
+  "name": "Ali D. Shah — Portfolio",
+  "short_name": "Ali D. Shah",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6eef2",
+  "theme_color": "#f6eef2",
+  "orientation": "portrait",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    { "src": "images/aurora-logo-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "images/aurora-logo-light-180.png", "sizes": "180x180", "type": "image/png", "purpose": "maskable" }
+  ]
+}
