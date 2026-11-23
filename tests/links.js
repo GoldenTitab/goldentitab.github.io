@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const root = process.cwd();
-const htmlFiles = ['index.html', 'experience.html', 'world.html'];
+const htmlFiles = ['index.html', 'experience.html', 'world.html', '404.html'];
 
 // URL-ish attributes to check.
 const attrRegex = /(?:href|src)="([^"]+)"/g;
@@ -14,6 +14,7 @@ function checkInternal(target) {
     let u = target.split('#')[0].split('?')[0];
     if (!u) return; // hash-only or empty
     if (u.startsWith('mailto:') || u.startsWith('tel:')) return;
+    u = u.replace(/^\//, '');
     // Resolve relative to the HTML file's dir (root for our files).
     const abs = path.resolve(root, u);
     if (!fs.existsSync(abs)) {
@@ -48,7 +49,7 @@ for (const f of htmlFiles) {
         if (checkedAssets.has(target)) continue;
         checkedAssets.add(target);
         if (target.startsWith('http')) continue;
-        const abs = path.resolve(root, target);
+        const abs = path.resolve(root, target.replace(/^\//, ''));
         if (!fs.existsSync(abs)) {
             failures++;
             console.log('MISSING asset: ' + target + ' -> ' + abs);
@@ -62,7 +63,7 @@ for (const m of js.matchAll(/(?:MUSIC_SRC|src)\s*=\s*["']([^"']+)["']/g)) {
     const target = m[1];
     if (target.startsWith('http') || checkedAssets.has(target)) continue;
     checkedAssets.add(target);
-    const abs = path.resolve(root, target);
+    const abs = path.resolve(root, target.replace(/^\//, ''));
     if (!fs.existsSync(abs)) { failures++; console.log('MISSING JS asset: ' + target); }
 }
 

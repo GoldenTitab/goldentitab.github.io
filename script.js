@@ -4,20 +4,27 @@
     // Formspree endpoint ID for the contact form. If empty, the form falls back to the visitor's email app.
     var FORMSPREE_ID = "xkjrprpb";
     // Site music file: sent by Ali 2026-11-23 — Odysseus_KLICKAUD.mp3 (8:41, 7.1 MB, loop, preload=none).
-    var MUSIC_SRC = "audio/Odysseus_KLICKAUD.mp3";
+    var MUSIC_SRC = "/audio/Odysseus_KLICKAUD.mp3";
 
     var HERO_STEPS = 30; // scroll-frame hero: 30 steps simulated from 3 key images (not 240 JPGs)
 
     // ===== TRANSLATIONS (EN + FA, every string on all 3 pages) =====
     var translations = {
         en: {
+            pageTitleIndex: 'Ali D. Shah — UI/UX Designer & Flutter Developer',
+            pageTitleExperience: 'Journey — Ali D. Shah',
+            pageTitleWorld: 'World — Ali D. Shah',
+            pageTitle404: '404 — Page not found — Ali D. Shah',
             skipLink: 'Skip to main content',
+            navLabel: 'Main navigation',
+            menuLabel: 'Menu',
             navIndex: 'Index', navProjects: 'Projects', navContact: 'Contact', navJourney: 'Journey', navWorld: 'World',
             menuOpenLabel: 'Open menu', menuCloseLabel: 'Close menu',
             themeToggleLabel: 'Switch theme', langToggleLabel: 'Switch to Persian', langAnnounce: 'Language switched to English',
             backToTopLabel: 'Back to top',
             gateEyebrow: 'A designer & developer portfolio',
             gateEnter: 'Enter', gateEnterSilent: 'Enter without audio',
+            avatarAlt: 'Ali D. Shah',
             heroEyebrow: 'Available for freelance',
             heroName: 'Ali D. Shah — Designer & Developer',
             heroTitle: 'Designer & Developer',
@@ -38,7 +45,19 @@
             skillGroup1: 'UI / UX', skillGroup2: 'Front-End', skillGroup3: 'Mobile & Dev', skillGroup4: 'Tools', skillGroup5: 'Soft Skills', skillGroup6: 'Learning',
             projectsLabel: '// projects', projectsTitle: 'Things I\'ve built',
             projectsSubtitle: 'A selection of projects I\'ve worked on recently',
+            filtersLabel: 'Filter projects',
+            projectsCarouselLabel: 'Projects',
+            stackPrevLabel: 'Previous project',
+            stackNextLabel: 'Next project',
             filterAll: 'All', filterFlutter: 'Flutter', filterWeb: 'Web', filterDart: 'Dart', filterDesign: 'Design',
+            project1Alt: 'German language learning illustration: open book and flashcards',
+            project2Alt: 'Anime franchise tracker illustration: poster shelf with progress bars',
+            project3Alt: 'Music player illustration: headphones, vinyl and sound waves',
+            project4Alt: 'Pirate adventure illustration: straw hat on a ship deck',
+            project5Alt: 'Titab AI Telegram Bot illustration: robot assistant chatting in a messaging app',
+            project6Alt: 'Dart CLI Calculator illustration: pocket calculator on a desk with a notebook',
+            project7Alt: 'Dart Fundamentals Exercises illustration: stepping-stone learning path with a laptop',
+            project8Alt: 'Gibberish Decoder illustration: scattered keyboard keys becoming an orderly keyboard',
             project1Name: 'German Pronunciation & Language Learning',
             project1Desc: 'Single-page web app for learning German from A0 to C1: vocabulary, grammar, verbs, cases, reading, quizzes, spaced-repetition flashcards and a pronunciation masterclass.',
             project2Name: 'Aurora — Anime Franchise Tracker',
@@ -67,6 +86,7 @@
             journey6Year: '2027', journey6Title: 'Product Designer', journey6Desc: 'Goal: ship real products, build a personal brand, launch a freelance career, and contribute to open-source.',
             worldLabel: '// world', worldTitle: 'The World',
             worldSubtitle: 'Drag the globe to explore, then browse every project below.',
+            globeLabel: 'Rotating wireframe globe',
             worldHint: 'Drag to rotate', worldNote: 'Tiles use the existing project artwork.',
             worldCta: 'View all projects ↗',
             contactLabel: '// contact', contactTitle: 'Let\'s work together',
@@ -81,6 +101,11 @@
             formFallback: 'Formspree is not set up yet — opening your email app instead.',
             formError: 'Something went wrong. Please email me directly.',
             musicOff: 'Music: Off', musicOn: 'Music: On', musicPending: 'Music: Off — file pending',
+            footerGithubLabel: 'GitHub',
+            footerEmailLabel: 'Email',
+            footerTwitterLabel: 'Twitter',
+            footerInstagramLabel: 'Instagram',
+            footerTelegramLabel: 'Telegram',
             footerText: 'built by Ali D. Shah — Kerman, Iran',
             error404Label: '// 404',
             error404Title: 'Page not found',
@@ -88,13 +113,20 @@
             error404Cta: 'Back to home ↗'
         },
         fa: {
+            pageTitleIndex: 'علی د. شاه — طراح UI/UX و توسعه‌دهنده فلاتر',
+            pageTitleExperience: 'مسیر — علی د. شاه',
+            pageTitleWorld: 'دنیا — علی د. شاه',
+            pageTitle404: '۴۰۴ — صفحه یافت نشد — علی د. شاه',
             skipLink: 'رفتن به محتوای اصلی',
+            navLabel: 'ناوبری اصلی',
+            menuLabel: 'منو',
             navIndex: 'خانه', navProjects: 'پروژه‌ها', navContact: 'تماس', navJourney: 'مسیر', navWorld: 'دنیا',
             menuOpenLabel: 'باز کردن منو', menuCloseLabel: 'بستن منو',
             themeToggleLabel: 'تغییر تم', langToggleLabel: 'تغییر به انگلیسی', langAnnounce: 'زبان به فارسی تغییر کرد',
             backToTopLabel: 'برگشت به بالا',
             gateEyebrow: 'پورتفولیوی طراح و توسعه‌دهنده',
             gateEnter: 'ورود', gateEnterSilent: 'ورود بدون صدا',
+            avatarAlt: 'علی د. شاه',
             heroEyebrow: 'آماده همکاری فریلنسری',
             heroName: 'علی د. شاه — طراح و توسعه‌دهنده',
             heroTitle: 'طراح و توسعه‌دهنده',
@@ -103,7 +135,7 @@
             heroCta1: 'مشاهده پروژه‌ها', heroCta2: 'پروفایل گیت‌هاب', heroWorldLink: 'ورود به دنیا ↗',
             scrollHint: 'اسکرول',
             levelMaster: 'حرفه‌ای', levelAdvanced: 'پیشرفته', levelIntermediate: 'متوسط', levelBeginner: 'مبتدی',
-            phName: 'نام شما', phEmail: 'ایمیل شما...', phMessage: 'درباره پروژه‌ات بگو...', backHome: 'بازگشت به خانه', musicLabel: 'روشن/خاموش کردن موزیک',
+            phName: 'نام شما', phEmail: 'you@example.com', phMessage: 'درباره پروژه‌ات بگو...', backHome: 'بازگشت به خانه', musicLabel: 'روشن/خاموش کردن موزیک',
             aboutLabel: '// درباره من', aboutTitle: 'کی هستم',
             aboutP1: 'من یک <strong>دانشجوی مهندسی کامپیوتر</strong> در دانشگاه ولی‌عصر رفسنجان هستم که به نقطه تلاقی فناوری و طراحی علاقه دارم.',
             aboutP2: 'مسیرم از <strong>HTML و CSS</strong> و جاوااسکریپت پایه شروع شد، سپس به وردپرس، طراحی UI/UX با فیگما و الان <strong>فلاتر و دارت</strong> برای اپ‌های موبایل رسیده.',
@@ -115,7 +147,19 @@
             skillGroup1: 'UI / UX', skillGroup2: 'فرانت‌اند', skillGroup3: 'موبایل و توسعه', skillGroup4: 'ابزارها', skillGroup5: 'مهارت‌های نرم', skillGroup6: 'در حال یادگیری',
             projectsLabel: '// پروژه‌ها', projectsTitle: 'چیزایی که ساختم',
             projectsSubtitle: 'چندتا از پروژه‌هایی که اخیراً روشون کار کردم',
+            filtersLabel: 'فیلتر پروژه‌ها',
+            projectsCarouselLabel: 'پروژه‌ها',
+            stackPrevLabel: 'پروژه قبلی',
+            stackNextLabel: 'پروژه بعدی',
             filterAll: 'همه', filterFlutter: 'فلاتر', filterWeb: 'وب', filterDart: 'دارت', filterDesign: 'دیزاین',
+            project1Alt: 'تصویرسازی یادگیری زبان آلمانی: کتاب باز و فلش‌کارت‌ها',
+            project2Alt: 'تصویرسازی ردیاب فرنچایز انیمه: قفسه پوسترها با نوار پیشرفت',
+            project3Alt: 'تصویرسازی موزیک‌پلیر: هدفون، صفحه وینیل و امواج صدا',
+            project4Alt: 'تصویرسازی ماجراجویی دزدان دریایی: کلاه حصیری روی عرشه کشتی',
+            project5Alt: 'تصویرسازی ربات تلگرام هوش مصنوعی تیتاب: دستیار ربات در حال گفتگو',
+            project6Alt: 'تصویرسازی ماشین‌حساب خط فرمان دارت: ماشین‌حساب روی میز کنار دفترچه',
+            project7Alt: 'تصویرسازی تمرین‌های مبانی دارت: مسیر یادگیری پله‌به‌پله با لپ‌تاپ',
+            project8Alt: 'تصویرسازی مبدل حروف اشتباه کیبورد: کلیدهای پراکنده تبدیل‌شونده به کیبورد مرتب',
             project1Name: 'یادگیری آلمانی و تلفظ',
             project1Desc: 'وب‌اپ تک‌صفحه‌ای برای یادگیری آلمانی از A0 تا C1: واژگان، گرامر، صرف فعل، حالت‌ها، خواندن، آزمون، فلش‌کارت با تکرار فاصله‌دار و بخش تلفظ.',
             project2Name: 'آرورا — ردیاب فرنچایز انیمه',
@@ -124,13 +168,13 @@
             project3Desc: 'موزیک‌پلیر فلاتر با پخش آنلاین، ورود با فایربیس، تم روشن و تیره، رابط فارسی راست‌به‌چپ و کنترل‌های کامل پخش.',
             project4Name: 'سایت فن‌مید مانکی دی. لوفی',
             project4Desc: 'وب‌سایت فن‌مید برای بیوگرافی مانکی دی. لوفی از وان پیس، با تم روشن و تیره، انیمیشن‌های اسکرول و چیدمان فارسی راست‌به‌چپ.',
-            project5Name: 'Titab AI Telegram Bot',
+            project5Name: 'ربات تلگرام هوش مصنوعی تیتاب',
             project5Desc: 'بات تلگرامی که با یه مدل AI جواب می‌ده: long polling خام با Telegram Bot API، حافظه مخصوص هر چت، و chat completions با Hugging Face، با توکن‌هایی که فقط توی یه فایل .env لوکال نگه داشته می‌شن.',
-            project6Name: 'Dart CLI Calculator',
+            project6Name: 'ماشین‌حساب خط فرمان دارت',
             project6Desc: 'ماشین‌حساب خط فرمانی با Dart، با پرامپت تعاملی، ورودی عملگرها، و خروج تمیز از برنامه.',
-            project7Name: 'Dart Fundamentals Exercises',
+            project7Name: 'تمرین‌های مبانی دارت',
             project7Desc: 'یه مسیر 23 تمرینی برای یادگیری مبانی Dart: مدیریت ورودی، کالکشن‌ها، کلاس‌ها، و برنامه‌های کنسولی کوچیک.',
-            project8Name: 'Gibberish Decoder',
+            project8Name: 'مبدل حروف اشتباه کیبورد',
             project8Desc: 'اکستنشن کروم که متن تایپ‌شده با کیبورد اشتباه (فارسی ↔ انگلیسی) رو توی باکس‌های چت درست می‌کنه، به‌علاوه نیم‌فاصله فارسی و تبدیل عددها. کاملا آفلاین، هیچ متنی به هیچ سروری فرستاده نمی‌شه.',
             journeyLabel: '// مسیر', journeyTitle: 'چطور اینجا رسیدم',
             journeySubtitle: 'مسیر من از مبتدی تا جایی که الان هستم',
@@ -144,6 +188,7 @@
             journey6Year: '۲۰۲۷', journey6Title: 'طراح محصول', journey6Desc: 'هدف: عرضه محصول واقعی، ساخت برند شخصی، شروع کار فریلنسری، و مشارکت در اوپن‌سورس.',
             worldLabel: '// دنیا', worldTitle: 'دنیا',
             worldSubtitle: 'کره رو بکش تا بچرخه، بعد همه پروژه‌ها رو پایین ببین.',
+            globeLabel: 'کره سیمی چرخان',
             worldHint: 'برای چرخوندن بکش', worldNote: 'کاشی‌ها از عکس‌های فعلی پروژه‌ها استفاده می‌کنن.',
             worldCta: 'مشاهده همه پروژه‌ها ↗',
             contactLabel: '// تماس', contactTitle: 'بزن بریم کار کنیم',
@@ -158,6 +203,11 @@
             formFallback: 'فورم‌اسپری هنوز تنظیم نشده — در عوض برنامه ایمیل باز می‌شه.',
             formError: 'یه مشکلی پیش اومد. لطفاً مستقیم ایمیل بزن.',
             musicOff: 'موزیک: خاموش', musicOn: 'موزیک: روشن', musicPending: 'موزیک: خاموش — فایل در انتظار',
+            footerGithubLabel: 'گیت‌هاب',
+            footerEmailLabel: 'ایمیل',
+            footerTwitterLabel: 'توییتر / X',
+            footerInstagramLabel: 'اینستاگرام',
+            footerTelegramLabel: 'تلگرام',
             footerText: 'ساخته‌شده توسط علی د. شاه — کرمان، ایران',
             error404Label: '// ۴۰۴',
             error404Title: 'صفحه یافت نشد',
@@ -172,7 +222,10 @@
     function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
     function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* ignore */ } }
     var currentLang = lsGet('aliLang') === 'fa' ? 'fa' : 'en';
-    var currentTheme = lsGet('aliTheme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var storedTheme = lsGet('aliTheme');
+    var currentTheme = (storedTheme === 'dark' || storedTheme === 'light')
+        ? storedTheme
+        : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var reducedData = window.matchMedia('(prefers-reduced-data: reduce)').matches || (navigator.connection && navigator.connection.saveData);
     var isCoarse = window.matchMedia('(pointer: coarse)').matches;
@@ -213,6 +266,14 @@
         if (sn) sn.textContent = lang === 'fa' ? '←' : '→';
         var langToggle = document.getElementById('langToggle');
         if (langToggle) langToggle.setAttribute('aria-label', tr.langToggleLabel);
+        var pageType = document.body ? document.body.getAttribute('data-page') : '';
+        var titleMap = {
+            index: tr.pageTitleIndex,
+            experience: tr.pageTitleExperience,
+            world: tr.pageTitleWorld,
+            '404': tr.pageTitle404
+        };
+        if (pageType && titleMap[pageType]) document.title = titleMap[pageType];
         var announcer = document.getElementById('langAnnouncer');
         if (announce && announcer) announcer.textContent = tr.langAnnounce;
         updateMusicLabel();
@@ -283,10 +344,12 @@
         if (!gate) return;
         if (ssGet('aliGateSeen')) { gate.remove(); return; }
         var done = false;
+        var onGateEsc;
         setShellInert(true);
         document.body.style.overflow = 'hidden';
         var enter = function (withAudio) {
             if (done) return; done = true;
+            document.removeEventListener('keydown', onGateEsc);
             musicWanted = !!withAudio;
             ssSet('aliGateSeen', '1');
             saveMusicState();
@@ -298,10 +361,11 @@
             setTimeout(function () { gate.remove(); }, 650);
             scrollToHash();
         };
+        onGateEsc = function (e) { if (e.key === 'Escape') enter(false); };
         var enterBtn = document.getElementById('gateEnter');
         enterBtn.addEventListener('click', function () { enter(true); });
         document.getElementById('gateEnterSilent').addEventListener('click', function () { enter(false); });
-        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') enter(false); });
+        document.addEventListener('keydown', onGateEsc);
         enterBtn.focus({ preventScroll: true });
     }
 
@@ -348,7 +412,9 @@
             return; // static fallback on mobile / reduced motion
         }
         var heroVisible = true, ticking = false;
-        new IntersectionObserver(function (entries) { heroVisible = entries[0].isIntersecting; }, { threshold: 0 }).observe(hero);
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entries) { heroVisible = entries[0].isIntersecting; }, { threshold: 0 }).observe(hero);
+        }
         document.addEventListener('visibilitychange', function () { if (!document.hidden) update(); });
         var update = function () {
             ticking = false;
@@ -398,10 +464,11 @@
         var totEl = document.getElementById('stackTotal');
         var rtl = function () { return html.getAttribute('dir') === 'rtl'; };
         var render = function () {
+            var nextIdx = visible.length > 1 ? (idx + 1) % visible.length : -1;
             allCards.forEach(function (card) { // every card, so a filtered-out card never keeps is-active
                 var i = visible.indexOf(card);
                 card.classList.toggle('is-active', i === idx);
-                card.classList.toggle('is-next', i !== -1 && i === idx + 1);
+                card.classList.toggle('is-next', i !== -1 && i === nextIdx);
                 card.setAttribute('aria-hidden', i === idx ? 'false' : 'true');
                 card.tabIndex = i === idx ? 0 : -1;
             });
@@ -504,7 +571,9 @@
         canvas.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; canvas.setPointerCapture(e.pointerId); });
         canvas.addEventListener('pointermove', function (e) { if (!dragging) return; rot += (e.clientX - lastX) * 0.008; lastX = e.clientX; draw(); });
         ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (ev) { canvas.addEventListener(ev, function () { dragging = false; }); });
-        new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; }).observe(canvas);
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; }).observe(canvas);
+        }
         window.addEventListener('resize', function () { resize(); draw(); });
         resize(); draw();
         if (!reducedMotion && !reducedData) loop(); else draw();
@@ -521,6 +590,20 @@
             }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
             reveals.forEach(function (el) { ob.observe(el); });
         } else { reveals.forEach(function (el) { el.classList.add('visible'); }); }
+        var pageType = document.body ? document.body.getAttribute('data-page') : '';
+        var activeHrefMap = {
+            index: ['#top', 'index.html'],
+            experience: ['experience.html'],
+            world: ['world.html']
+        };
+        var matches = activeHrefMap[pageType] || [];
+        document.querySelectorAll('.nav-center a, .menu-list a').forEach(function (a) {
+            var href = (a.getAttribute('href') || '').replace(/^\//, '');
+            if (matches.indexOf(href) !== -1) {
+                a.classList.add('active');
+                a.setAttribute('aria-current', 'page');
+            }
+        });
         var nav = document.querySelector('nav');
         var backToTop = document.getElementById('backToTop');
         var lastY = 0, ticking = false;

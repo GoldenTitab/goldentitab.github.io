@@ -2,9 +2,10 @@
 <html lang="en" data-theme="light" dir="ltr" class="no-js">
 <head>
     <meta charset="UTF-8">
-    <script>(function(){var d=document.documentElement;d.className="js";try{var th=localStorage.getItem("aliTheme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");var l=localStorage.getItem("aliLang")||"en";d.setAttribute("data-theme",th);d.setAttribute("lang",l);d.setAttribute("dir",l==="fa"?"rtl":"ltr");if(sessionStorage.getItem("aliGateSeen"))d.classList.add("gate-seen");}catch(e){}})();</script>
+    <script>(function(){var d=document.documentElement;d.className="js";try{var s=localStorage.getItem("aliTheme");var th=(s==="dark"||s==="light")?s:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");var sl=localStorage.getItem("aliLang");var l=sl==="fa"?"fa":"en";d.setAttribute("data-theme",th);d.setAttribute("lang",l);d.setAttribute("dir",l==="fa"?"rtl":"ltr");var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",th==="dark"?"#0a0a14":"#f6eef2");if(sessionStorage.getItem("aliGateSeen"))d.classList.add("gate-seen");}catch(e){}})();</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ali D. Shah — UI/UX Designer &amp; Flutter Developer</title>
+    <link rel="canonical" href="https://goldentitab.github.io/">
     <meta name="description" content="Portfolio of Ali D. Shah, a Computer Engineering student and UI/UX designer working with Figma, Flutter and front-end development.">
     <meta name="author" content="Ali D. Shah">
     <meta property="og:type" content="website">
@@ -44,7 +45,7 @@
     <link rel="preload" as="font" href="fonts/Vazirmatn-Regular.woff2" type="font/woff2" crossorigin>
     <link rel="preload" as="image" href="images/hero-world-1.webp" fetchpriority="high">
 </head>
-<body>
+<body data-page="index">
     <noscript><div class="noscript-msg"><p>JavaScript is required to view this portfolio. Please enable it in your browser.</p></div></noscript>
     <a href="#main" class="skip-link" data-i18n="skipLink">Skip to main content</a>
     <div id="langAnnouncer" class="visually-hidden" role="status" aria-live="polite"></div>
@@ -54,7 +55,7 @@
 
     <!-- ===== ENTER GATE — unseen-style, once per tab (sessionStorage) ===== -->
     <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
-        <p class="gate-brand">ALI D. SHAH<sup>®</sup></p>
+        <p class="gate-brand" dir="ltr">ALI D. SHAH<sup>®</sup></p>
         <p class="gate-eyebrow" data-i18n="gateEyebrow">A designer &amp; developer portfolio</p>
         <p id="gateTitle" class="gate-title"><span class="serif-i" data-i18n="heroTitle">Designer &amp; Developer</span></p>
         <p class="gate-sub" data-i18n="heroSub">Computer Engineering student building simple, intuitive digital experiences. Focused on UI/UX Design, Flutter, and Product Thinking.</p>
@@ -63,8 +64,8 @@
     </div>
 
     <!-- ===== NAV — minimal unseen-style ===== -->
-    <nav aria-label="Main navigation">
-        <a href="#top" class="nav-logo">ali<span class="serif-i">.shah</span>()</a>
+    <nav aria-label="Main navigation" data-i18n-attr="aria-label:navLabel">
+        <a href="#top" class="nav-logo" dir="ltr">ali<span class="serif-i">.shah</span>()</a>
         <ul class="nav-center" id="navCenter">
             <li><a href="#top" data-i18n="navIndex">Index</a></li>
             <li><a href="#projects" data-i18n="navProjects">Projects</a></li>
@@ -73,13 +74,13 @@
         <div class="nav-actions">
             <button type="button" id="musicToggle" class="nav-icon-btn" aria-label="Toggle music" data-i18n-attr="aria-label:musicLabel" aria-pressed="false"><span aria-hidden="true">♪</span><span class="music-state" data-i18n="musicOff">Music: Off</span></button>
             <button type="button" id="themeToggle" class="nav-icon-btn" aria-label="Switch theme" data-i18n-attr="aria-label:themeToggleLabel"><span aria-hidden="true">◐</span><span class="visually-hidden" data-i18n="themeToggleLabel">Switch theme</span></button>
-            <button type="button" id="langToggle" class="nav-icon-btn" aria-label="Switch to Persian" title="Toggle language"><span id="langLabel" aria-hidden="true">EN</span></button>
+            <button type="button" id="langToggle" class="nav-icon-btn" aria-label="Switch to Persian" data-i18n-attr="aria-label:langToggleLabel"><span id="langLabel" aria-hidden="true">EN</span></button>
             <button type="button" id="menuToggle" class="nav-icon-btn menu-dots" aria-expanded="false" aria-controls="fullscreenMenu" aria-label="Open menu" data-i18n-attr="aria-label:menuOpenLabel"><span aria-hidden="true">••</span></button>
         </div>
     </nav>
 
     <!-- ===== FULLSCREEN NUMBERED MENU ===== -->
-    <div id="fullscreenMenu" class="fullscreen-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div id="fullscreenMenu" class="fullscreen-menu" role="dialog" aria-modal="true" aria-label="Menu" data-i18n-attr="aria-label:menuLabel" hidden>
         <button type="button" id="menuClose" class="menu-close" aria-label="Close menu" data-i18n-attr="aria-label:menuCloseLabel">✕</button>
         <ol class="menu-list">
             <li><a href="#top"><span class="menu-num">01</span><span data-i18n="navIndex">Index</span></a></li>
@@ -89,7 +90,7 @@
             <li><a href="#contact"><span class="menu-num">05</span><span data-i18n="navContact">Contact</span></a></li>
         </ol>
         <div class="menu-foot">
-            <a href="mailto:suicidewithmeagain@gmail.com">suicidewithmeagain@gmail.com</a>
+            <a href="mailto:suicidewithmeagain@gmail.com" dir="ltr">suicidewithmeagain@gmail.com</a>
             <span class="menu-socials">
                 <a href="https://github.com/GoldenTitab" target="_blank" rel="noopener noreferrer">GitHub</a>
                 <a href="https://x.com/GoldenTitabExe" target="_blank" rel="noopener noreferrer">X</a>
@@ -121,7 +122,7 @@
             </div>
         </div>
         <div class="hero-bottom">
-            <span class="hero-frame-count"><span id="frameCount">01</span> / 30</span>
+            <span class="hero-frame-count" dir="ltr"><span id="frameCount">01</span> / 30</span>
             <span class="scroll-hint" data-i18n="scrollHint">scroll</span>
             <a href="world.html" class="hero-world-link" data-i18n="heroWorldLink">Enter the World ↗</a>
         </div>
@@ -134,7 +135,7 @@
     <section id="about" class="about-section">
         <div class="about-bg" aria-hidden="true"><picture><source srcset="images/about-world.webp" type="image/webp"><img src="images/about-world.jpg" alt="" loading="lazy"></picture></div>
         <div class="about-card glass-card">
-            <img class="about-avatar reveal" src="images/avatar.png" alt="Ali D. Shah" width="72" height="72" loading="lazy">
+            <img class="about-avatar reveal" src="images/avatar.png" alt="Ali D. Shah" data-i18n-attr="alt:avatarAlt" width="72" height="72" loading="lazy">
             <p class="section-label reveal" data-i18n="aboutLabel">// about me</p>
             <h2 class="section-title reveal" data-i18n="aboutTitle">Who I am</h2>
             <p data-i18n="aboutP1">I'm a <strong>Computer Engineering student</strong> at Vali-e-Asr University of Rafsanjan, passionate about the intersection of technology and design.</p>
@@ -184,28 +185,28 @@
         <p class="section-label reveal" data-i18n="projectsLabel">// projects</p>
         <h2 class="section-title reveal" data-i18n="projectsTitle">Things I've built</h2>
         <p class="section-subtitle reveal" data-i18n="projectsSubtitle">A selection of projects I've worked on recently</p>
-        <div class="stack-filters" role="group" aria-label="Filter projects">
+        <div class="stack-filters" role="group" aria-label="Filter projects" data-i18n-attr="aria-label:filtersLabel">
             <button type="button" class="stack-filter is-active" data-filter="all" data-i18n="filterAll">All</button>
             <button type="button" class="stack-filter" data-filter="Flutter" data-i18n="filterFlutter">Flutter</button>
             <button type="button" class="stack-filter" data-filter="Web" data-i18n="filterWeb">Web</button>
             <button type="button" class="stack-filter" data-filter="Dart" data-i18n="filterDart">Dart</button>
             <button type="button" class="stack-filter" data-filter="Design" data-i18n="filterDesign">Design</button>
         </div>
-        <section class="stack-wrap" aria-roledescription="carousel" aria-label="Projects">
+        <section class="stack-wrap" aria-roledescription="carousel" aria-label="Projects" data-i18n-attr="aria-label:projectsCarouselLabel">
             <div class="stack" id="projectStack">
-                <a href="https://github.com/GoldenTitab/Deutsch-Pronunciation" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><picture><source srcset="images/project-deutsch.webp" type="image/webp"><img src="images/project-deutsch.jpg" alt="German language learning illustration: open book and flashcards" loading="lazy"></picture></div><div class="project-name" data-i18n="project1Name">German Pronunciation &amp; Language Learning</div><p class="project-desc" data-i18n="project1Desc">Single-page web app for learning German from A0 to C1: vocabulary, grammar, verbs, cases, reading, quizzes, spaced-repetition flashcards and a pronunciation masterclass.</p><div class="project-tags"><span class="project-tag">HTML</span><span class="project-tag">CSS</span><span class="project-tag">JavaScript</span></div></a>
-                <a href="https://github.com/GoldenTitab/Aurora" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Flutter Dart Design"><div class="project-image"><picture><source srcset="images/project-aurora.webp" type="image/webp"><img src="images/project-aurora.jpg" alt="Anime franchise tracker illustration: poster shelf with progress bars" loading="lazy"></picture></div><div class="project-name" data-i18n="project2Name">Aurora — Anime Franchise Tracker</div><p class="project-desc" data-i18n="project2Desc">Offline-first anime franchise tracker built with Flutter: seasons, movies and OVAs grouped under one franchise, with data from AniList and MyAnimeList and a Persian (RTL) interface.</p><div class="project-tags"><span class="project-tag">Flutter</span><span class="project-tag">Dart</span><span class="project-tag">Hive</span></div></a>
-                <a href="https://github.com/GoldenTitab/First-App" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Flutter Dart"><div class="project-image"><picture><source srcset="images/project-music.webp" type="image/webp"><img src="images/project-music.jpg" alt="Music player illustration: headphones, vinyl and sound waves" loading="lazy"></picture></div><div class="project-name" data-i18n="project3Name">Aurora Music Player</div><p class="project-desc" data-i18n="project3Desc">Flutter music player with online streaming, Firebase authentication, light and dark themes, a Persian (RTL) interface and full player controls.</p><div class="project-tags"><span class="project-tag">Flutter</span><span class="project-tag">Dart</span><span class="project-tag">Firebase</span></div></a>
-                <a href="https://github.com/GoldenTitab/Monkey-D.-Luffy" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><picture><source srcset="images/project-luffy.webp" type="image/webp"><img src="images/project-luffy.jpg" alt="Pirate adventure illustration: straw hat on a ship deck" loading="lazy"></picture></div><div class="project-name" data-i18n="project4Name">Monkey D. Luffy Fan Site</div><p class="project-desc" data-i18n="project4Desc">Fan-made biography website for Monkey D. Luffy from One Piece, with a light/dark theme, scroll animations and a responsive Persian (RTL) layout.</p><div class="project-tags"><span class="project-tag">HTML</span><span class="project-tag">CSS</span><span class="project-tag">JavaScript</span></div></a>
-                <a href="https://github.com/GoldenTitab/titab-ai-telegram-bot" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><picture><source srcset="images/project-bot.webp" type="image/webp"><img src="images/project-bot.jpg" alt="Titab AI Telegram Bot illustration: robot assistant chatting in a messaging app" loading="lazy"></picture></div><div class="project-name" data-i18n="project5Name">Titab AI Telegram Bot</div><p class="project-desc" data-i18n="project5Desc">Telegram bot that answers with an AI model: raw Telegram Bot API long polling, per-chat memory, and Hugging Face chat completions, with tokens kept in a local .env file.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">Telegram Bot API</span><span class="project-tag">Hugging Face</span></div></a>
-                <a href="https://github.com/GoldenTitab/dart-cli-calculator" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><picture><source srcset="images/project-calculator.webp" type="image/webp"><img src="images/project-calculator.jpg" alt="Dart CLI Calculator illustration: pocket calculator on a desk with a notebook" loading="lazy"></picture></div><div class="project-name" data-i18n="project6Name">Dart CLI Calculator</div><p class="project-desc" data-i18n="project6Desc">Command-line calculator in Dart with an interactive prompt, operator input, and clean exit handling.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">CLI</span></div></a>
-                <a href="https://github.com/GoldenTitab/dart-fundamentals-exercises" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><picture><source srcset="images/project-fundamentals.webp" type="image/webp"><img src="images/project-fundamentals.jpg" alt="Dart Fundamentals Exercises illustration: stepping-stone learning path with a laptop" loading="lazy"></picture></div><div class="project-name" data-i18n="project7Name">Dart Fundamentals Exercises</div><p class="project-desc" data-i18n="project7Desc">A 23-exercise path through Dart fundamentals: input handling, collections, classes, and small console programs.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">Exercises</span></div></a>
-                <a href="https://github.com/GoldenTitab/gibberish-decoder" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><picture><source srcset="images/project-gibberish.webp" type="image/webp"><img src="images/project-gibberish.jpg" alt="Gibberish Decoder illustration: scattered keyboard keys becoming an orderly keyboard" loading="lazy"></picture></div><div class="project-name" data-i18n="project8Name">Gibberish Decoder</div><p class="project-desc" data-i18n="project8Desc">Chrome extension that fixes text typed on the wrong keyboard layout (Persian ↔ English) in chat boxes, plus Persian half-spaces and number conversion. Fully local, no text sent to any server.</p><div class="project-tags"><span class="project-tag">JavaScript</span><span class="project-tag">Chrome Extension</span><span class="project-tag">Vazir</span></div></a>
+                <a href="https://github.com/GoldenTitab/Deutsch-Pronunciation" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><picture><source srcset="images/project-deutsch.webp" type="image/webp"><img src="images/project-deutsch.jpg" alt="German language learning illustration: open book and flashcards" data-i18n-attr="alt:project1Alt" loading="lazy"></picture></div><h3 class="project-name" data-i18n="project1Name">German Pronunciation &amp; Language Learning</h3><p class="project-desc" data-i18n="project1Desc">Single-page web app for learning German from A0 to C1: vocabulary, grammar, verbs, cases, reading, quizzes, spaced-repetition flashcards and a pronunciation masterclass.</p><div class="project-tags"><span class="project-tag">HTML</span><span class="project-tag">CSS</span><span class="project-tag">JavaScript</span></div></a>
+                <a href="https://github.com/GoldenTitab/Aurora" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Flutter Dart Design"><div class="project-image"><picture><source srcset="images/project-aurora.webp" type="image/webp"><img src="images/project-aurora.jpg" alt="Anime franchise tracker illustration: poster shelf with progress bars" data-i18n-attr="alt:project2Alt" loading="lazy"></picture></div><h3 class="project-name" data-i18n="project2Name">Aurora — Anime Franchise Tracker</h3><p class="project-desc" data-i18n="project2Desc">Offline-first anime franchise tracker built with Flutter: seasons, movies and OVAs grouped under one franchise, with data from AniList and MyAnimeList and a Persian (RTL) interface.</p><div class="project-tags"><span class="project-tag">Flutter</span><span class="project-tag">Dart</span><span class="project-tag">Hive</span></div></a>
+                <a href="https://github.com/GoldenTitab/First-App" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Flutter Dart"><div class="project-image"><picture><source srcset="images/project-music.webp" type="image/webp"><img src="images/project-music.jpg" alt="Music player illustration: headphones, vinyl and sound waves" data-i18n-attr="alt:project3Alt" loading="lazy"></picture></div><h3 class="project-name" data-i18n="project3Name">Aurora Music Player</h3><p class="project-desc" data-i18n="project3Desc">Flutter music player with online streaming, Firebase authentication, light and dark themes, a Persian (RTL) interface and full player controls.</p><div class="project-tags"><span class="project-tag">Flutter</span><span class="project-tag">Dart</span><span class="project-tag">Firebase</span></div></a>
+                <a href="https://github.com/GoldenTitab/Monkey-D.-Luffy" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><picture><source srcset="images/project-luffy.webp" type="image/webp"><img src="images/project-luffy.jpg" alt="Pirate adventure illustration: straw hat on a ship deck" data-i18n-attr="alt:project4Alt" loading="lazy"></picture></div><h3 class="project-name" data-i18n="project4Name">Monkey D. Luffy Fan Site</h3><p class="project-desc" data-i18n="project4Desc">Fan-made biography website for Monkey D. Luffy from One Piece, with a light/dark theme, scroll animations and a responsive Persian (RTL) layout.</p><div class="project-tags"><span class="project-tag">HTML</span><span class="project-tag">CSS</span><span class="project-tag">JavaScript</span></div></a>
+                <a href="https://github.com/GoldenTitab/titab-ai-telegram-bot" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><picture><source srcset="images/project-bot.webp" type="image/webp"><img src="images/project-bot.jpg" alt="Titab AI Telegram Bot illustration: robot assistant chatting in a messaging app" data-i18n-attr="alt:project5Alt" loading="lazy"></picture></div><h3 class="project-name" data-i18n="project5Name">Titab AI Telegram Bot</h3><p class="project-desc" data-i18n="project5Desc">Telegram bot that answers with an AI model: raw Telegram Bot API long polling, per-chat memory, and Hugging Face chat completions, with tokens kept in a local .env file.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">Telegram Bot API</span><span class="project-tag">Hugging Face</span></div></a>
+                <a href="https://github.com/GoldenTitab/dart-cli-calculator" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><picture><source srcset="images/project-calculator.webp" type="image/webp"><img src="images/project-calculator.jpg" alt="Dart CLI Calculator illustration: pocket calculator on a desk with a notebook" data-i18n-attr="alt:project6Alt" loading="lazy"></picture></div><h3 class="project-name" data-i18n="project6Name">Dart CLI Calculator</h3><p class="project-desc" data-i18n="project6Desc">Command-line calculator in Dart with an interactive prompt, operator input, and clean exit handling.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">CLI</span></div></a>
+                <a href="https://github.com/GoldenTitab/dart-fundamentals-exercises" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><picture><source srcset="images/project-fundamentals.webp" type="image/webp"><img src="images/project-fundamentals.jpg" alt="Dart Fundamentals Exercises illustration: stepping-stone learning path with a laptop" data-i18n-attr="alt:project7Alt" loading="lazy"></picture></div><h3 class="project-name" data-i18n="project7Name">Dart Fundamentals Exercises</h3><p class="project-desc" data-i18n="project7Desc">A 23-exercise path through Dart fundamentals: input handling, collections, classes, and small console programs.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">Exercises</span></div></a>
+                <a href="https://github.com/GoldenTitab/gibberish-decoder" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><picture><source srcset="images/project-gibberish.webp" type="image/webp"><img src="images/project-gibberish.jpg" alt="Gibberish Decoder illustration: scattered keyboard keys becoming an orderly keyboard" data-i18n-attr="alt:project8Alt" loading="lazy"></picture></div><h3 class="project-name" data-i18n="project8Name">Gibberish Decoder</h3><p class="project-desc" data-i18n="project8Desc">Chrome extension that fixes text typed on the wrong keyboard layout (Persian ↔ English) in chat boxes, plus Persian half-spaces and number conversion. Fully local, no text sent to any server.</p><div class="project-tags"><span class="project-tag">JavaScript</span><span class="project-tag">Chrome Extension</span><span class="project-tag">Vazir</span></div></a>
             </div>
             <div class="stack-controls">
-                <button type="button" id="stackPrev" class="stack-arrow" aria-label="Previous project">←</button>
-                <span class="stack-counter"><span id="stackCurrent">1</span> / <span id="stackTotal">8</span></span>
-                <button type="button" id="stackNext" class="stack-arrow" aria-label="Next project">→</button>
+                <button type="button" id="stackPrev" class="stack-arrow" aria-label="Previous project" data-i18n-attr="aria-label:stackPrevLabel">←</button>
+                <span class="stack-counter" dir="ltr"><span id="stackCurrent">1</span> / <span id="stackTotal">8</span></span>
+                <button type="button" id="stackNext" class="stack-arrow" aria-label="Next project" data-i18n-attr="aria-label:stackNextLabel">→</button>
             </div>
         </section>
     </section>
@@ -218,7 +219,7 @@
         <h2 class="section-title reveal" data-i18n="journeyTitle">How I got here</h2>
         <p class="section-subtitle reveal" data-i18n="journeySubtitle">My path from beginner to where I am today</p>
         <div class="journey-teaser glass-card">
-            <p class="journey-teaser-years">2022 → 2027</p>
+            <p class="journey-teaser-years" dir="ltr">2022 → 2027</p>
             <p data-i18n="journeyTeaserText">From C and Java at university to Flutter, UI/UX and product design — six stops along the way.</p>
             <a href="experience.html" class="btn btn-pill" data-i18n="journeyTeaserCta">View the timeline ↗</a>
         </div>
@@ -236,11 +237,11 @@
                 <h3 data-i18n="contactHeading">Get in touch</h3>
                 <p data-i18n="contactDesc">Open to freelance projects, collaborations, and internship opportunities. I'm always excited to work on new challenges.</p>
                 <div class="contact-links-vertical">
-                    <a href="https://github.com/GoldenTitab" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="contact-link-text"><h4>GitHub</h4><p>@GoldenTitab</p></div></a>
-                    <a href="mailto:suicidewithmeagain@gmail.com" class="contact-link-item"><div class="contact-link-text"><h4 data-i18n="contactEmail">Email</h4><p>suicidewithmeagain@gmail.com</p></div></a>
-                    <a href="https://x.com/GoldenTitabExe" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="contact-link-text"><h4>Twitter / X</h4><p>@GoldenTitabExe</p></div></a>
-                    <a href="https://www.instagram.com/GoldenTitab.exe" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="contact-link-text"><h4>Instagram</h4><p>@GoldenTitab.exe</p></div></a>
-                    <a href="https://t.me/AuroraUXUI_Studio" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="contact-link-text"><h4>Telegram</h4><p>@AuroraUXUI_Studio</p></div></a>
+                    <a href="https://github.com/GoldenTitab" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="contact-link-text"><h4>GitHub</h4><p dir="ltr">@GoldenTitab</p></div></a>
+                    <a href="mailto:suicidewithmeagain@gmail.com" class="contact-link-item"><div class="contact-link-text"><h4 data-i18n="contactEmail">Email</h4><p dir="ltr">suicidewithmeagain@gmail.com</p></div></a>
+                    <a href="https://x.com/GoldenTitabExe" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="contact-link-text"><h4>Twitter / X</h4><p dir="ltr">@GoldenTitabExe</p></div></a>
+                    <a href="https://www.instagram.com/GoldenTitab.exe" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="contact-link-text"><h4>Instagram</h4><p dir="ltr">@GoldenTitab.exe</p></div></a>
+                    <a href="https://t.me/AuroraUXUI_Studio" target="_blank" rel="noopener noreferrer" class="contact-link-item"><div class="contact-link-text"><h4>Telegram</h4><p dir="ltr">@AuroraUXUI_Studio</p></div></a>
                     <div class="contact-link-item"><div class="contact-link-text"><h4 data-i18n="contactLocation">Location</h4><p data-i18n="contactLocationValue">Kerman, Iran</p></div></div>
                 </div>
             </div>
@@ -261,14 +262,14 @@
     <footer>
         <div class="footer-content">
             <div class="footer-socials">
-                <a href="https://github.com/GoldenTitab" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="GitHub">GitHub</a>
-                <a href="mailto:suicidewithmeagain@gmail.com" class="footer-social" aria-label="Email">Email</a>
-                <a href="https://x.com/GoldenTitabExe" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Twitter">X</a>
-                <a href="https://www.instagram.com/GoldenTitab.exe" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Instagram">Instagram</a>
-                <a href="https://t.me/AuroraUXUI_Studio" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Telegram">Telegram</a>
+                <a href="https://github.com/GoldenTitab" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="GitHub" data-i18n-attr="aria-label:footerGithubLabel">GitHub</a>
+                <a href="mailto:suicidewithmeagain@gmail.com" class="footer-social" aria-label="Email" data-i18n-attr="aria-label:footerEmailLabel">Email</a>
+                <a href="https://x.com/GoldenTitabExe" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Twitter" data-i18n-attr="aria-label:footerTwitterLabel">X</a>
+                <a href="https://www.instagram.com/GoldenTitab.exe" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Instagram" data-i18n-attr="aria-label:footerInstagramLabel">Instagram</a>
+                <a href="https://t.me/AuroraUXUI_Studio" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Telegram" data-i18n-attr="aria-label:footerTelegramLabel">Telegram</a>
             </div>
             <p class="footer-text" data-i18n="footerText">built by Ali D. Shah — Kerman, Iran</p>
-            <p class="footer-text">© <span id="year">2026</span></p>
+            <p class="footer-text" dir="ltr">© <span id="year">2026</span></p>
         </div>
     </footer>
 

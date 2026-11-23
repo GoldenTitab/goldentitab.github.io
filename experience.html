@@ -2,9 +2,10 @@
 <html lang="en" data-theme="light" dir="ltr" class="no-js">
 <head>
     <meta charset="UTF-8">
-    <script>(function(){var d=document.documentElement;d.className="js";try{var th=localStorage.getItem("aliTheme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");var l=localStorage.getItem("aliLang")||"en";d.setAttribute("data-theme",th);d.setAttribute("lang",l);d.setAttribute("dir",l==="fa"?"rtl":"ltr");if(sessionStorage.getItem("aliGateSeen"))d.classList.add("gate-seen");}catch(e){}})();</script>
+    <script>(function(){var d=document.documentElement;d.className="js";try{var s=localStorage.getItem("aliTheme");var th=(s==="dark"||s==="light")?s:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");var sl=localStorage.getItem("aliLang");var l=sl==="fa"?"fa":"en";d.setAttribute("data-theme",th);d.setAttribute("lang",l);d.setAttribute("dir",l==="fa"?"rtl":"ltr");var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",th==="dark"?"#0a0a14":"#f6eef2");if(sessionStorage.getItem("aliGateSeen"))d.classList.add("gate-seen");}catch(e){}})();</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Journey — Ali D. Shah</title>
+    <link rel="canonical" href="https://goldentitab.github.io/experience.html">
     <meta name="description" content="The journey of Ali D. Shah, from C and Java at university to Flutter, UI/UX and product design.">
     <meta name="author" content="Ali D. Shah">
     <meta property="og:type" content="website">
@@ -22,14 +23,14 @@
     <link rel="preload" as="font" href="fonts/Vazirmatn-Regular.woff2" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="style.css?v=20261123">
 </head>
-<body>
+<body data-page="experience">
     <noscript><div class="noscript-msg"><p>JavaScript is required to view this portfolio. Please enable it in your browser.</p></div></noscript>
     <a href="#main" class="skip-link" data-i18n="skipLink">Skip to main content</a>
     <div id="langAnnouncer" class="visually-hidden" role="status" aria-live="polite"></div>
     <audio id="siteAudio" preload="none" loop></audio>
 
     <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
-        <p class="gate-brand">ALI D. SHAH<sup>®</sup></p>
+        <p class="gate-brand" dir="ltr">ALI D. SHAH<sup>®</sup></p>
         <p class="gate-eyebrow" data-i18n="gateEyebrow">A designer &amp; developer portfolio</p>
         <p id="gateTitle" class="gate-title"><span class="serif-i" data-i18n="heroTitle">Designer &amp; Developer</span></p>
         <p class="gate-sub" data-i18n="heroSub">Computer Engineering student building simple, intuitive digital experiences. Focused on UI/UX Design, Flutter, and Product Thinking.</p>
@@ -37,8 +38,8 @@
         <button type="button" id="gateEnterSilent" class="gate-silent" data-i18n="gateEnterSilent">Enter without audio</button>
     </div>
 
-    <nav aria-label="Main navigation">
-        <a href="index.html" class="nav-logo">ali<span class="serif-i">.shah</span>()</a>
+    <nav aria-label="Main navigation" data-i18n-attr="aria-label:navLabel">
+        <a href="index.html" class="nav-logo" dir="ltr">ali<span class="serif-i">.shah</span>()</a>
         <ul class="nav-center" id="navCenter">
             <li><a href="index.html" data-i18n="navIndex">Index</a></li>
             <li><a href="index.html#projects" data-i18n="navProjects">Projects</a></li>
@@ -47,12 +48,12 @@
         <div class="nav-actions">
             <button type="button" id="musicToggle" class="nav-icon-btn" aria-label="Toggle music" data-i18n-attr="aria-label:musicLabel" aria-pressed="false"><span aria-hidden="true">♪</span><span class="music-state" data-i18n="musicOff">Music: Off</span></button>
             <button type="button" id="themeToggle" class="nav-icon-btn" aria-label="Switch theme" data-i18n-attr="aria-label:themeToggleLabel"><span aria-hidden="true">◐</span><span class="visually-hidden" data-i18n="themeToggleLabel">Switch theme</span></button>
-            <button type="button" id="langToggle" class="nav-icon-btn" aria-label="Switch to Persian" title="Toggle language"><span id="langLabel" aria-hidden="true">EN</span></button>
+            <button type="button" id="langToggle" class="nav-icon-btn" aria-label="Switch to Persian" data-i18n-attr="aria-label:langToggleLabel"><span id="langLabel" aria-hidden="true">EN</span></button>
             <button type="button" id="menuToggle" class="nav-icon-btn menu-dots" aria-expanded="false" aria-controls="fullscreenMenu" aria-label="Open menu" data-i18n-attr="aria-label:menuOpenLabel"><span aria-hidden="true">••</span></button>
         </div>
     </nav>
 
-    <div id="fullscreenMenu" class="fullscreen-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div id="fullscreenMenu" class="fullscreen-menu" role="dialog" aria-modal="true" aria-label="Menu" data-i18n-attr="aria-label:menuLabel" hidden>
         <button type="button" id="menuClose" class="menu-close" aria-label="Close menu" data-i18n-attr="aria-label:menuCloseLabel">✕</button>
         <ol class="menu-list">
             <li><a href="index.html"><span class="menu-num">01</span><span data-i18n="navIndex">Index</span></a></li>
@@ -62,7 +63,7 @@
             <li><a href="index.html#contact"><span class="menu-num">05</span><span data-i18n="navContact">Contact</span></a></li>
         </ol>
         <div class="menu-foot">
-            <a href="mailto:suicidewithmeagain@gmail.com">suicidewithmeagain@gmail.com</a>
+            <a href="mailto:suicidewithmeagain@gmail.com" dir="ltr">suicidewithmeagain@gmail.com</a>
             <span class="menu-socials">
                 <a href="https://github.com/GoldenTitab" target="_blank" rel="noopener noreferrer">GitHub</a>
                 <a href="https://x.com/GoldenTitabExe" target="_blank" rel="noopener noreferrer">X</a>
@@ -87,21 +88,21 @@
                 <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey5Year">2026</div><h2 data-i18n="journey5Title">Learning Flutter &amp; Dart</h2><p data-i18n="journey5Desc">Building mobile apps and working toward becoming a Product Designer. Exploring cross-platform development.</p><div class="timeline-tags"><span>Flutter</span><span>Dart</span><span>Firebase</span></div></div>
                 <div class="timeline-item reveal"><div class="timeline-year" data-i18n="journey6Year">2027</div><h2 data-i18n="journey6Title">Product Designer</h2><p data-i18n="journey6Desc">Goal: ship real products, build a personal brand, launch a freelance career, and contribute to open-source.</p><div class="timeline-tags"><span>Product Design</span><span>Freelance</span><span>Open Source</span></div></div>
             </div>
-            <p class="back-home" data-i18n="backHome">Back to home</p>
+            <p class="back-home"><a href="index.html" class="btn btn-pill" data-i18n="backHome">Back to home</a></p>
         </section>
     </main>
 
     <footer>
         <div class="footer-content">
             <div class="footer-socials">
-                <a href="https://github.com/GoldenTitab" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="GitHub">GitHub</a>
-                <a href="mailto:suicidewithmeagain@gmail.com" class="footer-social" aria-label="Email">Email</a>
-                <a href="https://x.com/GoldenTitabExe" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Twitter">X</a>
-                <a href="https://www.instagram.com/GoldenTitab.exe" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Instagram">Instagram</a>
-                <a href="https://t.me/AuroraUXUI_Studio" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Telegram">Telegram</a>
+                <a href="https://github.com/GoldenTitab" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="GitHub" data-i18n-attr="aria-label:footerGithubLabel">GitHub</a>
+                <a href="mailto:suicidewithmeagain@gmail.com" class="footer-social" aria-label="Email" data-i18n-attr="aria-label:footerEmailLabel">Email</a>
+                <a href="https://x.com/GoldenTitabExe" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Twitter" data-i18n-attr="aria-label:footerTwitterLabel">X</a>
+                <a href="https://www.instagram.com/GoldenTitab.exe" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Instagram" data-i18n-attr="aria-label:footerInstagramLabel">Instagram</a>
+                <a href="https://t.me/AuroraUXUI_Studio" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Telegram" data-i18n-attr="aria-label:footerTelegramLabel">Telegram</a>
             </div>
             <p class="footer-text" data-i18n="footerText">built by Ali D. Shah — Kerman, Iran</p>
-            <p class="footer-text">© <span id="year">2026</span></p>
+            <p class="footer-text" dir="ltr">© <span id="year">2026</span></p>
         </div>
     </footer>
     <button type="button" id="backToTop" class="back-to-top" aria-label="Back to top" data-i18n-attr="aria-label:backToTopLabel">↑</button>

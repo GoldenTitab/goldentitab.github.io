@@ -4,6 +4,10 @@
   "description": "Ali D. Shah's personal portfolio — static site, no build step",
   "private": true,
   "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node tests/build-check.js",
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:html",
     "test": "npm run lint:js && npm run lint:css && npm run lint:html && npm run test:i18n && npm run test:axe",
     "lint:js": "eslint script.js",
     "lint:css": "stylelint style.css",
@@ -23,5 +27,8 @@
     "playwright": "^1.49.0",
     "stylelint": "^16.10.0",
     "stylelint-config-standard": "^36.0.0"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
   }
 }

@@ -16,12 +16,14 @@ let server;
     server.stdout.on('data', d => { const m = d.toString().match(/TEST_SERVER_PORT=(\d+)/); if (m) port = parseInt(m[1]); });
     await new Promise(r => { const t = setInterval(() => { if (port) { clearInterval(t); r(); } }, 50); });
 
-    const browser = await chromium.launch();
+    const fallbackExe = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || '/ms-playwright/chrome-headless-shell-linux64/chrome-headless-shell';
+    const launchOpts = fs.existsSync(fallbackExe) ? { executablePath: fallbackExe } : {};
+    const browser = await chromium.launch(launchOpts);
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
     const page = await context.newPage();
     const base = `http://localhost:${port}`;
 
-    const pages = ['index.html', 'experience.html', 'world.html'];
+    const pages = ['index.html', 'experience.html', 'world.html', '404.html'];
     const themes = ['light', 'dark'];
     const langs = ['en', 'fa'];
 

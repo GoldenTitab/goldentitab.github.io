@@ -32,7 +32,7 @@ if (onlyEn.length) { failures++; console.log('MISSING in fa:'); onlyEn.forEach(k
 if (onlyFa.length) { failures++; console.log('MISSING in en:'); onlyFa.forEach(k => console.log('  - ' + k)); }
 
 // Check data-i18n keys referenced in HTML but missing from translations.
-const htmlFiles = ['index.html', 'experience.html', 'world.html'];
+const htmlFiles = ['index.html', 'experience.html', 'world.html', '404.html'];
 const referenced = new Set();
 for (const f of htmlFiles) {
     const h = fs.readFileSync(f, 'utf8');
