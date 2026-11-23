@@ -39,12 +39,10 @@ if (missing > 0) {
     process.exit(1);
 }
 
-// Validate JSON manifests
 JSON.parse(fs.readFileSync(path.join(root, 'manifest.webmanifest'), 'utf8'));
 JSON.parse(fs.readFileSync(path.join(root, 'koi/data.json'), 'utf8'));
 JSON.parse(fs.readFileSync(path.join(root, 'koi/sprite.json'), 'utf8'));
 
-// Run static checks (JS, CSS, HTML, i18n parity, internal links & assets)
 execSync('npm run lint:js && npm run lint:css && npm run lint:html && npm run test:i18n && node tests/links.js', {
     stdio: 'inherit'
 });

@@ -1,5 +1,4 @@
 'use strict';
-// Phase C screenshot matrix: pages × themes × langs × widths.
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
@@ -42,7 +41,6 @@ let server;
                         localStorage.setItem('aliLang', l);
                     }, { t: theme, l: lang });
                     await page.reload({ waitUntil: 'domcontentloaded' });
-                    // wait until main content rendered (gate removed)
                     await page.waitForSelector('main', { state: 'visible' });
                     await page.waitForTimeout(300);
                     const tag = `${pg.replace('.html','')}_${theme}_${lang}_${w}`;

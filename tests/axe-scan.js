@@ -1,5 +1,4 @@
 'use strict';
-// Phase D: axe-core accessibility scan on each page (light/dark × en/fa).
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');

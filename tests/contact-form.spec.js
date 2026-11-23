@@ -1,5 +1,4 @@
 'use strict';
-// Task 2: Contact form verification with Formspree interception
 const { test, expect } = require('@playwright/test');
 const { spawn } = require('child_process');
 const path = require('path');
@@ -72,13 +71,11 @@ test.describe('Contact form (Task 2)', () => {
         await expect(page.locator('#formStatus')).toHaveClass('is-ok');
         await page.waitForTimeout(300);
         await expect(btn).toBeEnabled();
-        // form reset
         await expect(page.locator('input[name="name"]')).toHaveValue('');
         await expect(page.locator('input[name="email"]')).toHaveValue('');
         await expect(page.locator('textarea[name="message"]')).toHaveValue('');
         expect(lastStatus).toBe(200);
         await expect(btn).toBeEnabled();
-        // form reset
         await expect(page.locator('input[name="name"]')).toHaveValue('');
         await expect(page.locator('input[name="email"]')).toHaveValue('');
         await expect(page.locator('textarea[name="message"]')).toHaveValue('');
@@ -156,10 +153,10 @@ test.describe('Contact form (Task 2)', () => {
         await page.fill('textarea[name="message"]', 'Test message');
         const btn = page.locator('button[type="submit"]');
         await btn.click();
-        await btn.click(); // double click
-        await btn.click(); // triple click
+        await btn.click();
+        await btn.click();
         await page.waitForTimeout(2500);
-        expect(callCount).toBe(1); // only one request sent
+        expect(callCount).toBe(1);
         await expect(btn).toBeEnabled();
     });
 
@@ -186,15 +183,12 @@ test.describe('Contact form (Task 2)', () => {
         await page.click('button[type="submit"]');
         await page.waitForTimeout(500);
         expect(requestSent).toBe(false);
-        // Name field should be focused (native validation)
         await expect(page.locator('input[name="name"]')).toBeFocused();
     });
 
     test('mailto fallback works when FORMSPREE_ID empty', async ({ page, context }) => {
-        // FORMSPREE_ID is set in code ("xkjrprpb"), so the form uses Formspree,
-        // but mailto links exist throughout for direct email. Verify all 3 occurrences.
         await enterGate(page);
         const mailtoLinks = page.locator('a[href="mailto:suicidewithmeagain@gmail.com"]');
-        await expect(mailtoLinks).toHaveCount(3); // menu, contact section, footer
+        await expect(mailtoLinks).toHaveCount(3);
     });
 });

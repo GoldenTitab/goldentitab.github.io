@@ -44,42 +44,31 @@ from pathlib import Path
 LOGIN = "GoldenTitab"
 HERE = Path(__file__).resolve().parent
 
-# --- pond style (locked by Ali's answers) -----------------------------------
 CELL = 12
 GAP = 4
 GRID_X = 18
 GRID_Y = 206
-EMPTY_FILL = "#E8EDF2"          # light grey, no contributions
-BORDER = "#00D9FF"              # same blue border on every tile
-LEVEL_COLORS = ["#A8E2FF", "#5CC8FF", "#1E96FF", "#0066D6"]  # 4 blues
+EMPTY_FILL = "#E8EDF2"
+BORDER = "#00D9FF"
+LEVEL_COLORS = ["#A8E2FF", "#5CC8FF", "#1E96FF", "#0066D6"]
 WATER_TOP = "#0C2D42"
 WATER_BOTTOM = "#061524"
 LABEL_FILL = "#6FA8C9"
 CAPTION_FILL = "#7FB3D5"
 SVG_W, SVG_H = 880, 380
 
-# --- the koi: the original git-koi pixel sprite (sprite.json) --------------
-# Native 247x118, faces right, centred on (0,0) by the caller. The body is
-# cut into 10 vertical slices (same bounds as pond.js); each slice gets a
-# SMIL translate animation: a travelling wave + a bend into the turns.
 SLICE_BOUNDS = [0, 25, 50, 74, 99, 124, 148, 173, 198, 222, 247]
 BODY_L = 247
-# The README fish swims one long closed route in the upper pond (no
-# teleport back to the start). The route is an irregular loop (a closed
-# Catmull-Rom spline through ROUTE) so no two stretches look alike; the
-# fish's speed rises and falls with its strokes, the stroke schedule is
-# irregular (seeded, so the file only changes when the data does), and the
-# body bends by the path's real curvature. One lap = LOOP_DUR seconds.
 ROUTE = [(170, 108), (280, 90), (420, 112), (560, 90), (690, 100), (752, 126),
          (728, 160), (600, 150), (468, 172), (330, 150), (215, 172), (150, 160),
          (128, 134)]
-SHADOW_DY = 80                   # the shadow swims the same route, lower
+SHADOW_DY = 80
 LOOP_DUR = 34.0
-SAMPLE_DT = 0.30                 # keyframe spacing (body wave stays > 4/cycle)
-FINE_DT = 0.05                   # internal integration step
-GLIDE_SPEED, STROKE_BOOST = 0.40, 1.10   # relative speed: coast / extra on a stroke
-WAVE_BASE_HZ, WAVE_BEAT_HZ = 0.45, 0.35  # body-wave frequency: coast / extra
-STROKE_LEN = 0.75                # one tail beat, seconds
+SAMPLE_DT = 0.30
+FINE_DT = 0.05
+GLIDE_SPEED, STROKE_BOOST = 0.40, 1.10
+WAVE_BASE_HZ, WAVE_BEAT_HZ = 0.45, 0.35
+STROKE_LEN = 0.75
 
 
 def load_sprite():
@@ -183,7 +172,6 @@ def motion_plan():
     if _PLAN:
         return _PLAN
     segs = _route_segments()
-    # Arc-length table of the route.
     pts = []
     for seg in segs:
         for k in range(80):
@@ -215,8 +203,6 @@ def motion_plan():
             if st <= t < st + STROKE_LEN:
                 e += strength * math.sin(math.pi * (t - st) / STROKE_LEN)
         env.append(min(1.0, e))
-    # Speed lags the stroke a little (peaks just after it). A first-order
-    # filter run over three laps gives the periodic steady state.
     tau, y, lag = 0.6, 0.0, []
     for lap in range(3):
         for i in range(n):
@@ -229,11 +215,8 @@ def motion_plan():
     for i in range(1, n + 1):
         prog.append(prog[-1] + 0.5 * (speed_rel[i] + speed_rel[i - 1]))
     total = prog[-1]
-    prog = [v / total for v in prog]                 # 0 .. 1 along the route
-    # d(progress)/dt = speed_rel / (total * FINE_DT); times route length = px/s.
+    prog = [v / total for v in prog]
     px_per_s = [length * speed_rel[i] / (total * FINE_DT) for i in range(n + 1)]
-    # Wave phase: faster while stroking, scaled to a whole number of cycles
-    # so the lap wraps without a jump.
     ph = [0.0]
     for i in range(1, n + 1):
         f0 = WAVE_BASE_HZ + WAVE_BEAT_HZ * env[i - 1]
@@ -241,7 +224,6 @@ def motion_plan():
         ph.append(ph[-1] + 2 * math.pi * 0.5 * (f0 + f1) * FINE_DT)
     cycles = round(ph[-1] / (2 * math.pi))
     ph = [v * (2 * math.pi * cycles) / ph[-1] + 0.8 for v in ph]
-    # Signed turn rate (rad/s, + = clockwise on screen) from the route.
     ds = 12.0
     omega = []
     for i in range(n + 1):
@@ -320,7 +302,7 @@ def gh_graphql(query, variables):
 
 def fetch_snapshot():
     today = date.today()
-    start = today - timedelta(days=364)  # GraphQL caps the range at 1 year
+    start = today - timedelta(days=364)
     cal = gh_graphql(
         """
         query($login: String!, $from: DateTime!, $to: DateTime!) {
@@ -417,7 +399,6 @@ def build_weeks(days):
     dates = sorted(by_date)
     first = datetime.strptime(dates[0], "%Y-%m-%d").date()
     last = datetime.strptime(dates[-1], "%Y-%m-%d").date()
-    # Back up to the Sunday on/before the first day.
     sunday = first - timedelta(days=(first.weekday() + 1) % 7)
     columns = []
     cur = sunday
@@ -467,7 +448,6 @@ def fish_group(languages, sprite, animated=True):
     loop_path = _path_d(plan["segs"])
     shadow_path = _path_d(plan["segs"], SHADOW_DY)
     if not animated:
-        # Rest pose: heading right, a third of the way along the top run.
         return f"""
   <ellipse cx="420" cy="{114 + SHADOW_DY}" rx="120" ry="10" fill="#000000" opacity="0.22"/>
   <g shape-rendering="crispEdges" transform="translate(420,114)">

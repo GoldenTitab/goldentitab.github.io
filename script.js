@@ -1,14 +1,11 @@
 (function () {
     'use strict';
 
-    // Formspree endpoint ID for the contact form. If empty, the form falls back to the visitor's email app.
     var FORMSPREE_ID = "xkjrprpb";
-    // Site music file: sent by Ali 2026-11-23 — Odysseus_KLICKAUD.mp3 (8:41, 7.1 MB, loop, preload=none).
     var MUSIC_SRC = "/audio/Odysseus_KLICKAUD.mp3";
 
-    var HERO_STEPS = 30; // scroll-frame hero: 30 steps simulated from 3 key images (not 240 JPGs)
+    var HERO_STEPS = 30;
 
-    // ===== TRANSLATIONS (EN + FA, every string on all 3 pages) =====
     var translations = {
         en: {
             pageTitleIndex: 'Ali D. Shah — UI/UX Designer & Flutter Developer',
@@ -218,11 +215,10 @@
         }
     };
 
-    // Storage can throw (private mode / blocked cookies) — never let that kill the whole script.
     function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-    function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* ignore */ } }
+    function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {  } }
     function ssGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
-    function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* ignore */ } }
+    function ssSet(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {  } }
     var currentLang = lsGet('aliLang') === 'fa' ? 'fa' : 'en';
     var storedTheme = lsGet('aliTheme');
     var currentTheme = (storedTheme === 'dark' || storedTheme === 'light')
@@ -234,7 +230,6 @@
     var html = document.documentElement;
     var t = function (key) { var tr = translations[currentLang] || translations.en; return tr[key] !== undefined ? tr[key] : (translations.en[key] || key); };
 
-    // ===== THEME =====
     function applyTheme(theme) {
         currentTheme = theme;
         html.setAttribute('data-theme', theme);
@@ -244,7 +239,6 @@
     }
     function toggleTheme() { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
 
-    // ===== LANGUAGE =====
     function setLanguage(lang, announce) {
         currentLang = lang;
         lsSet('aliLang', lang);
@@ -281,8 +275,6 @@
         updateMusicLabel();
     }
 
-    // ===== MUSIC — audio/Odysseus_KLICKAUD.mp3; on/off + position kept in sessionStorage across pages =====
-    // (A full page load still has a short silence between pages; truly gapless needs a single-page app.)
     var audio = document.getElementById('siteAudio');
     var musicWanted = ssGet('auroraMusicWanted') === '1';
     var lastSave = 0;
@@ -301,17 +293,15 @@
     function tryPlayMusic() {
         if (!MUSIC_SRC || !audio) return;
         if (!audio.getAttribute('src')) {
-            // preload="none" never fires loadedmetadata until play() is called, so play first, seek once metadata arrives.
             var startAt = savedMusicTime();
             audio.preload = 'auto';
             audio.src = MUSIC_SRC;
             if (startAt > 0) audio.addEventListener('loadedmetadata', function () {
-                try { if (startAt < audio.duration - 1) audio.currentTime = startAt; } catch (e) { /* seek not ready */ }
+                try { if (startAt < audio.duration - 1) audio.currentTime = startAt; } catch (e) {  }
             }, { once: true });
         }
         var p = audio.play();
         if (p && p.catch) p.catch(function () {
-            // Autoplay blocked on this page load — resume on the first user gesture instead.
             var resume = function () { if (musicWanted) audio.play().catch(function () {}); };
             document.addEventListener('pointerdown', resume, { once: true });
             document.addEventListener('keydown', resume, { once: true });
@@ -340,7 +330,6 @@
         document.querySelectorAll('nav, main, footer, .back-to-top').forEach(function (n) { if (on) n.setAttribute('inert', ''); else n.removeAttribute('inert'); });
     }
 
-    // ===== ENTER GATE — once per tab =====
     function initGate() {
         var gate = document.getElementById('gate');
         if (!gate) return;
@@ -371,7 +360,6 @@
         enterBtn.focus({ preventScroll: true });
     }
 
-    // ===== FULLSCREEN MENU =====
     function initMenu() {
         var menu = document.getElementById('fullscreenMenu');
         var openBtn = document.getElementById('menuToggle');
@@ -393,7 +381,7 @@
         document.addEventListener('keydown', function (e) {
             if (menu.hidden) return;
             if (e.key === 'Escape') { close(); return; }
-            if (e.key !== 'Tab') return; // simple focus trap
+            if (e.key !== 'Tab') return;
             var f = menu.querySelectorAll('a[href], button');
             if (!f.length) return;
             var first = f[0], last = f[f.length - 1];
@@ -402,7 +390,6 @@
         });
     }
 
-    // ===== HERO SCROLL-FRAME — 30 steps from 3 key images, rAF-throttled, pauses off-screen =====
     function initHero() {
         var hero = document.querySelector('.hero');
         var frames = Array.prototype.slice.call(document.querySelectorAll('.hero-frame'));
@@ -411,7 +398,7 @@
         if (reducedMotion || reducedData || isCoarse || window.innerWidth <= 720) {
             frames.forEach(function (f, i) { f.classList.toggle('is-active', i === 0); });
             if (countEl) countEl.textContent = '01';
-            return; // static fallback on mobile / reduced motion
+            return;
         }
         var heroVisible = true, ticking = false, mx = 0, my = 0;
         if ('IntersectionObserver' in window) {
@@ -448,7 +435,6 @@
         update();
     }
 
-    // ===== ARSENAL BARS — widths come from data-pct (values sent by Ali), animated on reveal =====
     function initArsenal() {
         var fills = document.querySelectorAll('.arsenal-fill[data-pct]');
         if (!fills.length) return;
@@ -465,7 +451,6 @@
         } else setWidths();
     }
 
-    // ===== PROJECTS STACK & UNSEEN INDEX STRIP =====
     function initStack() {
         var stack = document.getElementById('projectStack');
         if (!stack) return;
@@ -480,7 +465,7 @@
         var indexBtns = [];
         var render = function () {
             var nextIdx = visible.length > 1 ? (idx + 1) % visible.length : -1;
-            allCards.forEach(function (card, cardPos) { // every card, so a filtered-out card never keeps is-active
+            allCards.forEach(function (card, cardPos) {
                 var i = visible.indexOf(card);
                 card.classList.toggle('is-active', i === idx);
                 card.classList.toggle('is-next', i !== -1 && i === nextIdx);
@@ -536,7 +521,6 @@
             if (e.key === 'ArrowLeft') go(rtl() ? 1 : -1);
             if (e.key === 'ArrowRight') go(rtl() ? -1 : 1);
         });
-        // swipe on touch screens; a swipe must not also open the project link
         var sx = null, swiped = false;
         stack.addEventListener('pointerdown', function (e) { sx = e.clientX; swiped = false; });
         stack.addEventListener('pointerup', function (e) {
@@ -560,7 +544,6 @@
         render();
     }
 
-    // ===== WORLD GLOBE — light 2D canvas wireframe, drag to rotate =====
     function initGlobe() {
         var canvas = document.getElementById('globeCanvas');
         if (!canvas) return;
@@ -581,7 +564,7 @@
             ctx.strokeStyle = accent; ctx.lineWidth = 1.2; ctx.globalAlpha = 0.85;
             ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
             var i, j, x, y, z, px, py, pen;
-            for (i = -3; i <= 3; i++) { // latitude lines
+            for (i = -3; i <= 3; i++) {
                 ctx.beginPath();
                 pen = false;
                 for (j = 0; j <= 64; j++) {
@@ -596,7 +579,7 @@
                 }
                 ctx.stroke();
             }
-            for (i = 0; i < 12; i++) { // longitude lines
+            for (i = 0; i < 12; i++) {
                 ctx.beginPath();
                 pen = false;
                 for (j = 0; j <= 64; j++) {
@@ -612,7 +595,7 @@
             }
             ctx.globalAlpha = 1;
             ctx.fillStyle = accent;
-            var mlat = 0.35, mlon = 0.9 + rot * 0 ; // marker pinned to the sphere, rotates with it
+            var mlat = 0.35, mlon = 0.9 + rot * 0 ;
             var mx = Math.cos(mlon) * Math.cos(mlat), my = Math.sin(mlat), mz = Math.sin(mlon) * Math.cos(mlat);
             var mxr = mx * Math.cos(rot) + mz * Math.sin(rot), mzr = -mx * Math.sin(rot) + mz * Math.cos(rot);
             if (mzr > 0) { ctx.beginPath(); ctx.arc(cx + mxr * r, cy - my * r, 5, 0, Math.PI * 2); ctx.fill(); }
@@ -632,7 +615,6 @@
         if (!reducedMotion && !reducedData) loop(); else draw();
     }
 
-    // ===== SCROLL REVEALS / NAV / BACK-TO-TOP / SMOOTH SCROLL =====
     function initChrome() {
         var prefersReduced = reducedMotion || reducedData;
         var reveals = document.querySelectorAll('.reveal, .float-in-left, .float-in-right');
@@ -681,7 +663,7 @@
                         e.preventDefault();
                         var top = target.getBoundingClientRect().top + window.pageYOffset - 80;
                         window.scrollTo({ top: top, behavior: prefersReduced ? 'auto' : 'smooth' });
-                        try { history.pushState(null, '', href); } catch (err) { /* file:// etc. */ }
+                        try { history.pushState(null, '', href); } catch (err) {  }
                         if (target.id) { if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
                     }
                 }
@@ -689,14 +671,13 @@
         });
     }
 
-    // ===== CONTACT FORM — Formspree when FORMSPREE_ID is set, mailto fallback otherwise =====
     function initContactForm() {
         var form = document.getElementById('contactForm');
         if (!form) return;
         var submitBtn = form.querySelector('button[type="submit"]');
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            if (form.elements._gotcha && form.elements._gotcha.value) return; // honeypot: bots fill hidden fields
+            if (form.elements._gotcha && form.elements._gotcha.value) return;
             var status = document.getElementById('formStatus');
             var name = form.elements.name.value, email = form.elements.email.value;
             var scope = form.elements.projectScope.value, message = form.elements.message.value;
@@ -707,7 +688,7 @@
                 window.location.href = 'mailto:suicidewithmeagain@gmail.com?subject=' + subject + '&body=' + body;
                 return;
             }
-            if (submitBtn) submitBtn.disabled = true; // no double submits
+            if (submitBtn) submitBtn.disabled = true;
             if (status) { status.textContent = t('formSending'); status.className = ''; }
             fetch('https://formspree.io/f/' + FORMSPREE_ID, {
                 method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },

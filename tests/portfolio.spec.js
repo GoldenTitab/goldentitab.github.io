@@ -16,7 +16,6 @@ test.afterAll(() => { if (server) server.kill(); });
 
 const BASE = () => `http://localhost:${global.TEST_PORT}`;
 
-// Surgical storage: only set the keys explicitly provided.
 async function setStorage(page, { lang, theme, gateSeen, musicWanted, musicTime } = {}) {
     await page.evaluate(({ l, t, g, mw, mt, hasL, hasT, hasG, hasMW, hasMT }) => {
         if (hasL) localStorage.setItem('aliLang', l);
@@ -71,7 +70,7 @@ test.describe('Gate', () => {
 test.describe('Music', () => {
     test('toggle on/off updates aria-pressed', async ({ page }) => {
         await page.goto(BASE() + '/index.html');
-        await enterGate(page, false); // music already ON
+        await enterGate(page, false);
         await expect(page.locator('#musicToggle')).toHaveAttribute('aria-pressed', 'true');
         await page.locator('#musicToggle').click();
         await expect(page.locator('#musicToggle')).toHaveAttribute('aria-pressed', 'false');
@@ -130,7 +129,6 @@ test.describe('Hero', () => {
         await enterGate(page, false);
         await page.waitForSelector('.hero-frame.is-active');
         await expect(page.locator('#frameCount')).toBeVisible();
-        // first (active) frame is eager; the other two are lazy
         await expect(page.locator('.hero-frame').nth(1)).toHaveAttribute('loading', 'lazy');
         await expect(page.locator('.hero-frame').nth(2)).toHaveAttribute('loading', 'lazy');
     });
@@ -141,7 +139,7 @@ test.describe('Project stack', () => {
         await page.goto(BASE() + '/index.html');
         await enterGate(page, false);
         await page.click('[data-filter="Flutter"]');
-        await expect(page.locator('#stackTotal')).toHaveText('2'); // Aurora, Music Player
+        await expect(page.locator('#stackTotal')).toHaveText('2');
         await page.click('[data-filter="all"]');
         await expect(page.locator('#stackTotal')).toHaveText('8');
     });

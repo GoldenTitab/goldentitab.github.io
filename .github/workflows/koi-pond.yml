@@ -1,13 +1,7 @@
-# Koi Pond — redraws koi/pond.svg + koi/pond-still.svg (profile README) and koi/data.json
-# (interactive pond page) every night from the account's GitHub activity.
-# The generator is koi/generate_pond.py (stdlib only, GitHub GraphQL via gh).
-# Optional: add a repo secret KOI_TOKEN (a read-only personal token) and the
-# generator will use it instead of the built-in token.
 name: Koi Pond
 
 on:
   schedule:
-    # Just after midnight UTC, so the pond shows the day that just ended.
     - cron: "20 0 * * *"
   workflow_dispatch:
   push:

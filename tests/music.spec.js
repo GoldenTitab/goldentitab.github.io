@@ -1,5 +1,4 @@
 'use strict';
-// Task 3: Music autoplay/gesture verification across browsers
 const fs = require('fs');
 const path = require('path');
 const { test, expect } = require('@playwright/test');
@@ -87,7 +86,6 @@ test.describe('Music (Task 3)', () => {
         await page.route(MUSIC_URL, routeMusic);
         await enterGateWithAudio(page);
         await page.waitForTimeout(1000);
-        // Music state should be saved in sessionStorage
         const saved = await page.evaluate(() => ({
             wanted: sessionStorage.getItem('auroraMusicWanted'),
             gateSeen: sessionStorage.getItem('aliGateSeen'),
@@ -95,16 +93,13 @@ test.describe('Music (Task 3)', () => {
         }));
         expect(saved.wanted).toBe('1');
         expect(saved.gateSeen).toBe('1');
-        // Navigate to experience directly - gate should NOT reappear (once per tab)
         await page.route(MUSIC_URL, routeMusic);
         await page.goto(BASE() + '/experience.html');
         await page.waitForTimeout(500);
         const gateStillRemoved = await page.evaluate(() => document.getElementById('gate') === null);
         expect(gateStillRemoved).toBe(true);
-        // Music resume state preserved in sessionStorage
         const saved2 = await page.evaluate(() => sessionStorage.getItem('auroraMusicWanted'));
         expect(saved2).toBe('1');
-        // Navigate to world - same check
         await page.route(MUSIC_URL, routeMusic);
         await page.goto(BASE() + '/world.html');
         await page.waitForTimeout(500);

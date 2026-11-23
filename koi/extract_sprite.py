@@ -38,10 +38,9 @@ NAVY = {(38, 43, 68), (58, 68, 102)}
 FAMS = {"orange": ORANGE, "red": RED, "blue": BLUE, "yellow": YELLOW, "navy": NAVY}
 RANK = {"orange": 0, "navy": 1, "red": 2, "blue": 3, "yellow": 2}
 
-# bbox of the fish inside the 256x256 cell (measured)
 BX0, BY0, BX1, BY1 = 5, 69, 251, 186
-TAIL_CUT_NATIVE = 82          # narrowest column (peduncle)
-PIVOT_NATIVE = (82, 115.5)    # neck centre
+TAIL_CUT_NATIVE = 82
+PIVOT_NATIVE = (82, 115.5)
 
 
 def lum(rgb):
@@ -69,9 +68,8 @@ def main():
                 return name
         return None
 
-    # --- navy components: big blob = dark patch (rank 1), small bits = shading
     navy_seen = set()
-    navy_rank = {}   # (x,y) -> (rank, shade)
+    navy_rank = {}
     for y in range(H):
         for x in range(W):
             if px[x, y][:3] not in NAVY or (x, y) in navy_seen:
@@ -90,9 +88,8 @@ def main():
                         q.append((nx, ny))
             if len(cells) >= 100:
                 for c in cells:
-                    navy_rank[c] = (1, None)  # dark patch, shade from luminance
+                    navy_rank[c] = (1, None)
             else:
-                # shade of the neighbouring patch family (most adjacent pixels)
                 adj = {}
                 for cx, cy in cells:
                     for dx in (-1, 0, 1):
@@ -104,7 +101,6 @@ def main():
                 for c in cells:
                     navy_rank[c] = (rank, -0.18)
 
-    # --- per-family mean luminance (for shade modelling)
     fam_lum = {}
     for name, s in FAMS.items():
         vals = [lum(c) for c in s]
@@ -113,7 +109,6 @@ def main():
     def shade_for(name, rgb):
         return round(max(-0.22, min(0.22, (lum(rgb) - fam_lum[name]) * 0.8)), 3)
 
-    # --- build runs (rebased to bbox origin), split at the tail cut
     tail_x = TAIL_CUT_NATIVE - BX0
     pivot = [PIVOT_NATIVE[0] - BX0, PIVOT_NATIVE[1] - BY0]
     w, h = BX1 - BX0 + 1, BY1 - BY0 + 1
@@ -156,7 +151,6 @@ def main():
                 if k2 != key:
                     break
                 x += 1
-            # split the run at the tail cut
             rx0, rx1 = x0 - BX0, x - 1 - BX0
             for seg0, seg1 in ((rx0, min(rx1, tail_x - 1)), (max(rx0, tail_x), rx1)):
                 if seg0 > seg1:

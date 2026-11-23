@@ -1,21 +1,17 @@
 'use strict';
-// Link checker: verifies all internal href/src targets exist on disk and external URLs are well-formed.
 const fs = require('fs');
 const path = require('path');
 const root = process.cwd();
 const htmlFiles = ['index.html', 'experience.html', 'world.html', '404.html'];
 
-// URL-ish attributes to check.
 const attrRegex = /(?:href|src)="([^"]+)"/g;
 let failures = 0;
 
 function checkInternal(target) {
-    // Strip hash and query.
     let u = target.split('#')[0].split('?')[0];
-    if (!u) return; // hash-only or empty
+    if (!u) return;
     if (u.startsWith('mailto:') || u.startsWith('tel:')) return;
     u = u.replace(/^\//, '');
-    // Resolve relative to the HTML file's dir (root for our files).
     const abs = path.resolve(root, u);
     if (!fs.existsSync(abs)) {
         failures++;
@@ -28,7 +24,6 @@ for (const f of htmlFiles) {
     for (const m of content.matchAll(attrRegex)) {
         const target = m[1];
         if (target.startsWith('http:') || target.startsWith('https:')) {
-            // External: validate format only (no network in CI).
             try { new URL(target); } catch (e) {
                 failures++;
                 console.log('MALFORMED external URL in ' + f + ': ' + target);
@@ -39,7 +34,6 @@ for (const f of htmlFiles) {
     }
 }
 
-// Check all referenced image/audio assets exist.
 const assetRegex = /(?:src|href)="([^"]*\.(?:jpg|jpeg|png|gif|svg|mp3|webp|avif|ico|css|js|json))"/gi;
 const checkedAssets = new Set();
 for (const f of htmlFiles) {
@@ -57,7 +51,6 @@ for (const f of htmlFiles) {
     }
 }
 
-// Check script.js asset references (MUSIC_SRC, images).
 const js = fs.readFileSync('script.js', 'utf8');
 for (const m of js.matchAll(/(?:MUSIC_SRC|src)\s*=\s*["']([^"']+)["']/g)) {
     const target = m[1];

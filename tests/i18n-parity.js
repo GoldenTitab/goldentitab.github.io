@@ -1,14 +1,11 @@
 'use strict';
-// i18n key-parity check: verifies every data-i18n key exists in both `en` and `fa`
-// translation objects in script.js, and flags obvious English leftovers in FA strings.
 const fs = require('fs');
 const src = fs.readFileSync('script.js', 'utf8');
 const lines = src.split('\n');
 
 const enKeys = [], faKeys = [];
 const enVals = {}, faVals = {};
-let block = null; // 'en' | 'fa' | null
-// Matches:  key: 'value'   or   key: "value"   (with optional trailing comma)
+let block = null;
 const kvRe = /(\w+)\s*:\s*(['"])((?:\\.|(?!\2).)*?)\2/g;
 for (const line of lines) {
     const trimmed = line.trim();
@@ -31,7 +28,6 @@ let failures = 0;
 if (onlyEn.length) { failures++; console.log('MISSING in fa:'); onlyEn.forEach(k => console.log('  - ' + k)); }
 if (onlyFa.length) { failures++; console.log('MISSING in en:'); onlyFa.forEach(k => console.log('  - ' + k)); }
 
-// Check data-i18n keys referenced in HTML but missing from translations.
 const htmlFiles = ['index.html', 'experience.html', 'world.html', '404.html'];
 const referenced = new Set();
 for (const f of htmlFiles) {
@@ -49,11 +45,9 @@ const missingFromFa = [...referenced].filter(k => !faSet.has(k));
 if (missingFromEn.length) { failures++; console.log('Referenced in HTML but missing from en:'); missingFromEn.forEach(k => console.log('  - ' + k)); }
 if (missingFromFa.length) { failures++; console.log('Referenced in HTML but missing from fa:'); missingFromFa.forEach(k => console.log('  - ' + k)); }
 
-// Obvious English leftovers in FA strings.
 const engWords = /\b(the|and|of|to|a|in|is|it|you|for|with|on|at|from|by|or|as|be|this|that|are|was|but|not|have|has|had|will|can|about|project|message|email|name|view|send|enter|music|theme|language|skip|back|close|menu|home|projects|contact|journey|world|skills|send message|view projects|github profile|enter the world)\b/i;
 const faLeftovers = [];
 for (const k of Object.keys(faVals)) {
-    // Placeholder examples (your@email.com, Your name, ...) are intentionally English.
     if (/^(ph|phName|phEmail|phMessage)$/.test(k)) continue;
     const v = faVals[k];
     if (typeof v === 'string' && engWords.test(v)) faLeftovers.push(k + ': ' + v.slice(0, 60));

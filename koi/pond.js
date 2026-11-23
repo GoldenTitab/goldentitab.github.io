@@ -1,56 +1,19 @@
-/* Ali's Koi Pond — interactive layer.
- * Builds the pond from data.json (regenerated nightly), then lets the koi
- * swim after the pointer with realistic motion: burst-and-coast strokes,
- * a body wave that travels head-to-tail, smooth turning with the body
- * bending into the turn, gentle hovering when it arrives, and a slow
- * wander when the pointer is idle. Bubbles from the mouth, a soft
- * shadow, ripples on click. Hover a colour on the koi to see its
- * language (name only); hover a tile to see that day's count. The
- * language hover is pixel-perfect: the pointer is mapped into the
- * sprite and looked up against the actual patch pixels (with a small
- * tolerance), so the 1 px-tall patch rects themselves are never the
- * hover target.
- * Tap or click the water to drop food: pellets float for ~14 s, the
- * koi turns to the nearest one, swims at it and gulps it down (a ripple
- * and a couple of bubbles). The loop pauses when the tab is hidden, the
- * pond is scrolled offscreen, or the visitor presses Pause.
- * Vanilla JS, no dependencies.
- *
- * The koi is the original git-koi pixel-art sprite (yalongwastaken/git-koi,
- * MIT, (c) 2026 Anthony Yalong) in sprite.json, recoloured to Ali's
- * languages — the same data koi/generate_pond.py uses for the README SVG.
- *
- * Motion model (real koi, after Wu et al. 2007 and the git-koi cruise
- * model): koi swim burst-and-coast — a few tail beats, then a glide
- * with the body straight. The body wave travels head-to-tail with the
- * amplitude growing toward the tail; the tail lags the wave; speed
- * peaks just after each stroke. In a turn the body bends into the
- * turn (up to ~0.6 body lengths in a hard turn) with the tail
- * sweeping outside. Even with prefers-reduced-motion the fish keeps
- * swimming, only slower and gentler — it never freezes.
- */
 (function () {
   'use strict';
 
   var SVG_W = 880, SVG_H = 380;
   var CELL = 12, GAP = 4, GRID_X = 18, GRID_Y = 206;
   var NS = 'http://www.w3.org/2000/svg';
-  var KOI_SCALE = 1.0;   /* sprite 247x118, shown at native size: its
-     bounding circle (radius ~137) then fits the 380-tall pond in any
-     orientation, so the fish is never clipped at an edge */
-  var BODY_L = 247;      /* sprite length in native pixels */
+  var KOI_SCALE = 1.0;
+  var BODY_L = 247;
 
-  /* Vertical slices of the sprite for the body wave (shared bounds with
-     generate_pond.py). Each slice is a <g> shifted sideways per frame. */
   var SLICE_BOUNDS = [0, 25, 50, 74, 99, 124, 148, 173, 198, 222, 247];
 
-  /* Burst-and-coast stroke: 2.4 s cycle, beat for the first 55%, glide. */
   var BEAT_PERIOD = 2.4, BEAT_SHARE = 0.55;
   var CRUISE_SPEED = 70, MAX_SPEED = 230, ACCEL = 300, TURN_MAX = 2.2;
 
-  /* Feeding. */
   var MAX_PELLETS = 12, PELLET_LIFE = 14000, PELLET_FADE = 3000;
-  var MOUTH = 172;       /* head tip, px ahead of the sprite centre */
+  var MOUTH = 172;
 
   var svg = document.getElementById('pond');
   var wrap = document.getElementById('pondWrap');
@@ -96,7 +59,6 @@
   }
 
   function shadeHex(hex, delta) {
-    /* Same lightness shift as generate_pond.py's shade_hex. */
     var r = parseInt(hex.slice(1, 3), 16) / 255;
     var g = parseInt(hex.slice(3, 5), 16) / 255;
     var b = parseInt(hex.slice(5, 7), 16) / 255;
@@ -128,7 +90,6 @@
   }
 
   function fishMarkup(languages, sprite) {
-    /* Split the pixel runs at the slice bounds so each slice can move. */
     var slices = [];
     for (var i = 0; i < SLICE_BOUNDS.length - 1; i++) slices.push('');
     sprite.runs.forEach(function (run) {
@@ -241,22 +202,21 @@
       + active + ' active days · redrawn nightly';
   }
 
-  /* --- the living koi ---------------------------------------------------- */
   var koi = null, shadow = null, fx = null, sliceGroups = [];
   var spriteData = null, patchMap = null, fishPixels = null;
   var pos = { x: 440, y: 120 }, vel = { x: 0, y: 0 };
   var heading = 0, turnRate = 0;
   var wavePhase = 0.8, beatClock = 0, lastT = 0, lastPointer = 0, lastBubble = 0;
-  var curBeatEnv = 0, curTurnNorm = 0;   /* latest frame's wave state, for the hit-test */
+  var curBeatEnv = 0, curTurnNorm = 0;
   var pointer = { x: 440, y: 120 };
   var lastClient = { x: 0, y: 0 };
-  var tooltipKind = null;   /* 'lang' | 'tile' | null */
+  var tooltipKind = null;
   var wanderTarget = null, wanderUntil = 0;
   var bubbles = [], ripples = [];
   var pellets = [], gulpUntil = 0;
-  var hoverActive = false;  /* true only while a mouse is over the page: touch has no hover */
+  var hoverActive = false;
   var rafId = 0, paused = false, hidden = false, offscreen = false;
-  var PATCH_OFFS = (function () {   /* 4 px hit tolerance, nearest first, built once */
+  var PATCH_OFFS = (function () {
     var o = [];
     for (var dx = -4; dx <= 4; dx++)
       for (var dy = -4; dy <= 4; dy++)
@@ -265,11 +225,6 @@
     return o;
   })();
 
-  /* Screen -> pond coordinates, WITHOUT clamping: the hit-test must
-     see the pointer where it really is. (An earlier version clamped
-     here, which squashed every pointer outside the fish's roaming box
-     onto its edge — so a yellow patch at the fish's nose read as the
-     wrong colour, and empty water could read as a patch.) */
   function toSVG(clientX, clientY) {
     var pt = svg.createSVGPoint();
     pt.x = clientX; pt.y = clientY;
@@ -277,10 +232,6 @@
     return { x: p.x, y: p.y };
   }
 
-  /* Clamp a TARGET point to the fish's roaming box, so the whole fish
-     stays inside the pond in ANY orientation: the centre stays one
-     bounding-circle radius (137) plus a small margin from every edge.
-     Only the target is clamped — never the pointer itself. */
   function clampToPond(p) {
     return {
       x: Math.max(145, Math.min(SVG_W - 145, p.x)),
@@ -295,7 +246,6 @@
   }
 
   function spawnBubble() {
-    /* Mouth = head tip, 172px ahead along the heading. */
     var bx = pos.x + 172 * Math.cos(heading);
     var by = pos.y + 172 * Math.sin(heading);
     var c = document.createElementNS(NS, 'circle');
@@ -321,7 +271,6 @@
 
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
-  /* Drop a few floating pellets around (x, y), in pond coordinates. */
   function dropFood(x, y, count) {
     if (!fx) return;
     var c = { x: clamp(x, 24, SVG_W - 24), y: clamp(y, 28, SVG_H - 28) };
@@ -356,7 +305,7 @@
     spawnBubble(); spawnBubble();
     pl.el.remove();
     pellets.splice(i, 1);
-    gulpUntil = now + 450;   /* a brief pause: the koi gulps */
+    gulpUntil = now + 450;
   }
 
   function updatePellets(now) {
@@ -364,9 +313,8 @@
     var my = pos.y + MOUTH * Math.sin(heading);
     for (var i = pellets.length - 1; i >= 0; i--) {
       var pl = pellets[i], age = now - pl.born;
-      var life = reducedMotion ? PELLET_LIFE * 2.5 : PELLET_LIFE;   /* the slower koi needs longer */
+      var life = reducedMotion ? PELLET_LIFE * 2.5 : PELLET_LIFE;
       if (age > life) { pl.el.remove(); pellets.splice(i, 1); continue; }
-      /* Eaten when the mouth reaches it (or the body swims right over it). */
       if (Math.hypot(mx - pl.x, my - pl.y) < 22 || Math.hypot(pos.x - pl.x, pos.y - pl.y) < 50) {
         eatPellet(i, now);
         continue;
@@ -387,16 +335,11 @@
     lastT = now;
     var rm = reducedMotion;
 
-    /* Target: the pointer, or a slow wander once it has been idle 6 s
-       AND the fish has already arrived there. Until it arrives, it
-       keeps chasing — parking the pointer somewhere new always brings
-       the fish over. The switch to wandering is smooth: a wander
-       waypoint is just another target for the same physics. */
     var target;
     var food = pellets.length ? nearestPellet() : null;
     var distToPointer = Math.hypot(pointer.x - pos.x, pointer.y - pos.y);
     if (food) {
-      target = food;          /* food beats the pointer and the wander */
+      target = food;
     } else if (!rm && (now - lastPointer < 12000 || distToPointer > 45)) {
       target = pointer;
     } else {
@@ -411,8 +354,6 @@
       target = wanderTarget;
     }
 
-    /* Burst-and-coast stroke: a smooth beat, then a glide. Speed peaks
-       just after the stroke, like a real koi. */
     beatClock += dt;
     var cycle = (beatClock % BEAT_PERIOD) / BEAT_PERIOD;
     var beatEnv = cycle < BEAT_SHARE ? Math.sin(Math.PI * cycle / BEAT_SHARE) : 0;
@@ -420,12 +361,8 @@
     var cruise = rm ? 35 : CRUISE_SPEED;
     var maxSpeed = rm ? 55 : MAX_SPEED;
     var speedCap = cruise + (maxSpeed - cruise) * beatEnv;
-    if (food) speedCap *= 1.25;                 /* a koi darts at food */
+    if (food) speedCap *= 1.25;
     if (now < gulpUntil) speedCap = Math.min(speedCap, 20);
-    /* While the cursor rests on a coloured patch the fish holds its
-       position (tail still beating — a koi hovering in place), so the
-       patch stays under the pointer and its tooltip stays readable.
-       On the plain body it just calms down. */
     var hoverPatch = hoverActive ? patchLangAt(lastClient.x, lastClient.y) : null;
     if (!food) {
       if (hoverPatch) {
@@ -435,7 +372,6 @@
       }
     }
 
-    /* Arrived: orbit the pointer slowly instead of parking dead still. */
     var tx = target.x, ty = target.y;
     var dx = tx - pos.x, dy = ty - pos.y;
     var dist = Math.hypot(dx, dy);
@@ -446,7 +382,6 @@
       dx = tx - pos.x; dy = ty - pos.y; dist = Math.hypot(dx, dy);
     }
 
-    /* Desired velocity, capped acceleration: smooth starts and stops. */
     var wantX = 0, wantY = 0;
     if (dist > 6) {
       var sp = Math.min(speedCap, 25 + dist * 0.85);
@@ -461,10 +396,6 @@
     pos.y = Math.max(145, Math.min(SVG_H - 145, pos.y));
     var speed = Math.hypot(vel.x, vel.y);
 
-    /* Heading turns toward the velocity at a limited rate, so the fish
-       steers instead of snapping. The sprite is a top-down koi, so it
-       rotates freely through 360° — no horizontal flip (flipping would
-       teleport the head across the body mid-turn). */
     if (speed > 8) {
       var desired = Math.atan2(vel.y, vel.x);
       var diff = normRad(desired - heading);
@@ -479,8 +410,6 @@
       'translate(' + pos.x.toFixed(1) + ' ' + pos.y.toFixed(1) + ')'
       + ' rotate(' + (heading * 180 / Math.PI).toFixed(1) + ')');
 
-    /* Travelling body wave: amplitude grows head-to-tail, the tail lags
-       the wave, and the body bends into the turn (tail sweeps outside). */
     var freq = (rm ? 0.45 : 0.6) + (rm ? 0.3 : 1.2) * beatEnv;
     wavePhase += 2 * Math.PI * freq * dt;
     var turnNorm = Math.max(-1, Math.min(1, turnRate / TURN_MAX));
@@ -491,8 +420,6 @@
         'translate(0 ' + sliceOffAt(xc).toFixed(2) + ')');
     }
 
-    /* Shadow follows under the fish, rotated with it so it hugs the
-       belly in any orientation instead of lying flat as a streak. */
     shadow.setAttribute('transform',
       'translate(' + pos.x.toFixed(1) + ' ' + pos.y.toFixed(1) + ')'
       + ' rotate(' + (heading * 180 / Math.PI).toFixed(1) + ')'
@@ -500,8 +427,6 @@
     shadow.setAttribute('rx', (120 + Math.min(18, speed * 0.06)).toFixed(1));
     if (speed > 60 && now - lastBubble > 320) { spawnBubble(); lastBubble = now; }
 
-    /* A language tooltip must not outlive the hover: if the fish swam
-       away from under a stationary pointer, hide it. */
     if (tooltipKind === 'lang' && !hoverPatch) {
       hideTooltip();
     }
@@ -526,7 +451,6 @@
     if (shouldRun()) rafId = requestAnimationFrame(frame);
   }
 
-  /* --- loop control: no work while hidden, offscreen or paused ----------- */
   function shouldRun() { return koi && !paused && !hidden && !offscreen; }
   function wake() {
     if (!rafId && shouldRun()) {
@@ -545,10 +469,6 @@
     }).observe(wrap);
   }
 
-  /* --- tooltips ---------------------------------------------------------- */
-  /* Map sprite pixel -> language name, for pixel-perfect patch hover,
-     plus the set of all fish pixels (to tell when the cursor is on
-     the fish at all). */
   function buildPatchMap(languages, sprite) {
     var map = {};
     var all = {};
@@ -565,11 +485,6 @@
     return map;
   }
 
-  /* Vertical shift of the slice containing sprite x, right now — the
-     same offset the renderer applies to that slice, so the hit-test
-     looks the pointer up against the WAVED fish as rendered, not the
-     flat sprite. (A slice is translated rigidly, so its centre offset
-     is exact for every pixel in it.) */
   function sliceOffAt(sx) {
     var i = 0;
     while (i < SLICE_BOUNDS.length - 2 && sx >= SLICE_BOUNDS[i + 1]) i++;
@@ -581,8 +496,6 @@
       - curTurnNorm * 14 * fromTail * fromTail;
   }
 
-  /* Sprite coordinates under the pointer (undoing the fish's
-     translate/rotate/scale), or null before the sprite loads. */
   function pointerToSprite(clientX, clientY) {
     if (!spriteData) return null;
     var p = toSVG(clientX, clientY);
@@ -595,8 +508,6 @@
     };
   }
 
-  /* Language under the pointer, if any: look the pixel up in the waved
-     sprite, with a 4 px tolerance (nearest patch wins). */
   function patchLangAt(clientX, clientY) {
     if (!patchMap) return null;
     var sp = pointerToSprite(clientX, clientY);
@@ -610,7 +521,6 @@
     return null;
   }
 
-  /* Is the pointer on the fish at all (any pixel, patch or body)? */
   function pointerOnFish() {
     if (!fishPixels) return false;
     var sp = pointerToSprite(lastClient.x, lastClient.y);
@@ -642,14 +552,12 @@
     for (var i = 0; i < hl.length; i++) hl[i].classList.remove('hl');
   }
 
-  /* The pointer is tracked anywhere on the page, not just over the pond,
-     so moving the mouse outside the SVG still steers the fish. */
   window.addEventListener('pointermove', function (e) {
     pointer = clampToPond(toSVG(e.clientX, e.clientY));
     lastPointer = performance.now();
     lastClient = { x: e.clientX, y: e.clientY };
     hoverActive = e.pointerType === 'mouse';
-    if (!hoverActive) return;   /* touch / pen: steer only, no tooltips */
+    if (!hoverActive) return;
     var lang = patchLangAt(e.clientX, e.clientY);
     if (lang) {
       showTooltip(lang, e.clientX, e.clientY);
@@ -675,7 +583,6 @@
     dropFood(p.x, p.y, 3);
   });
 
-  /* Buttons: keyboard- and touch-friendly alternatives. */
   var feedBtn = document.getElementById('feedBtn');
   var pauseBtn = document.getElementById('pauseBtn');
   if (feedBtn) feedBtn.addEventListener('click', function () {

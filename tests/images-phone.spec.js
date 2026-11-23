@@ -1,5 +1,4 @@
 'use strict';
-// Task 7: Image verification on phone emulations (Chromium + WebKit)
 const { test, expect, devices } = require('@playwright/test');
 const { spawn } = require('child_process');
 const path = require('path');
@@ -28,7 +27,6 @@ async function dismissGate(page) {
 }
 
 async function checkAllImages(page, label) {
-    // Scroll to bottom to trigger lazy-loading of all images, then back to top
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await page.waitForTimeout(1000);
     await page.evaluate(() => window.scrollTo(0, 0));

@@ -15,4 +15,4 @@ const server = http.createServer((req, res) => {
     });
 });
 server.listen(0, () => { console.log('TEST_SERVER_PORT=' + server.address().port); });
-process.stdin.resume(); // keep alive
+process.stdin.resume();
