@@ -10,15 +10,42 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Ali D. Shah — UI/UX Designer &amp; Flutter Developer">
     <meta property="og:description" content="Computer Engineering student building simple, intuitive digital experiences with Figma, Flutter and the web.">
-    <meta property="og:image" content="https://goldentitab.github.io/images/hero-world-1.jpg">
+    <meta property="og:image" content="https://goldentitab.github.io/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="theme-color" content="#f6eef2">
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="icon" type="image/png" href="images/aurora-logo-light-180.png" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/png" href="images/aurora-logo-180.png" media="(prefers-color-scheme: dark)">
     <link rel="apple-touch-icon" href="images/aurora-logo-180.png">
-    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="style.css?v=20261123">
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Ali D. Shah",
+  "jobTitle": "UI/UX Designer & Flutter Developer",
+  "description": "Computer Engineering student building simple, intuitive digital experiences. Focused on UI/UX Design, Flutter, and Product Thinking.",
+  "url": "https://goldentitab.github.io/",
+  "image": "https://goldentitab.github.io/images/avatar.png",
+  "address": { "@type": "PostalAddress", "addressLocality": "Kerman", "addressCountry": "Iran" },
+  "knowsAbout": ["UI/UX Design", "Flutter", "Dart", "Figma", "HTML", "CSS", "JavaScript", "WordPress", "Firebase", "Git"],
+  "sameAs": [
+    "https://github.com/GoldenTitab",
+    "https://x.com/GoldenTitabExe",
+    "https://www.instagram.com/GoldenTitab.exe",
+    "https://t.me/AuroraUXUI_Studio"
+  ]
+}
+    </script>
+    <link rel="preload" as="font" href="fonts/Vazirmatn-Regular.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="image" href="images/hero-world-1.webp" fetchpriority="high">
 </head>
 <body>
+    <noscript><div class="noscript-msg"><p>JavaScript is required to view this portfolio. Please enable it in your browser.</p></div></noscript>
     <a href="#main" class="skip-link" data-i18n="skipLink">Skip to main content</a>
     <div id="langAnnouncer" class="visually-hidden" role="status" aria-live="polite"></div>
 
@@ -36,9 +63,9 @@
     </div>
 
     <!-- ===== NAV — minimal unseen-style ===== -->
-    <nav role="navigation" aria-label="Main navigation">
+    <nav aria-label="Main navigation">
         <a href="#top" class="nav-logo">ali<span class="serif-i">.shah</span>()</a>
-        <ul class="nav-center" id="navCenter" role="list">
+        <ul class="nav-center" id="navCenter">
             <li><a href="#top" data-i18n="navIndex">Index</a></li>
             <li><a href="#projects" data-i18n="navProjects">Projects</a></li>
             <li><a href="#contact" data-i18n="navContact">Contact</a></li>
@@ -76,9 +103,9 @@
     <!-- ===== HERO — scroll-frame, 30 steps simulated from 3 key images ===== -->
     <header class="hero" id="top">
         <div class="hero-frames">
-            <img class="hero-frame is-active" src="images/hero-world-1.jpg" alt="" data-frame="0">
-            <img class="hero-frame" src="images/hero-world-2.jpg" alt="" data-frame="1" loading="lazy">
-            <img class="hero-frame" src="images/hero-world-3.jpg" alt="" data-frame="2" loading="lazy">
+            <picture><source srcset="images/hero-world-1.webp" type="image/webp"><img class="hero-frame is-active" src="images/hero-world-1.jpg" alt="" data-frame="0" fetchpriority="high"></picture>
+            <picture><source srcset="images/hero-world-2.webp" type="image/webp"><img class="hero-frame" src="images/hero-world-2.jpg" alt="" data-frame="1" loading="lazy"></picture>
+            <picture><source srcset="images/hero-world-3.webp" type="image/webp"><img class="hero-frame" src="images/hero-world-3.jpg" alt="" data-frame="2" loading="lazy"></picture>
             <div class="hero-grain" aria-hidden="true"></div>
         <div class="hero-copy">
             <p class="hero-eyebrow"><span class="availability-dot"></span><span data-i18n="heroEyebrow">Available for freelance</span></p>
@@ -105,7 +132,7 @@
 
     <!-- ===== ABOUT — white card over the 3D-world image ===== -->
     <section id="about" class="about-section">
-        <div class="about-bg" aria-hidden="true"><img src="images/about-world.jpg" alt="" loading="lazy"></div>
+        <div class="about-bg" aria-hidden="true"><picture><source srcset="images/about-world.webp" type="image/webp"><img src="images/about-world.jpg" alt="" loading="lazy"></picture></div>
         <div class="about-card glass-card">
             <img class="about-avatar reveal" src="images/avatar.png" alt="Ali D. Shah" width="72" height="72" loading="lazy">
             <p class="section-label reveal" data-i18n="aboutLabel">// about me</p>
@@ -130,15 +157,15 @@
         <p class="section-subtitle reveal" data-i18n="skillsSubtitle">Tools and technologies I use to bring ideas to life</p>
         <div class="arsenal">
             <!-- % values exactly as sent by Ali 2026-11-23: HTML 100, CSS 60, Figma 80, Flutter 80, JavaScript 20, Dart 80, WordPress 60, Git/GitHub 70, Firebase 50. Level scale: 90+ Master, 70–89 Advanced, 50–69 Intermediate, below 50 Beginner. -->
-            <div class="arsenal-row" data-skill="Figma"><span class="arsenal-name">Figma</span><span class="arsenal-level" data-i18n="levelAdvanced">Advanced</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="80" style="--pct:80%"></div></div><span class="arsenal-pct">80%</span></div>
-            <div class="arsenal-row" data-skill="HTML"><span class="arsenal-name">HTML</span><span class="arsenal-level" data-i18n="levelMaster">Master</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="100" style="--pct:100%"></div></div><span class="arsenal-pct">100%</span></div>
-            <div class="arsenal-row" data-skill="CSS"><span class="arsenal-name">CSS</span><span class="arsenal-level" data-i18n="levelIntermediate">Intermediate</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="60" style="--pct:60%"></div></div><span class="arsenal-pct">60%</span></div>
-            <div class="arsenal-row" data-skill="Flutter"><span class="arsenal-name">Flutter</span><span class="arsenal-level" data-i18n="levelAdvanced">Advanced</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="80" style="--pct:80%"></div></div><span class="arsenal-pct">80%</span></div>
-            <div class="arsenal-row" data-skill="JavaScript"><span class="arsenal-name">JavaScript</span><span class="arsenal-level" data-i18n="levelBeginner">Beginner</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="20" style="--pct:20%"></div></div><span class="arsenal-pct">20%</span></div>
-            <div class="arsenal-row" data-skill="Dart"><span class="arsenal-name">Dart</span><span class="arsenal-level" data-i18n="levelAdvanced">Advanced</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="80" style="--pct:80%"></div></div><span class="arsenal-pct">80%</span></div>
-            <div class="arsenal-row" data-skill="WordPress"><span class="arsenal-name">WordPress</span><span class="arsenal-level" data-i18n="levelIntermediate">Intermediate</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="60" style="--pct:60%"></div></div><span class="arsenal-pct">60%</span></div>
-            <div class="arsenal-row" data-skill="Git / GitHub"><span class="arsenal-name">Git / GitHub</span><span class="arsenal-level" data-i18n="levelAdvanced">Advanced</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="70" style="--pct:70%"></div></div><span class="arsenal-pct">70%</span></div>
-            <div class="arsenal-row" data-skill="Firebase"><span class="arsenal-name">Firebase</span><span class="arsenal-level" data-i18n="levelIntermediate">Intermediate</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="50" style="--pct:50%"></div></div><span class="arsenal-pct">50%</span></div>
+            <div class="arsenal-row" data-skill="Figma"><span class="arsenal-name">Figma</span><span class="arsenal-level" data-i18n="levelAdvanced">Advanced</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="80"></div></div><span class="arsenal-pct">80%</span></div>
+            <div class="arsenal-row" data-skill="HTML"><span class="arsenal-name">HTML</span><span class="arsenal-level" data-i18n="levelMaster">Master</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="100"></div></div><span class="arsenal-pct">100%</span></div>
+            <div class="arsenal-row" data-skill="CSS"><span class="arsenal-name">CSS</span><span class="arsenal-level" data-i18n="levelIntermediate">Intermediate</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="60"></div></div><span class="arsenal-pct">60%</span></div>
+            <div class="arsenal-row" data-skill="Flutter"><span class="arsenal-name">Flutter</span><span class="arsenal-level" data-i18n="levelAdvanced">Advanced</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="80"></div></div><span class="arsenal-pct">80%</span></div>
+            <div class="arsenal-row" data-skill="JavaScript"><span class="arsenal-name">JavaScript</span><span class="arsenal-level" data-i18n="levelBeginner">Beginner</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="20"></div></div><span class="arsenal-pct">20%</span></div>
+            <div class="arsenal-row" data-skill="Dart"><span class="arsenal-name">Dart</span><span class="arsenal-level" data-i18n="levelAdvanced">Advanced</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="80"></div></div><span class="arsenal-pct">80%</span></div>
+            <div class="arsenal-row" data-skill="WordPress"><span class="arsenal-name">WordPress</span><span class="arsenal-level" data-i18n="levelIntermediate">Intermediate</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="60"></div></div><span class="arsenal-pct">60%</span></div>
+            <div class="arsenal-row" data-skill="Git / GitHub"><span class="arsenal-name">Git / GitHub</span><span class="arsenal-level" data-i18n="levelAdvanced">Advanced</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="70"></div></div><span class="arsenal-pct">70%</span></div>
+            <div class="arsenal-row" data-skill="Firebase"><span class="arsenal-name">Firebase</span><span class="arsenal-level" data-i18n="levelIntermediate">Intermediate</span><div class="arsenal-bar" aria-hidden="true"><div class="arsenal-fill" data-pct="50"></div></div><span class="arsenal-pct">50%</span></div>
         </div>
         <div class="skills-grid stagger-children">
             <div class="skill-card"><p class="skill-group-title" data-i18n="skillGroup1">UI / UX</p><div class="skill-tags"><span class="skill-tag">Figma</span><span class="skill-tag">Wireframing</span><span class="skill-tag">Prototyping</span><span class="skill-tag">User Flows</span><span class="skill-tag">Design Thinking</span><span class="skill-tag">Usability Testing</span></div></div>
@@ -164,23 +191,23 @@
             <button type="button" class="stack-filter" data-filter="Dart" data-i18n="filterDart">Dart</button>
             <button type="button" class="stack-filter" data-filter="Design" data-i18n="filterDesign">Design</button>
         </div>
-        <div class="stack-wrap" role="region" aria-roledescription="carousel" aria-label="Projects">
+        <section class="stack-wrap" aria-roledescription="carousel" aria-label="Projects">
             <div class="stack" id="projectStack">
-                <a href="https://github.com/GoldenTitab/Deutsch-Pronunciation" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><img src="images/project-deutsch.jpg" alt="German language learning illustration: open book and flashcards" loading="lazy"></div><div class="project-name" data-i18n="project1Name">German Pronunciation &amp; Language Learning</div><p class="project-desc" data-i18n="project1Desc">Single-page web app for learning German from A0 to C1: vocabulary, grammar, verbs, cases, reading, quizzes, spaced-repetition flashcards and a pronunciation masterclass.</p><div class="project-tags"><span class="project-tag">HTML</span><span class="project-tag">CSS</span><span class="project-tag">JavaScript</span></div></a>
-                <a href="https://github.com/GoldenTitab/Aurora" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Flutter Dart Design"><div class="project-image"><img src="images/project-aurora.jpg" alt="Anime franchise tracker illustration: poster shelf with progress bars" loading="lazy"></div><div class="project-name" data-i18n="project2Name">Aurora — Anime Franchise Tracker</div><p class="project-desc" data-i18n="project2Desc">Offline-first anime franchise tracker built with Flutter: seasons, movies and OVAs grouped under one franchise, with data from AniList and MyAnimeList and a Persian (RTL) interface.</p><div class="project-tags"><span class="project-tag">Flutter</span><span class="project-tag">Dart</span><span class="project-tag">Hive</span></div></a>
-                <a href="https://github.com/GoldenTitab/First-App" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Flutter Dart"><div class="project-image"><img src="images/project-music.jpg" alt="Music player illustration: headphones, vinyl and sound waves" loading="lazy"></div><div class="project-name" data-i18n="project3Name">Aurora Music Player</div><p class="project-desc" data-i18n="project3Desc">Flutter music player with online streaming, Firebase authentication, light and dark themes, a Persian (RTL) interface and full player controls.</p><div class="project-tags"><span class="project-tag">Flutter</span><span class="project-tag">Dart</span><span class="project-tag">Firebase</span></div></a>
-                <a href="https://github.com/GoldenTitab/Monkey-D.-Luffy" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><img src="images/project-luffy.jpg" alt="Pirate adventure illustration: straw hat on a ship deck" loading="lazy"></div><div class="project-name" data-i18n="project4Name">Monkey D. Luffy Fan Site</div><p class="project-desc" data-i18n="project4Desc">Fan-made biography website for Monkey D. Luffy from One Piece, with a light/dark theme, scroll animations and a responsive Persian (RTL) layout.</p><div class="project-tags"><span class="project-tag">HTML</span><span class="project-tag">CSS</span><span class="project-tag">JavaScript</span></div></a>
-                <a href="https://github.com/GoldenTitab/titab-ai-telegram-bot" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><img src="images/project-bot.jpg" alt="Titab AI Telegram Bot illustration: robot assistant chatting in a messaging app" loading="lazy"></div><div class="project-name" data-i18n="project5Name">Titab AI Telegram Bot</div><p class="project-desc" data-i18n="project5Desc">Telegram bot that answers with an AI model: raw Telegram Bot API long polling, per-chat memory, and Hugging Face chat completions, with tokens kept in a local .env file.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">Telegram Bot API</span><span class="project-tag">Hugging Face</span></div></a>
-                <a href="https://github.com/GoldenTitab/dart-cli-calculator" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><img src="images/project-calculator.jpg" alt="Dart CLI Calculator illustration: pocket calculator on a desk with a notebook" loading="lazy"></div><div class="project-name" data-i18n="project6Name">Dart CLI Calculator</div><p class="project-desc" data-i18n="project6Desc">Command-line calculator in Dart with an interactive prompt, operator input, and clean exit handling.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">CLI</span></div></a>
-                <a href="https://github.com/GoldenTitab/dart-fundamentals-exercises" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><img src="images/project-fundamentals.jpg" alt="Dart Fundamentals Exercises illustration: stepping-stone learning path with a laptop" loading="lazy"></div><div class="project-name" data-i18n="project7Name">Dart Fundamentals Exercises</div><p class="project-desc" data-i18n="project7Desc">A 23-exercise path through Dart fundamentals: input handling, collections, classes, and small console programs.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">Exercises</span></div></a>
-                <a href="https://github.com/GoldenTitab/gibberish-decoder" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><img src="images/project-gibberish.jpg" alt="Gibberish Decoder illustration: scattered keyboard keys becoming an orderly keyboard" loading="lazy"></div><div class="project-name" data-i18n="project8Name">Gibberish Decoder</div><p class="project-desc" data-i18n="project8Desc">Chrome extension that fixes text typed on the wrong keyboard layout (Persian ↔ English) in chat boxes, plus Persian half-spaces and number conversion. Fully local, no text sent to any server.</p><div class="project-tags"><span class="project-tag">JavaScript</span><span class="project-tag">Chrome Extension</span><span class="project-tag">Vazir</span></div></a>
+                <a href="https://github.com/GoldenTitab/Deutsch-Pronunciation" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><picture><source srcset="images/project-deutsch.webp" type="image/webp"><img src="images/project-deutsch.jpg" alt="German language learning illustration: open book and flashcards" loading="lazy"></picture></div><div class="project-name" data-i18n="project1Name">German Pronunciation &amp; Language Learning</div><p class="project-desc" data-i18n="project1Desc">Single-page web app for learning German from A0 to C1: vocabulary, grammar, verbs, cases, reading, quizzes, spaced-repetition flashcards and a pronunciation masterclass.</p><div class="project-tags"><span class="project-tag">HTML</span><span class="project-tag">CSS</span><span class="project-tag">JavaScript</span></div></a>
+                <a href="https://github.com/GoldenTitab/Aurora" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Flutter Dart Design"><div class="project-image"><picture><source srcset="images/project-aurora.webp" type="image/webp"><img src="images/project-aurora.jpg" alt="Anime franchise tracker illustration: poster shelf with progress bars" loading="lazy"></picture></div><div class="project-name" data-i18n="project2Name">Aurora — Anime Franchise Tracker</div><p class="project-desc" data-i18n="project2Desc">Offline-first anime franchise tracker built with Flutter: seasons, movies and OVAs grouped under one franchise, with data from AniList and MyAnimeList and a Persian (RTL) interface.</p><div class="project-tags"><span class="project-tag">Flutter</span><span class="project-tag">Dart</span><span class="project-tag">Hive</span></div></a>
+                <a href="https://github.com/GoldenTitab/First-App" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Flutter Dart"><div class="project-image"><picture><source srcset="images/project-music.webp" type="image/webp"><img src="images/project-music.jpg" alt="Music player illustration: headphones, vinyl and sound waves" loading="lazy"></picture></div><div class="project-name" data-i18n="project3Name">Aurora Music Player</div><p class="project-desc" data-i18n="project3Desc">Flutter music player with online streaming, Firebase authentication, light and dark themes, a Persian (RTL) interface and full player controls.</p><div class="project-tags"><span class="project-tag">Flutter</span><span class="project-tag">Dart</span><span class="project-tag">Firebase</span></div></a>
+                <a href="https://github.com/GoldenTitab/Monkey-D.-Luffy" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><picture><source srcset="images/project-luffy.webp" type="image/webp"><img src="images/project-luffy.jpg" alt="Pirate adventure illustration: straw hat on a ship deck" loading="lazy"></picture></div><div class="project-name" data-i18n="project4Name">Monkey D. Luffy Fan Site</div><p class="project-desc" data-i18n="project4Desc">Fan-made biography website for Monkey D. Luffy from One Piece, with a light/dark theme, scroll animations and a responsive Persian (RTL) layout.</p><div class="project-tags"><span class="project-tag">HTML</span><span class="project-tag">CSS</span><span class="project-tag">JavaScript</span></div></a>
+                <a href="https://github.com/GoldenTitab/titab-ai-telegram-bot" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><picture><source srcset="images/project-bot.webp" type="image/webp"><img src="images/project-bot.jpg" alt="Titab AI Telegram Bot illustration: robot assistant chatting in a messaging app" loading="lazy"></picture></div><div class="project-name" data-i18n="project5Name">Titab AI Telegram Bot</div><p class="project-desc" data-i18n="project5Desc">Telegram bot that answers with an AI model: raw Telegram Bot API long polling, per-chat memory, and Hugging Face chat completions, with tokens kept in a local .env file.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">Telegram Bot API</span><span class="project-tag">Hugging Face</span></div></a>
+                <a href="https://github.com/GoldenTitab/dart-cli-calculator" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><picture><source srcset="images/project-calculator.webp" type="image/webp"><img src="images/project-calculator.jpg" alt="Dart CLI Calculator illustration: pocket calculator on a desk with a notebook" loading="lazy"></picture></div><div class="project-name" data-i18n="project6Name">Dart CLI Calculator</div><p class="project-desc" data-i18n="project6Desc">Command-line calculator in Dart with an interactive prompt, operator input, and clean exit handling.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">CLI</span></div></a>
+                <a href="https://github.com/GoldenTitab/dart-fundamentals-exercises" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Dart"><div class="project-image"><picture><source srcset="images/project-fundamentals.webp" type="image/webp"><img src="images/project-fundamentals.jpg" alt="Dart Fundamentals Exercises illustration: stepping-stone learning path with a laptop" loading="lazy"></picture></div><div class="project-name" data-i18n="project7Name">Dart Fundamentals Exercises</div><p class="project-desc" data-i18n="project7Desc">A 23-exercise path through Dart fundamentals: input handling, collections, classes, and small console programs.</p><div class="project-tags"><span class="project-tag">Dart</span><span class="project-tag">Exercises</span></div></a>
+                <a href="https://github.com/GoldenTitab/gibberish-decoder" target="_blank" rel="noopener noreferrer" class="project-card stack-card" data-cat="Web Design"><div class="project-image"><picture><source srcset="images/project-gibberish.webp" type="image/webp"><img src="images/project-gibberish.jpg" alt="Gibberish Decoder illustration: scattered keyboard keys becoming an orderly keyboard" loading="lazy"></picture></div><div class="project-name" data-i18n="project8Name">Gibberish Decoder</div><p class="project-desc" data-i18n="project8Desc">Chrome extension that fixes text typed on the wrong keyboard layout (Persian ↔ English) in chat boxes, plus Persian half-spaces and number conversion. Fully local, no text sent to any server.</p><div class="project-tags"><span class="project-tag">JavaScript</span><span class="project-tag">Chrome Extension</span><span class="project-tag">Vazir</span></div></a>
             </div>
             <div class="stack-controls">
                 <button type="button" id="stackPrev" class="stack-arrow" aria-label="Previous project">←</button>
                 <span class="stack-counter"><span id="stackCurrent">1</span> / <span id="stackTotal">8</span></span>
                 <button type="button" id="stackNext" class="stack-arrow" aria-label="Next project">→</button>
             </div>
-        </div>
+        </section>
     </section>
 
     <hr class="divider">
@@ -246,6 +273,6 @@
     </footer>
 
     <button type="button" id="backToTop" class="back-to-top" aria-label="Back to top" data-i18n-attr="aria-label:backToTopLabel">↑</button>
-    <script src="script.js"></script>
+    <script src="script.js?v=20261123"></script>
 </body>
 </html>

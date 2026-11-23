@@ -7,13 +7,23 @@
     <title>World — Ali D. Shah</title>
     <meta name="description" content="The World of Ali D. Shah — a rotating globe gallery of his projects.">
     <meta name="author" content="Ali D. Shah">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="World — Ali D. Shah">
+    <meta property="og:description" content="The World of Ali D. Shah — a rotating globe gallery of his projects.">
+    <meta property="og:image" content="https://goldentitab.github.io/images/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="theme-color" content="#f6eef2">
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
     <link rel="icon" type="image/png" href="images/aurora-logo-light-180.png" media="(prefers-color-scheme: light)">
     <link rel="icon" type="image/png" href="images/aurora-logo-180.png" media="(prefers-color-scheme: dark)">
     <link rel="apple-touch-icon" href="images/aurora-logo-180.png">
-    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="preload" as="font" href="fonts/Vazirmatn-Regular.woff2" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="style.css?v=20261123">
 </head>
 <body>
+    <noscript><div class="noscript-msg"><p>JavaScript is required to view this portfolio. Please enable it in your browser.</p></div></noscript>
     <a href="#main" class="skip-link" data-i18n="skipLink">Skip to main content</a>
     <div id="langAnnouncer" class="visually-hidden" role="status" aria-live="polite"></div>
     <audio id="siteAudio" preload="none" loop></audio>
@@ -27,9 +37,9 @@
         <button type="button" id="gateEnterSilent" class="gate-silent" data-i18n="gateEnterSilent">Enter without audio</button>
     </div>
 
-    <nav role="navigation" aria-label="Main navigation">
+    <nav aria-label="Main navigation">
         <a href="index.html" class="nav-logo">ali<span class="serif-i">.shah</span>()</a>
-        <ul class="nav-center" id="navCenter" role="list">
+        <ul class="nav-center" id="navCenter">
             <li><a href="index.html" data-i18n="navIndex">Index</a></li>
             <li><a href="index.html#projects" data-i18n="navProjects">Projects</a></li>
             <li><a href="index.html#contact" data-i18n="navContact">Contact</a></li>
@@ -64,24 +74,24 @@
 
     <main id="main" tabindex="-1">
         <section class="page-head world-stage">
-            <p class="section-label reveal" data-i18n="worldLabel" style="justify-content:center">// world</p>
+            <p class="section-label reveal" data-i18n="worldLabel">// world</p>
             <h1 class="section-title reveal"><span class="serif-i" data-i18n="worldTitle">The World</span></h1>
-            <p class="section-subtitle reveal" data-i18n="worldSubtitle" style="margin:0 auto">Drag the globe to explore, then browse every project below.</p>
+            <p class="section-subtitle reveal" data-i18n="worldSubtitle">Drag the globe to explore, then browse every project below.</p>
             <div class="globe-wrap">
                 <canvas id="globeCanvas" role="img" aria-label="Rotating wireframe globe"></canvas>
                 <p class="globe-hint" data-i18n="worldHint">Drag to rotate</p>
             </div>
             <div class="world-tiles">
-                <a class="world-tile" href="https://github.com/GoldenTitab/Deutsch-Pronunciation" target="_blank" rel="noopener noreferrer"><img src="images/project-deutsch.jpg" alt="" loading="lazy"><span data-i18n="project1Name">German Pronunciation &amp; Language Learning</span></a>
-                <a class="world-tile" href="https://github.com/GoldenTitab/Aurora" target="_blank" rel="noopener noreferrer"><img src="images/project-aurora.jpg" alt="" loading="lazy"><span data-i18n="project2Name">Aurora — Anime Franchise Tracker</span></a>
-                <a class="world-tile" href="https://github.com/GoldenTitab/First-App" target="_blank" rel="noopener noreferrer"><img src="images/project-music.jpg" alt="" loading="lazy"><span data-i18n="project3Name">Aurora Music Player</span></a>
-                <a class="world-tile" href="https://github.com/GoldenTitab/Monkey-D.-Luffy" target="_blank" rel="noopener noreferrer"><img src="images/project-luffy.jpg" alt="" loading="lazy"><span data-i18n="project4Name">Monkey D. Luffy Fan Site</span></a>
-                <a class="world-tile" href="https://github.com/GoldenTitab/titab-ai-telegram-bot" target="_blank" rel="noopener noreferrer"><img src="images/project-bot.jpg" alt="" loading="lazy"><span data-i18n="project5Name">Titab AI Telegram Bot</span></a>
-                <a class="world-tile" href="https://github.com/GoldenTitab/dart-cli-calculator" target="_blank" rel="noopener noreferrer"><img src="images/project-calculator.jpg" alt="" loading="lazy"><span data-i18n="project6Name">Dart CLI Calculator</span></a>
-                <a class="world-tile" href="https://github.com/GoldenTitab/dart-fundamentals-exercises" target="_blank" rel="noopener noreferrer"><img src="images/project-fundamentals.jpg" alt="" loading="lazy"><span data-i18n="project7Name">Dart Fundamentals Exercises</span></a>
-                <a class="world-tile" href="https://github.com/GoldenTitab/gibberish-decoder" target="_blank" rel="noopener noreferrer"><img src="images/project-gibberish.jpg" alt="" loading="lazy"><span data-i18n="project8Name">Gibberish Decoder</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/Deutsch-Pronunciation" target="_blank" rel="noopener noreferrer"><picture><source srcset="images/project-deutsch.webp" type="image/webp"><img src="images/project-deutsch.jpg" alt="" loading="lazy"></picture><span data-i18n="project1Name">German Pronunciation &amp; Language Learning</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/Aurora" target="_blank" rel="noopener noreferrer"><picture><source srcset="images/project-aurora.webp" type="image/webp"><img src="images/project-aurora.jpg" alt="" loading="lazy"></picture><span data-i18n="project2Name">Aurora — Anime Franchise Tracker</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/First-App" target="_blank" rel="noopener noreferrer"><picture><source srcset="images/project-music.webp" type="image/webp"><img src="images/project-music.jpg" alt="" loading="lazy"></picture><span data-i18n="project3Name">Aurora Music Player</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/Monkey-D.-Luffy" target="_blank" rel="noopener noreferrer"><picture><source srcset="images/project-luffy.webp" type="image/webp"><img src="images/project-luffy.jpg" alt="" loading="lazy"></picture><span data-i18n="project4Name">Monkey D. Luffy Fan Site</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/titab-ai-telegram-bot" target="_blank" rel="noopener noreferrer"><picture><source srcset="images/project-bot.webp" type="image/webp"><img src="images/project-bot.jpg" alt="" loading="lazy"></picture><span data-i18n="project5Name">Titab AI Telegram Bot</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/dart-cli-calculator" target="_blank" rel="noopener noreferrer"><picture><source srcset="images/project-calculator.webp" type="image/webp"><img src="images/project-calculator.jpg" alt="" loading="lazy"></picture><span data-i18n="project6Name">Dart CLI Calculator</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/dart-fundamentals-exercises" target="_blank" rel="noopener noreferrer"><picture><source srcset="images/project-fundamentals.webp" type="image/webp"><img src="images/project-fundamentals.jpg" alt="" loading="lazy"></picture><span data-i18n="project7Name">Dart Fundamentals Exercises</span></a>
+                <a class="world-tile" href="https://github.com/GoldenTitab/gibberish-decoder" target="_blank" rel="noopener noreferrer"><picture><source srcset="images/project-gibberish.webp" type="image/webp"><img src="images/project-gibberish.jpg" alt="" loading="lazy"></picture><span data-i18n="project8Name">Gibberish Decoder</span></a>
             </div>
-            <p style="margin-top:1.4rem;"><a href="index.html#projects" class="btn btn-pill" data-i18n="worldCta">View all projects ↗</a></p>
+            <p class="world-cta"><a href="index.html#projects" class="btn btn-pill" data-i18n="worldCta">View all projects ↗</a></p>
         </section>
     </main>
 
@@ -99,6 +109,6 @@
         </div>
     </footer>
     <button type="button" id="backToTop" class="back-to-top" aria-label="Back to top" data-i18n-attr="aria-label:backToTopLabel">↑</button>
-    <script src="script.js"></script>
+    <script src="script.js?v=20261123"></script>
 </body>
 </html>
